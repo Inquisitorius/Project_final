@@ -16,7 +16,7 @@
 	<div class="container join-container">
 		<div class="join-banner do-hyeon-regular">회원가입</div>
 		<div class="css-headline"></div>
-		<form method="POST" action="" class="form-container"
+		<form method="POST" action="/join" class="form-container"
 			style="display: contents;">
 			<div class="input">
 				<div class="label-container gothic-a1-regular"
@@ -147,17 +147,17 @@
 				<div class="col-md-6 input-container" style="display:flex; justify-content: flex-start;">
 					<div class="form-check">
 						<input class="form-check-input" type="radio"
-							name="flexRadioDefault" id="flexRadioDefault1" value="MALE"> <label
+							name="gender" id="MALE" value="MALE"> <label
 							class="form-check-label gender-label" for="flexRadioDefault1"> 남자</label>
 					</div>
 					<div class="form-check">
 						<input class="form-check-input" type="radio"
-							name="flexRadioDefault" id="flexRadioDefault2" value="FEMALE"> <label
+							name="gender" id="FEMALE" value="FEMALE"> <label
 							class="form-check-label gender-label" for="flexRadioDefault2"> 여자 </label>
 					</div>
 					<div class="form-check">
 						<input class="form-check-input" type="radio"
-							name="flexRadioDefault" id="flexRadioDefault2" value="NONE"> <label
+							name="gender" id="NONE" value="NONE"> <label
 							class="form-check-label gender-label" for="flexRadioDefault2"> 선택안함 </label>
 					</div>
 				</div>
@@ -175,11 +175,11 @@
 						</div>
 						<span class="slash" style="height: 100%"></span>
 						<div  height="48">
-							<input class="textinput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" name="year" id="year" placeholder="MM" maxlength="2">
+							<input class="textinput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" name="month" id="month" placeholder="MM" maxlength="2">
 						</div>
 						<span class="slash" style="height: 100%"></span>
 						<div  height="48">
-							<input class="textinput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" name="year" id="year" placeholder="DD" maxlength="2">
+							<input class="textinput" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" name="day" id="day" placeholder="DD" maxlength="2">
 						</div>
 					</div>
 				</div>
