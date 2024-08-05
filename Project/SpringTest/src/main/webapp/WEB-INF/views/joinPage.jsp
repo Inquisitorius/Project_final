@@ -190,19 +190,36 @@
 					style="font-weight: bold; font-size: 15px;">
 					<label>이용약관 동의</label>
 				</div>
-				<div class="col-md-3 input-container">
-					<label class="css-allAgree">
-						<input id="TermsAgreeAll" type="checkbox">
-						<div class="css-79hxr7 e1dcessg1">
-							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 12C23.5 18.3513 18.3513 23.5 12 23.5C5.64873 23.5 0.5 18.3513 0.5 12C0.5 5.64873 5.64873 0.5 12 0.5C18.3513 0.5 23.5 5.64873 23.5 12Z" stroke="#ddd" fill="#fff"></path><path d="M7 12.6667L10.3846 16L18 8.5" stroke="#ddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-							<path d="M23.5 12C23.5 18.3513 18.3513 23.5 12 23.5C5.64873 23.5 0.5 18.3513 0.5 12C0.5 5.64873 5.64873 0.5 12 0.5C18.3513 0.5 23.5 5.64873 23.5 12Z" stroke="#ddd" fill="#fff"></path>
-							<path d="M7 12.6667L10.3846 16L18 8.5" stroke="#ddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-							</svg>
-						</div>
-						<span>전체 동의합니다.</span>
-					</label>
+				<div class="col-md-10 input-container" style="height: auto;">
+					<div class="AgreeAll-container">
+					<input id="agreeAll" type="checkbox" class="custom-checkbox">
+					<label for="agreeAll" class="checkbox-label gothic-a1-regular" style="font-size: 20px; font-weight: bold;">전체 동의합니다.</label>
+					<p class="terms-p"style="padding: 4px 0px 0px 30px; font-size: 12px;">선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다.</p>
+					</div>
+					
+					<div class="terms-list" style="padding: 8px 0px;">
+					<input id="termsagree1" type="checkbox" class="custom-checkbox">
+					<label for="termsagree1" class="checkbox-label" style="font-size: 14px; color: rgb(51,51,51);">이용약관 동의</label>
+					<span class="terms-span"style="font-size: 11px; color:rgb(121,121,121);">(필수)</span>
+					</div>
+					
+					<div class="terms-list" style="padding: 8px 0px;">
+					<input id="termsagree2" type="checkbox" class="custom-checkbox">
+					<label for="termsagree2" class="checkbox-label" style="font-size: 14px; color: rgb(51,51,51);">개인정보약관 동의</label>
+					<span class="terms-span"style="font-size: 11px; color:rgb(121,121,121);">(필수)</span>
+					</div>
+					
+					<div class="terms-list" style="padding: 8px 0px;">
+					<input id="termsagree3" type="checkbox" class="custom-checkbox">
+					<label for="termsagree3" class="checkbox-label" style="font-size: 14px; color: rgb(51,51,51);">본인은 만 14세 이상입니다.</label>
+					<span class="terms-span"style="font-size: 11px; color:rgb(121,121,121);">(필수)</span>
+					</div>
+					
 				</div>
 		</div>
+			<div class=submit-container>
+				<button type="submit" class="submit-btn"><span class="submit-span">가입하기</span></button>
+			</div>
 		</form>
 	</div>
 	

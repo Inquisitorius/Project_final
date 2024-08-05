@@ -113,5 +113,10 @@
 		$('#address-btn').on('click', openAddressSearch);
 		$('#research-btn').on('click', openAddressSearch);
 		
+		$('#agreeAll').on('change', function(){
+			var isCheckd = $(this).is(':checked');
+			
+			$('.terms-list .custom-checkbox').prop('checked', isCheckd);
+		});
 		
 	});
