@@ -1,0 +1,22 @@
+@charset "UTF-8";
+.footer-container{
+	border-top: 1px #eaebee solid;
+}
+.p-head{
+	color:rgb(102, 102, 102);
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 20px;
+	margin-bottom: 6px;
+	padding: 0px;
+}
+
+.footer-content{
+	margin: 0 auto;
+}
+
+p{
+	margin: 0 auto;
+	color: rgb(102,102,102);
+	font-size: 13px;
+}
