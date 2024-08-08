@@ -1,7 +1,5 @@
 package com.zerock.test.service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ public class UserService  {
 
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    
 
     public UserService(UserMapper mapper, PasswordEncoder passwordEncoder) {
         this.mapper = mapper;
@@ -30,11 +29,15 @@ public class UserService  {
         return mapper.findById(id);
     }
     
-    public UserDTO findUser(String email, String number) {
-    	Map<String, Object> params = new HashMap<>();
-    	params.put("email", email);
-    	params.put("phone", number);
-    	return mapper.findUser(params);
-    }
+   public UserDTO findUser(String email, String number) {
+	   return mapper.findUser(email, number);
+   }
 
+   public String findPwd(String id) {
+	   return mapper.findPwd(id);
+   }
+   
+   public UserDTO UserUpdatePwd(String email, String pwd) {
+	   return mapper.updateUserPassWord(email,pwd);
+   }
 }

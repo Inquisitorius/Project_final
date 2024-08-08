@@ -11,6 +11,16 @@
 	</select>
 	
 	<select id="findUser" parameterType="map" resultType="com.zerock.test.dto.UserDTO">
-		SELECT * FROM userinfo WHERE email = #{email} AND phone = #{number}
+		SELECT id FROM userinfo WHERE email = #{email} AND phone = #{number}
 	</select>
+	
+	<select id="findPwd" parameterType="String" resultType="java.lang.String">
+		SELECT email FROM userinfo WHERE id = #{id}
+	</select>
+	
+	<update id="updateUserPassWord" parameterType="com.zerock.test.dto.UserDTO">
+		UPDATE USERINFO 
+		SET PWD = #{PWD}
+		WHERE EMAIL = #{EMAIL}
+	</update>
 </mapper>

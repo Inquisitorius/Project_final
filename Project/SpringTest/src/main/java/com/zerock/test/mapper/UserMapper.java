@@ -1,7 +1,5 @@
 package com.zerock.test.mapper;
 
-import java.util.Map;
-
 import com.zerock.test.dto.UserDTO;
 
 public interface UserMapper {
@@ -9,6 +7,9 @@ public interface UserMapper {
 	
 	UserDTO findById(String id);
 	
-	UserDTO findUser(Map<String, Object> params);
-
+	UserDTO findUser(String email, String number);
+	
+	String findPwd(String id);
+	
+	UserDTO updateUserPassWord(String email, String newPwd);
 }

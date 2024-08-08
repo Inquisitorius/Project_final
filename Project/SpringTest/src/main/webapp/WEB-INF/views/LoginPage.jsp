@@ -28,9 +28,9 @@
             <label for="pwd">비밀번호</label>
          </div>
          <div class="search-id">
-         	<a class="id-link" href="#" style="text-decoration: none; color:black;">아이디 찾기</a>
+         	<a class="id-link" href="" style="text-decoration: none; color:black;">아이디 찾기</a>
          	<span class="pipe"></span>
-         	<a class="pw-link" style="text-decoration: none; color:black;">비밀번호 찾기</a>
+         	<a class="pw-link" href="" style="text-decoration: none; color:black;">비밀번호 찾기</a>
          </div>
          <button type="submit" class="login-btn" style="width:-webkit-fill-available; margin-top: 20px;">로그인</button>
 		</form>
@@ -64,48 +64,126 @@
 		});
 		
 		$('.id-link').on('click', function(event) {
-            event.preventDefault(); // 기본 링크 동작 방지
+		    event.preventDefault(); // 기본 링크 동작 방지
 
-            Swal.fire({
-                title: '아이디 찾기',
-                html: `
-                    <label for="email">이메일:</label>
-                    <input type="email" id="email" class="swal2-input" placeholder="이메일 입력...">
-                    <label for="phone">전화번호:</label>
-                    <input type="tel" id="phone" class="swal2-input" placeholder="전화번호 입력..." oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength=11>
-                `,
-                preConfirm: () => {
-                    const email = Swal.getPopup().querySelector('#email').value;
-                    const phone = Swal.getPopup().querySelector('#phone').value;
-                    
-                    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!email || !emailPattern.test(email)) {
-                        Swal.showValidationMessage(`유효한 이메일 주소를 입력해주세요.`);
-                        return false;
-                    }
-                    
-                    if(!phone || phone.length < 11){
-                    	 Swal.showValidationMessage(`유효한 전화번호를 입력해주세요.`);
-                    	 return false
-                    }
-                    
-                    if (!email || !phone) {
-                        Swal.showValidationMessage(`모든 필드를 입력해야 합니다.`);
-                    }
-                    return { email: email, phone: phone }
-                },
-                showCancelButton: true,
-                confirmButtonText: '제출'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                    	title : '아이디 찾기 결과',
-                    	text : 'id : dsadsad',
-                    	icon : 'info'
-                    });
-                }
-            });
-        });
+		    Swal.fire({
+		        title: '아이디 찾기',
+		        html: `<div class="container" style="padding-top:30px;">
+		    			<div class="row row-cols-1">
+		    			<div class="col" style="margin-bottom:15px;">
+		            <label for="email">이메일:</label>
+		            <input type="email" id="email" style="margin:0 auto;" name="email" class="swal2-input" placeholder="이메일 입력...">
+	            		</div>
+	            		<div class="col" style="padding-left: 0px; padding-right: 16px;">
+		            <label for="phone">전화번호:</label>
+		            <input type="text"id="number" name="number" style="margin:0 auto;" class="swal2-input" placeholder="전화번호 입력..." oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="11">
+		            </div>
+		            </div>
+		            </div>
+		        `,
+		        preConfirm: () => {
+		            var email = Swal.getPopup().querySelector('#email').value;
+		            var number = Swal.getPopup().querySelector('#number').value;
+		            
+		            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		            if (!email || !emailPattern.test(email)) {
+		                Swal.showValidationMessage(`유효한 이메일 주소를 입력해주세요.`);
+		                return false;
+		            }
+		            
+		            if (!number || number.length < 11) {
+		                Swal.showValidationMessage(`유효한 전화번호를 입력해주세요. (11자리)`);
+		                return false;
+		            }
+		            
+		            return { email: email, number: number};
+		        },
+		        showCancelButton: true,
+		        confirmButtonText: '제출'
+		    }).then((result) => {
+		    	console.log(result.value);
+		        if (result.isConfirmed) {
+		        	$.post('/findId', result.value, function(data) {
+		        	 
+		        	    if (data != null) {
+		        	        console.log('Data ID:', data.id);
+		        	        Swal.fire({
+		        	            title: '아이디 찾기 결과',
+		        	            text: '찾은 아이디 : ' + data.id,
+		        	            icon: 'info'
+		        	        });
+		        	    } else {
+		        	        Swal.fire({
+		        	            title: '아이디 찾기 결과',
+		        	            text: '찾은 아이디 : 없음',
+		        	            icon: 'info'
+		        	        });
+		        	    }
+		        	}).fail(function() {
+		                Swal.fire({
+		                    title: '오류',
+		                    text: '아이디를 찾는 중 오류가 발생했습니다.',
+		                    icon: 'error'
+		                    
+		                });
+		            });
+		        }
+		    });
+		});
+		
+		$('.pw-link').on('click', function(event) {
+		    event.preventDefault(); // 기본 링크 동작 방지
+			
+		    Swal.fire({
+		        title: '비밀번호 찾기',
+		        html: `<div class="container" style="padding-top:30px;">
+		    			<div class="row row-cols-1">
+		    			<div class="col" style="margin-bottom:15px;">
+		            <label for="id">아이디:</label>
+		            <input type="text" id="id" style="margin:0 auto;" name="id" class="swal2-input" placeholder="아이디입력...">
+	            		</div>
+	            		
+		            </div>
+		            </div>
+		        `,
+		        preConfirm: () => {
+		            var id = Swal.getPopup().querySelector('#id').value;
+		            
+			
+		            return { id : id};
+		        },
+		        showCancelButton: true,
+		        confirmButtonText: '제출'
+		    }).then((result) => {
+		    	console.log(result.value);
+		        if (result.isConfirmed) {
+		        	$.post('/findPwd', result.value, function(data) {
+		        	 
+		        	    if (data && data.status === 'success' && data.email) {
+		        	        console.log('Data email:', data.email);
+		        	        Swal.fire({
+		        	            title: '비밀번호 찾기',
+		        	            text: '입력된 이메일로 변경된 비밀번호를 전송합니다.    ' + data.email,
+		        	            icon: 'info'
+		        	        });
+		        	    } else {
+		        	        Swal.fire({
+		        	            title: '이메일 찾기 결과',
+		        	            text: '찾은 이메일 : 없음',
+		        	            icon: 'error'
+		        	        });
+		        	    }
+		        	}).fail(function() {
+		                Swal.fire({
+		                    title: '오류',
+		                    text: '아이디를 찾는 중 오류가 발생했습니다.',
+		                    icon: 'error'
+		                    
+		                });
+		            });
+		        }
+		    });
+		});
 		
         });
 		
