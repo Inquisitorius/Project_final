@@ -11,5 +11,5 @@ public interface UserMapper {
 	
 	String findPwd(String id);
 	
-	UserDTO updateUserPassWord(String email, String newPwd);
+	void updateUserPassWord(String email, String pwd);
 }

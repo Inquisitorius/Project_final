@@ -20,7 +20,7 @@
 	
 	<update id="updateUserPassWord" parameterType="com.zerock.test.dto.UserDTO">
 		UPDATE USERINFO 
-		SET PWD = #{PWD}
-		WHERE EMAIL = #{EMAIL}
+		SET PWD = #{pwd}
+		WHERE EMAIL = #{email}
 	</update>
 </mapper>

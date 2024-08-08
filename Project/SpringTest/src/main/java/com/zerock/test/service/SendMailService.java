@@ -2,11 +2,10 @@ package com.zerock.test.service;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zerock.test.dto.UserDTO;
 import com.zerock.test.mapper.UserMapper;
 
 import jakarta.mail.internet.MimeMessage;
@@ -17,23 +16,24 @@ import lombok.RequiredArgsConstructor;
 public class SendMailService {
 
     private final UserMapper mapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
    
-     public SendMailService(UserMapper mapper, BCryptPasswordEncoder bCryptPasswordEncoder,
+     public SendMailService(UserMapper mapper, PasswordEncoder passwordEncoder,
             JavaMailSender javaMailSender) {
          this.mapper = mapper;
-         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+         this.passwordEncoder = passwordEncoder;;
          this.javaMailSender = javaMailSender;
      }
 
     @Transactional
-    public void UpdatePassword(UserDTO dto) {
+    public void UpdatePassword(String email) {
         String tempPwd = getTempPassword();
         String encodedTempPwd = passwordEncoder(tempPwd);
-        mapper.updateUserPassWord(dto.getMail(), encodedTempPwd);
-        sendPasswordResetMail(dto.getMail(), tempPwd);
+        
+        mapper.updateUserPassWord(email, encodedTempPwd);
+        sendPasswordResetMail(email, tempPwd);
     }
 
     // 임시 비밀번호 생성
@@ -51,7 +51,7 @@ public class SendMailService {
     }
 
     public String passwordEncoder(String tempPwd) {
-        return bCryptPasswordEncoder.encode(tempPwd);
+        return passwordEncoder.encode(tempPwd);
     }
 
     // 메서드 선언부 수정
@@ -67,6 +67,7 @@ public class SendMailService {
             helper.setSubject(subject);
             helper.setText(message);
             javaMailSender.send(mimeMessage);
+            System.out.println("전송된 비밀 번호 : " + pwd);
         } catch (Exception e) {
             throw new RuntimeException("메일 전송 실패", e);
         }

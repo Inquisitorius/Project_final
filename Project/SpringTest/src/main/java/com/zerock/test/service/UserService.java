@@ -37,7 +37,7 @@ public class UserService  {
 	   return mapper.findPwd(id);
    }
    
-   public UserDTO UserUpdatePwd(String email, String pwd) {
-	   return mapper.updateUserPassWord(email,pwd);
+   public void UserUpdatePwd(String email, String pwd) {
+	   mapper.updateUserPassWord(email, pwd);
    }
 }

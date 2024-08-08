@@ -159,15 +159,19 @@ public class MainController {
     	return response;
     }
     
+    @ResponseBody
     @PostMapping("/updatePwd")
-    public String updatePwd(@RequestBody UserDTO dto) {
-    	try {
-    		sendMailService.UpdatePassword(dto);
-    		return "비밀번호 성공";
-    	}catch (Exception e) {
-			// TODO: handle exception
-    		return "asdds";
-		}
+    public Map<String, Object> updatePwdByEmail(@RequestParam String email) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            sendMailService.UpdatePassword(email);
+            response.put("status", "success");
+            response.put("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "fail");
+            response.put("message", "비밀번호 변경에 실패했습니다.");
+        }
+        return response;
     }
-    
 }

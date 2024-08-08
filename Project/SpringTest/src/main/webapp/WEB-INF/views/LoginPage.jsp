@@ -160,13 +160,16 @@
 		        	$.post('/findPwd', result.value, function(data) {
 		        	 
 		        	    if (data && data.status === 'success' && data.email) {
-		        	        console.log('Data email:', data.email);
-		        	        Swal.fire({
-		        	            title: '비밀번호 찾기',
-		        	            text: '입력된 이메일로 변경된 비밀번호를 전송합니다.    ' + data.email,
-		        	            icon: 'info'
-		        	        });
-		        	    } else {
+		        	    	 console.log('Data email:', data.email);
+		        	    	 $.post('/updatePwd', { email: data.email }, function(response) {
+		        	                // 비밀번호 전송 요청이 성공적으로 완료된 경우
+		        	                console.log('Data email:', data.email);
+		        	                Swal.fire({
+		        	                    title: '비밀번호 찾기',
+		        	                    text: '입력된 이메일로 변경된 비밀번호를 전송합니다. ' + data.email,
+		        	                    icon: 'info'
+		        	                });
+		        	    });} else {
 		        	        Swal.fire({
 		        	            title: '이메일 찾기 결과',
 		        	            text: '찾은 이메일 : 없음',
