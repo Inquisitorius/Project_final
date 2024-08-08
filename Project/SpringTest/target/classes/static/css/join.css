@@ -1,0 +1,261 @@
+@charset "UTF-8";
+
+.gothic-a1-regular {
+  font-family: "Gothic A1", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.do-hyeon-regular {
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 400; /* 기본 폰트 굵기 */
+  font-style: normal; /* 기본 폰트 스타일 */
+}
+
+.join-banner{
+	font-size: 40px;
+	color: #333;
+	justify-content: center;
+    display: flex;
+}
+
+.join-container{
+	display: grid;
+	justify-content: center;
+	margin-top: 30px;
+	margin-bottom: 60px;
+}
+
+.input{
+	display: inline-flex;
+    width: 640px;
+    height: 100%;
+    padding: 13px 20px;
+    
+}
+
+.css-headline{
+	padding-bottom: 10px;
+    border-bottom: 2px solid rgb(51, 51, 51);
+    font-size: 12px;
+    color: rgb(102, 102, 102);
+    line-height: 17px;
+    text-align: right;
+}
+
+.label-container{
+	width: 139px;
+    padding-top: 12px;
+}
+
+.input-container{
+	position: relative;
+    height: 48px;
+}
+
+.text-input{
+	width: 100%;
+    height: 46px;
+    padding: 0px 11px 1px 15px;
+    border-radius: 4px;
+    border: 1px solid rgb(221, 221, 221);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgb(51, 51, 51);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.text-input::placeholder{
+	 font-family: "Gothic A1", sans-serif;
+	 color:rgb(207,207,207);
+	 font-weight: 500;
+     font-size: 16px;
+}
+
+.text-input:focus{
+	border: 1px solid;
+}
+.btn-container{
+	margin-left: 8px;
+}
+
+.input-btn{
+	width: 100%;
+	height: 46px;
+	border-radius: 5px;
+	background-color: rgb(255,255,255);
+}
+
+.text-muted{
+	padding: 10px 0px;
+}
+
+.error-msg{
+	font-size: 13px;
+	color: rgb(221,29,30);
+	margin-top: -4px;
+	letter-spacing: -0.5px;
+}
+
+.form-check{
+	align-content: center;
+    width: max-content;
+    margin-bottom: 0px !important;
+    margin-right: 30px;
+}
+
+.form-check-input:checked {
+    background-color: rgb(31,31,31) !important;
+    border-color: rgb(255,255,255) !important;
+}
+
+.form-check-input:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 .25rem rgb(115 115 115 / 25%) !important;
+   
+}
+
+.gender-label{
+    font-weight: 600;
+    font-family: "Gothic A1", sans-serif;
+    font-size: 17px;
+   
+}
+
+.birth-container{
+	height: 48px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 3px;
+    padding: 0px 15px;
+}
+
+.textinput{
+	width: 100%;
+    height: 40px;
+    padding: 0px 11px 1px 15px;
+    border-radius: 4px;
+    font-weight: 400;
+    line-height: 38px;
+    color: rgb(51, 51, 51);
+    outline: none;
+    box-sizing: border-box;
+    border: none;
+    text-align: center;
+    font-family: "Gothic A1", sans-serif;
+  	font-weight: 600;
+  	font-style: normal;
+}
+
+.text input::placeholder{
+	 font-family: "Gothic A1", sans-serif;
+	 color:rgb(207,207,207);
+	 font-weight: 500;
+     font-size: 16px;
+}
+
+.slash::after{
+	content: "/";
+    font-size: 14px;
+    color: rgb(204, 204, 204);
+    text-align: center;
+    line-height: 40px;
+}
+
+.terms-container{
+	display: flex;
+    padding: 8px 0px;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.custom-checkbox {
+    display: none;
+}
+
+.checkbox-label {
+    display: inline-block;
+    margin-left: 30px;
+    margin-top: 12px;
+    cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+    display: inline;
+}
+
+.checkbox-label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #000000;
+    background-color: white;
+    box-shadow: 0 0 0 1px rgb(51,51,51) inset;
+}
+
+.custom-checkbox:checked + .checkbox-label:before {
+    background-color: #c0c0c0;
+}
+
+.custom-checkbox:checked + .checkbox-label:after {
+    content: '✔';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
+}
+
+.terms-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    margin-bottom: 20px;
+}
+
+
+.termsinput-container {
+    display: flex;
+    align-items: center;
+}
+
+.terms-list{
+	font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+}
+
+.submit-container{
+	 display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-top: 1px solid rgb(255, 255, 255);
+    padding: 40px 0px;
+}
+
+.submit-btn{
+	width: 280px;
+    height: 60px;
+    display: block;
+    padding: 0 10;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    border: 0px none;
+}
+
+.submit-span{
+	display: inline-block;
+	font-size: 18px;
+	font-weight: bold;
+}

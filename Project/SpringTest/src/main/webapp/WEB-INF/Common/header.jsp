@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <link href="/css/header.css" rel="stylesheet" type="text/css">	
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gothic+A1&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
 
 <header>
 	<div class="container header-container">
@@ -32,12 +34,47 @@
             </form>
         </nav>
     </div>
-    		<div class="col-2 login" style="max-height: 48px;">
-    			<a href="/login" style="display: flex; justify-content: end; text-decoration: none;">
-    				<img src="/img/LoginBtn.png">
-    				<div class="login-span" style="display:flex;"><span class="login-span">로그인/회원가입</span></div>
-    			</a>
-    		</div>
-			</div>
-		</div>
+    	
+    <% 
+        String username = (String) request.getAttribute("username");
+        Boolean isAdmin = (Boolean) request.getAttribute("isAdmin");
+        if (username != null) {
+    %>
+    <div class="col-3 login" style="max-height: 48px; padding: 10px 20px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span class="ddd"> <%= username %> 님</span>
+        <% if (Boolean.TRUE.equals(isAdmin)) { %>
+        <button id="admin-btn">관리자 페이지</button>
+        <% } %>
+        <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px;">
+            <button type="submit" style="background: none; border: none; padding: 0; text-decoration: underline; cursor: pointer;">
+                로그아웃
+            </button>
+        </form>
+    </div>
+    </div>
+    
+    <% } else { %>
+    <div class="col-2 login" style="max-height: 48px;">
+    	<div class="login-span" style="display: flex;">
+            <a href="/login" style="display: flex; align-items: center; text-decoration: none;">
+                <img src="/img/login-btn.svg" style="width: auto; height: 50px;">
+                <div class="login-span" style="display: flex; align-items: center;">
+                    <span>로그인/회원가입</span>
+                </div>
+            </a>
+        </div>
+        </div>
+        
+    <% } %>
+	</div>
+	</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#admin-btn").on('click',function(){
+			 window.location.href = '/admin';
+		});
+	});
+	
+</script>
 </header>

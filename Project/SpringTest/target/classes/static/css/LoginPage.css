@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+.gothic-a1-regular {
+  font-family: "Gothic A1", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.do-hyeon-regular {
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 400; /* 기본 폰트 굵기 */
+  font-style: normal; /* 기본 폰트 스타일 */
+}
+
+.login-container{
+	display: grid;
+	justify-content: center;
+	margin-top: 30px;
+	margin-bottom: 60px;
+}
+
+.login-banner{
+	font-size: 40px;
+	color: #333;
+	justify-content: center;
+    display: flex;
+}
+
+
+.form-container{
+	margin-top: 20px;
+	padding: 10px;
+}
+
+.form-floating{
+	width: 350px;
+	height: auto;
+}
+
+.search-id{
+	margin-top: 10px;
+    display: flex;
+    justify-content: end;
+    font-size: 12px;
+}
+
+.pipe{
+	font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+	width: 1px;
+    height: 13px;
+    margin: 3px 6px 0px;
+    background-color: rgb(51, 51, 51);
+}
+
+.login-btn, .join-btn{
+	border: 0px none;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+}
+
+.id-link{
+	font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+	font-size: 14px;
+}
+
+.pw-link{
+	font-family: "Noto Sans KR", "malgun gothic", AppleGothic, dotum, sans-serif;
+	font-size: 14px;
+}

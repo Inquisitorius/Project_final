@@ -17,7 +17,7 @@
 		<div class="join-banner do-hyeon-regular">회원가입</div>
 		<div class="css-headline"></div>
 		<form method="POST" action="/join" class="form-container"
-			style="display: contents;">
+			style="display: contents;">	
 			<div class="input">
 				<div class="label-container gothic-a1-regular"
 					style="font-weight: bold; font-size: 15px;">

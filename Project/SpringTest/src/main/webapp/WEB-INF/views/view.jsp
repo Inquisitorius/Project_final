@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%
+String username = (String) request.getAttribute("username");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,12 +51,16 @@
   </button>
 </div>
 <div class="sticky-sidebar" >
-	<div class="sc-box">
-		<div class="Saved-item">
+	<div class="sc-box" style="border-color: rgb(102,102,102);">
+		<div class="Saved-item" style="text-align: center;">
 			찜한 상품
 		</div>
-		<div class="saved-link">
+		<div class="saved-link" style="text-align: center;">
+		<%if(username != null){ %>
 			<a href="">찜한상품</a>
+			<%} else { %>
+			<a href="/login">찜한상품</a>
+			<%} %>
 		</div>
 	</div>
 	<div class="sc-box">
