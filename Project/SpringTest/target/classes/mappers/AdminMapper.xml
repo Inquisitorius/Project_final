@@ -5,4 +5,90 @@
 	<select id="selectAll" resultType="com.zerock.test.dto.AdminTestDTO">
         SELECT TEST_IDX, TEST_TEXT FROM TEST
     </select>
+    
+    <insert id="ServerLogUpdate2" parameterType="com.zerock.test.dto.ServerInfoDTO">
+    	INSERT INTO SERVERLOG VALUES
+			(
+				#{date},
+				#{time},
+				#{proces_ProcessCnt},				
+				#{proces_IOwait},				
+				#{swpd},
+				#{free},
+				#{buffer},
+				#{cache},				
+				#{si},
+				#{so},
+				#{bi},
+				#{bo},
+				#{in},
+				#{cs},
+				#{us},
+				#{sy},
+				#{id},
+				#{wa},
+				#{st}
+			)
+    </insert>
+   <update id="ServerLogUpdate" parameterType="list">
+   BEGIN
+        <foreach collection="list" item="item" index="idx" separator="">
+         MERGE INTO SERVERLOG trg
+            USING (
+                SELECT #{item.date} AS SERVER_DATE, #{item.time} AS SERVER_TIME FROM DUAL
+            ) src
+            ON (trg.SERVER_DATE = src.SERVER_DATE AND trg.SERVER_TIME = src.SERVER_TIME)
+            WHEN NOT MATCHED THEN
+            	INSERT VALUES
+            	(
+					#{item.date},
+					#{item.time},
+					#{item.proces_ProcessCnt},				
+					#{item.proces_IOwait},				
+					#{item.swpd},
+					#{item.free},
+					#{item.buffer},
+					#{item.cache},				
+					#{item.si},
+					#{item.so},
+					#{item.bi},
+					#{item.bo},
+					#{item.in},
+					#{item.cs},
+					#{item.us},
+					#{item.sy},
+					#{item.id},
+					#{item.wa},
+					#{item.st}
+				);
+	    </foreach>
+	    END;
+	</update>
+    <insert id="ServerLogUpdate99" parameterType="list">
+    	<foreach collection="list" item="item" index="idx" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
+        INTO SERVERLOG VALUES
+			(
+				#{item.date},
+				#{item.time},
+				#{item.proces_ProcessCnt},				
+				#{item.proces_IOwait},				
+				#{item.swpd},
+				#{item.free},
+				#{item.buffer},
+				#{item.cache},				
+				#{item.si},
+				#{item.so},
+				#{item.bi},
+				#{item.bo},
+				#{item.in},
+				#{item.cs},
+				#{item.us},
+				#{item.sy},
+				#{item.id},
+				#{item.wa},
+				#{item.st}
+			)
+	    </foreach>
+	</insert>
+	
 </mapper>
