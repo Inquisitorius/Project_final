@@ -174,4 +174,10 @@ public class MainController {
         }
         return response;
     }
+    
+    @PostMapping("/idexits")
+    @ResponseBody
+    public int idExits(@RequestParam String id) {
+    	return userService.existById(id);
+    }
 }

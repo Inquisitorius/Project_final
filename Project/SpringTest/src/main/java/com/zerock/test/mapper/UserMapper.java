@@ -12,4 +12,6 @@ public interface UserMapper {
 	String findPwd(String id);
 	
 	void updateUserPassWord(String email, String pwd);
+	
+	Integer existById(String id);
 }

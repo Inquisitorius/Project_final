@@ -23,4 +23,8 @@
 		SET PWD = #{pwd}
 		WHERE EMAIL = #{email}
 	</update>
+	
+	<select id="existById" parameterType="String" resultType="java.lang.Integer">
+		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM userinfo WHERE id = #{id}
+	</select>
 </mapper>

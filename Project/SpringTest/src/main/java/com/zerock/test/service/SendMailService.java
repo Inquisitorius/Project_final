@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SendMailService {
 
-    private final UserMapper mapper;
-    private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender javaMailSender;
+    private  UserMapper mapper;
+    private  PasswordEncoder passwordEncoder;
+    private  JavaMailSender javaMailSender;
 
    
      public SendMailService(UserMapper mapper, PasswordEncoder passwordEncoder,

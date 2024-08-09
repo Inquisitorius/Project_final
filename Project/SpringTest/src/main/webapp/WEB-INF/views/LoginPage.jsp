@@ -4,7 +4,7 @@
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -187,6 +187,32 @@
 		        }
 		    });
 		});
+		
+		 $("#username").on("keypress", function(e) {
+             // 공백 입력을 막기
+             if (e.which === 32) {
+                 e.preventDefault();
+             }
+         });
+		 
+		 $("#password").on("keypress", function(e) {
+             // 공백 입력을 막기
+             if (e.which === 32) {
+                 e.preventDefault();
+             }
+         });
+		 
+		// 붙여넣기 시 공백 제거
+         $("#password").on("paste", function(e) {
+             let clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+             let pastedData = clipboardData.getData('Text');
+             
+             // 공백 제거 후 붙여넣기
+             $(this).val(pastedData.replace(/\s+/g, ''));
+             
+             // 기본 붙여넣기 동작 막기
+             e.preventDefault();
+         });
 		
         });
 		

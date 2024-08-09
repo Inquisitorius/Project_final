@@ -35,7 +35,8 @@ public class WebSecurityConfig {
                     new AntPathRequestMatcher("/logout", "POST"),
                     new AntPathRequestMatcher("/findId", "POST"),
                     new AntPathRequestMatcher("/findPwd", "POST"),
-                    new AntPathRequestMatcher("/updatePwd", "POST")
+                    new AntPathRequestMatcher("/updatePwd", "POST"),
+                    new AntPathRequestMatcher("/idexits", "POST")
                 )
             )
             .authorizeHttpRequests(auth -> auth 

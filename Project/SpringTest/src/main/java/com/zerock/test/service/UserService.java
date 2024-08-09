@@ -40,4 +40,8 @@ public class UserService  {
    public void UserUpdatePwd(String email, String pwd) {
 	   mapper.updateUserPassWord(email, pwd);
    }
+   
+   public Integer existById(String id) {
+	   return mapper.existById(id);
+   }
 }

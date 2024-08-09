@@ -8,6 +8,7 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/join.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -16,7 +17,7 @@
 	<div class="container join-container">
 		<div class="join-banner do-hyeon-regular">회원가입</div>
 		<div class="css-headline"></div>
-		<form method="POST" action="/join" class="form-container"
+		<form method="POST" id="joinForm" action="/join" class="form-container"
 			style="display: contents;">	
 			<div class="input">
 				<div class="label-container gothic-a1-regular"
@@ -31,7 +32,7 @@
 					</div>
 				</div>
 				<div class="col-md-3 btn-container">
-					<button class="input-btn" type="button">
+					<button class="input-btn" id="id-check-btn" type="button">
 						<span>중복확인</span>
 					</button>
 				</div>
@@ -222,7 +223,7 @@
 			</div>
 		</form>
 	</div>
-	
+	saddassd
 	<jsp:include page="../Common/footer.jsp"></jsp:include>
 
 </body>
