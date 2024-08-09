@@ -29,15 +29,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers(
-                    new AntPathRequestMatcher("/login", "POST"),
-                    new AntPathRequestMatcher("/join", "POST"),
-                    new AntPathRequestMatcher("/logout", "POST"),
-                    new AntPathRequestMatcher("/findId", "POST"),
-                    new AntPathRequestMatcher("/findPwd", "POST"),
-                    new AntPathRequestMatcher("/updatePwd", "POST"),
-                    new AntPathRequestMatcher("/idexits", "POST")
-                )
+               .disable()
             )
             .authorizeHttpRequests(auth -> auth 
             	
