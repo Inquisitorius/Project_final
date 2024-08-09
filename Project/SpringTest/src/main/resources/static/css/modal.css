@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.swal2-validation-message{
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.swal2-confirm{
+	background-color: black !important;
+    font-weight: bold !important;;
+}
+.swal2-confirm:focus-visible{
+	box-shadow: none;
+}
+.swal2-cancel{
+	font-weight: bold;
+}

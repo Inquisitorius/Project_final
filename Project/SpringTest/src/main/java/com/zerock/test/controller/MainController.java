@@ -180,4 +180,27 @@ public class MainController {
     public int idExits(@RequestParam String id) {
     	return userService.existById(id);
     }
+    
+    @PostMapping("/reset-password")
+    @ResponseBody
+    public int ResetPassWord(@RequestParam String id) {
+    	 return userService.findResetUser(id);
+    }
+    
+    @PostMapping("/changePwd")
+    @ResponseBody
+    public Map<String, Object> ChangePwd(@RequestParam String id, @RequestParam String pwd){
+    	Map<String, Object> response = new HashMap<>();
+    	try {
+    		userService.ChangePassWord(id, pwd);
+    		response.put("status", "success");
+    		
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+    		 response.put("status", "error");
+    	    
+		}
+    	return response;
+    }
 }

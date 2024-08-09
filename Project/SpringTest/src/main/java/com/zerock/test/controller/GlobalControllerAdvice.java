@@ -21,6 +21,18 @@ public class GlobalControllerAdvice {
 //	        return (auth != null && auth.isAuthenticated()) ? auth.getName() : null;
 	    }
 	 
+	 @ModelAttribute("userid")
+	    public String getUserID() {
+	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	        if(auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof CustomUserDetails) {
+	        	CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+	            return userDetails.getUserDTO().getId();  
+	        }else {
+	        	return null;
+	        }
+//	        return (auth != null && auth.isAuthenticated()) ? auth.getName() : null;
+	    }
+	 
 	 @ModelAttribute("isAdmin")
 	 	public boolean isAdmin() {
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();

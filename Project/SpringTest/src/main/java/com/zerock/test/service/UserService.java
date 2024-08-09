@@ -10,8 +10,8 @@ import com.zerock.test.mapper.UserMapper;
 @Service
 public class UserService  {
 
-    private final UserMapper mapper;
-    private final PasswordEncoder passwordEncoder;
+    private  UserMapper mapper;
+    private  PasswordEncoder passwordEncoder;
     
 
     public UserService(UserMapper mapper, PasswordEncoder passwordEncoder) {
@@ -43,5 +43,14 @@ public class UserService  {
    
    public Integer existById(String id) {
 	   return mapper.existById(id);
+   }
+   
+   public Integer findResetUser(String id) {
+	   return mapper.findResetUser(id);
+   }
+   
+   public void ChangePassWord(String id, String pwd) {
+	   String encodedPassword = passwordEncoder.encode(pwd);
+	   mapper.ChangePassWord(id, encodedPassword);
    }
 }

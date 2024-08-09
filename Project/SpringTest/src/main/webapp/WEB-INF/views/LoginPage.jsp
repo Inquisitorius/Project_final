@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<link href="/css/modal.css" rel="stylesheet" type="text/css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,11 +72,11 @@
 		        html: `<div class="container" style="padding-top:30px;">
 		    			<div class="row row-cols-1">
 		    			<div class="col" style="margin-bottom:15px;">
-		            <label for="email">이메일:</label>
+		            <label for="email" style="font-weight:bold;">이메일:</label>
 		            <input type="email" id="email" style="margin:0 auto;" name="email" class="swal2-input" placeholder="이메일 입력...">
 	            		</div>
 	            		<div class="col" style="padding-left: 0px; padding-right: 16px;">
-		            <label for="phone">전화번호:</label>
+		            <label for="phone" style="font-weight:bold;">전화번호:</label>
 		            <input type="text"id="number" name="number" style="margin:0 auto;" class="swal2-input" placeholder="전화번호 입력..." oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="11">
 		            </div>
 		            </div>
@@ -139,7 +140,7 @@
 		        html: `<div class="container" style="padding-top:30px;">
 		    			<div class="row row-cols-1">
 		    			<div class="col" style="margin-bottom:15px;">
-		            <label for="id">아이디:</label>
+		            <label for="id" style="font-weight:bold;">아이디:</label>
 		            <input type="text" id="id" style="margin:0 auto;" name="id" class="swal2-input" placeholder="아이디입력...">
 	            		</div>
 	            		

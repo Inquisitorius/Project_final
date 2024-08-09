@@ -20,11 +20,23 @@
 	
 	<update id="updateUserPassWord" parameterType="com.zerock.test.dto.UserDTO">
 		UPDATE USERINFO 
-		SET PWD = #{pwd}
+		SET PWD = #{pwd},
+		PASSWORD_RESET = 1
 		WHERE EMAIL = #{email}
 	</update>
 	
 	<select id="existById" parameterType="String" resultType="java.lang.Integer">
 		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM userinfo WHERE id = #{id}
 	</select>
+	
+	<select id="findResetUser" parameterType="String" resultType="java.lang.Integer">
+		SELECT PASSWORD_RESET FROM USERINFO WHERE id = #{id}
+	</select>
+	
+	<update id="ChangePassWord" parameterType="com.zerock.test.dto.UserDTO">
+		UPDATE USERINFO
+		SET PWD = #{pwd},
+		PASSWORD_RESET = 0
+		WHERE ID = #{id}
+	</update>
 </mapper>
