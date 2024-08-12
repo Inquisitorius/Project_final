@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+.gothic-a1-regular {
+  font-family: "Gothic A1", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.do-hyeon-regular {
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 400; /* 기본 폰트 굵기 */
+  font-style: normal; /* 기본 폰트 스타일 */
+}
+
+.Mypage-banner{
+	font-size: 40px;
+	color: #333;
+	justify-content: center;
+    display: flex;
+    
+    width: 1024px;
+}
+
+.Mypage-container{
+	display: grid;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 60px;
+    
+}
+
+.user-info{
+	border-top: 1px solid rgb(238, 238, 238);
+    border-right: 1px solid rgb(238, 238, 238);
+    border-bottom: 1px solid rgb(238, 238, 238);
+    border-left: 1px solid rgb(238, 238, 238);
+    max-height: 310px;
+    width : 100%;
+    margin-top: 30px;
+    padding: 0 !important;
+}
+
+.user-profile{
+	width : 100%;
+    display: flex;
+}
+
+.left-profile{
+	width: 310px;
+    height: 310px;
+    position: relative;
+}
+
+.back-container{
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.background-img{
+	position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/img/back-img.png);
+    background-color: rgb(181, 181, 181);
+}
+
+.background-content{
+	position: inherit;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+.shop-img{
+	border-radius: 50%;
+	margin-bottom: 15px;
+	cursor: pointer;
+}
+
+.shop-name{
+	font-size: 16px;
+    margin-bottom: 10px;
+    color : white;
+    letter-spacing: -0.5px;
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+.shop-control{
+	display: flex;
+	margin-top: 20px;
+}
+
+.star-img{
+	width: 15px;
+	height: 14px;
+}
+
+.star{
+	display: flex;
+}
+
+.shop-link{
+	width: 106px;
+    border: 1px solid rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    height: 40px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 13px;
+    letter-spacing: -0.5px;
+    font-family: "Noto Sans KR", sans-serif;
+    text-decoration-line: none;
+}
+
+.shop-link:hover{
+	color: white;
+}
+

@@ -15,6 +15,8 @@ public interface UserMapper {
 	
 	Integer existById(String id);
 	
+	Integer existByemail(String email);
+	
 	Integer findResetUser(String id);
 	
 	void ChangePassWord(String id, String pwd);

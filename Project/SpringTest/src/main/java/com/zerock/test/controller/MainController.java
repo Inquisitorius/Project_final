@@ -79,17 +79,18 @@ public class MainController {
     }
     
     @PostMapping("/join")
-    public String handleJoin(@RequestParam("id") String id, 
-                             @RequestParam("pwd") String pwd,
-                             @RequestParam("name") String name,
-                             @RequestParam("mail") String mail,
-                             @RequestParam("number") String number,
-                             @RequestParam("roadAddress") String streetAddress,
-                             @RequestParam("detailAddress") String detailAddress,
-                             @RequestParam("gender") String gender,
-                             @RequestParam("year") String year,
-                             @RequestParam("month") String month,
-                             @RequestParam("day") String day,
+    public String handleJoin(@RequestParam String id, 
+                             @RequestParam String pwd,
+                             @RequestParam String name,
+                             @RequestParam String mail,
+                             @RequestParam String number,
+                             @RequestParam String roadAddress,
+                             @RequestParam String detailAddress,
+                             @RequestParam String gender,
+                             @RequestParam String year,
+                             @RequestParam String month,
+                             @RequestParam String day,
+                             @RequestParam String expJibunAddr,
                              Model model) {
     	
     	  
@@ -106,8 +107,9 @@ public class MainController {
             dto.setName(name);
             dto.setMail(mail);
             dto.setNumber(number);
-            dto.setStreet_address(streetAddress);
+            dto.setStreet_address(roadAddress);
             dto.setDetail_address(detailAddress);
+            dto.setExpJibunAddr(expJibunAddr);
             dto.setGender(gender);
             dto.setBirthDate(year, month, day);
             
@@ -127,6 +129,11 @@ public class MainController {
         return "view"; 
     }
     
+    
+    @GetMapping("/mypage")
+    public String MyPage() {
+    	return "MyPage";
+    }
    
     @ResponseBody
     @PostMapping("/findId")
@@ -181,10 +188,23 @@ public class MainController {
     	return userService.existById(id);
     }
     
+    @PostMapping("/mailexits")
+    @ResponseBody
+    public int emailExits(@RequestParam String email) {
+    	return userService.existByemail(email);
+    }
+    
     @PostMapping("/reset-password")
     @ResponseBody
     public int ResetPassWord(@RequestParam String id) {
-    	 return userService.findResetUser(id);
+    	Integer result = userService.findResetUser(id);
+
+        if (result == null) {
+            // 특정 값(예: -1)을 반환하여 클라이언트에서 이를 처리할 수 있게 합니다.
+            return -1; // -1은 존재하지 않는 ID를 나타내는 값으로 사용할 수 있습니다.
+        }
+
+        return result;
     }
     
     @PostMapping("/changePwd")
@@ -203,4 +223,6 @@ public class MainController {
 		}
     	return response;
     }
+    
+    
 }

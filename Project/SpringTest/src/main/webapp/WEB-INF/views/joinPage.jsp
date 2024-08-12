@@ -17,7 +17,7 @@
 	<div class="container join-container">
 		<div class="join-banner do-hyeon-regular">회원가입</div>
 		<div class="css-headline"></div>
-		<form method="POST" id="joinForm" action="/join" class="form-container"
+		<form method="POST" id="joinForm" class="form-container"
 			style="display: contents;">	
 			<div class="input">
 				<div class="label-container gothic-a1-regular"
@@ -114,7 +114,7 @@
 					style="font-weight: bold; font-size: 15px;">
 					<label>주소</label>
 				</div>
-				<div class="col-md-6 input-container" id="Addressbtn-container">
+				<div class="col-md-6 input-container" id="Addressbtn-container" style="display: blcok;">
 					<div class="Addressbtn-container">
 						<button type="button" class="input-btn" id="address-btn">
 							<span>주소찾기</span>
@@ -122,7 +122,7 @@
 					</div>
 				</div>
 				<div class="result-container" id="result-container"
-					style="width: 300px; display: none">
+					style="width: 300px; display: none;">
 					<div class="col input-container" id="result-container">
 						<input type="text" class="text-input" name="roadAddress"
 							id="roadAddress" readonly="readonly">
@@ -131,9 +131,13 @@
 						<input type="text" class="text-input" name="detailAddress"
 							id="detailAddress" placeholder="상세주소를 입력해주세요.">
 					</div>
+					<div class="col input-container" id="expJibunAddr-container" style="display: none;">
+						<input type="text" class="text-input" name="expJibunAddr"
+							id="expJibunAddr" placeholder="상세주소를 입력해주세요.">
+					</div>
+					
 				</div>
-				<div class="col-md-3 btn-container" id="btn-container"
-					style="display: none;">
+				<div class="col-md-3 btn-container" id="btn-container" style="display: none;">
 					<button type="button" class="input-btn" id="research-btn">
 						<span>재검색</span>
 					</button>
@@ -219,7 +223,7 @@
 				</div>
 		</div>
 			<div class=submit-container>
-				<button type="submit" class="submit-btn"><span class="submit-span">가입하기</span></button>
+				<button type="button" id ="submit-btn" class="submit-btn"><span class="submit-span">가입하기</span></button>
 			</div>
 		</form>
 	</div>

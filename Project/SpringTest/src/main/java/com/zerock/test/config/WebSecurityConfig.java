@@ -33,9 +33,7 @@ public class WebSecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth 
             	
-            	.requestMatchers("/reset-password").permitAll()
-            	.requestMatchers("/changePwd").permitAll()
-            	.requestMatchers("/findId").permitAll()
+            	
                 .requestMatchers(new AntPathRequestMatcher("/admin")).hasRole("ADMIN") // ADMIN 권한만 접근 허용
                 .anyRequest().permitAll() // 나머지 요청은 접근 허용
                 

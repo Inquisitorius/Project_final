@@ -13,13 +13,14 @@ public class UserDTO {
     private LocalDate birthDate; 
     private String Street_address;
     private String detail_address;
+    private String expJibunAddr;
     private int password_reset;
 
 
     public UserDTO() {
     }
 
-    public UserDTO(String id, String pwd, String name, String mail, String number, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset) {
+    public UserDTO(String id, String pwd, String name, String mail, String number, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
@@ -111,5 +112,13 @@ public class UserDTO {
 
 	public void setPassword_reset(int password_reset) {
 		this.password_reset = password_reset;
+	}
+
+	public String getExpJibunAddr() {
+		return expJibunAddr;
+	}
+
+	public void setExpJibunAddr(String expJibunAddr) {
+		this.expJibunAddr = expJibunAddr;
 	}
 }
