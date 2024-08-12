@@ -5,6 +5,22 @@
 	<select id="selectAll" resultType="com.zerock.test.dto.AdminTestDTO">
         SELECT TEST_IDX, TEST_TEXT FROM TEST
     </select>
+    <select id = "Get_ServerInfo"  parameterType = "int"
+    		resultType ="com.zerock.test.dto.ServerInfoDTO">
+    <![CDATA[
+    	SELECT *
+			FROM (
+			    SELECT *
+			    FROM SERVERLOG
+			    WHERE TO_DATE(SERVER_DATE || ' ' || SERVER_TIME, 'YYYY-MM-DD HH24:MI:SS') 
+			    < FROM_TZ(CAST(SYSDATE AS TIMESTAMP), 'UTC') AT TIME ZONE 'Asia/Seoul'
+			    ORDER BY SERVER_DATE DESC, SERVER_TIME DESC
+			)
+			WHERE ROWNUM <= #{cnt}
+			ORDER BY SERVER_DATE ASC, SERVER_TIME ASC
+	]]>
+    </select>
+    
     
     <insert id="ServerLogUpdate2" parameterType="com.zerock.test.dto.ServerInfoDTO">
     	INSERT INTO SERVERLOG VALUES

@@ -2,115 +2,118 @@ package com.zerock.test.dto;
 
 public class ServerInfoDTO 
 {
-	private String date;
-	private String time;
+	private String server_date;
+	private String server_time;
 	
 	//proces
 	private int proces_ProcessCnt;
 	private int proces_IOwait;
 	
 	//memory
-	private int swpd; //사용된 가상 메모리의 용량
-	private int free; //사용가능한 여유 메모리 용량
-	private int buffer;//사용된 버퍼 메모리 총량
-	private int cache;//사용된 페이지케시 메모리
+	private int memory_swpd; //사용된 가상 메모리의 용량
+	private int memory_free; //사용가능한 여유 메모리 용량
+	private int memory_buffer;//사용된 버퍼 메모리 총량
+	private int memory_cache;//사용된 페이지케시 메모리
 	
 	//swap
-	private int si; //swap-in 메모리의 양 kb
-	private int so; //swap-out 메모리양 ! 지속적으로 발생시 메모리 부족 의심
+	private int swap_si; //swap-in 메모리의 양 kb
+	private int swap_so; //swap-out 메모리양 ! 지속적으로 발생시 메모리 부족 의심
 	
 	//IO
-	private int bi; // 블록 디바이스로부터 입력 블록수
-	private int bo; // 블록 디바이스에 쓰기 블록수
+	private int io_bi; // 블록 디바이스로부터 입력 블록수
+	private int io_bo; // 블록 디바이스에 쓰기 블록수
 	
 	//system
-	private int in; // 초당 발생한 interrupts
-	private int cs; // 초당 발생한 문맥교환수
+	private int system_in; // 초당 발생한 interrupts
+	private int system_cs; // 초당 발생한 문맥교환수
 	
 	//cpu
-	private int us; //cpu가 사용자 수준 코드를 실행한 시간
-	private int sy; // cput 가 시스템 수준 코드를 실행한 시간
-	private int id; //idel 시간!
-	private int wa; //IO WAIT TIME
-	private int st; //?
+	private int cpu_us; //cpu가 사용자 수준 코드를 실행한 시간
+	private int cpu_sy; // cput 가 시스템 수준 코드를 실행한 시간
+	private int cpu_id; //idel 시간!
+	private int cpu_wa; //IO WAIT TIME
+	private int cpu_st; //?
 	
-	public int getSt() {
-		return st;
-	}
-
-	public void setSt(int st) {
-		this.st = st;
-	}
+	private boolean hitDate;
+	
+	
 
 	public ServerInfoDTO()
 	{
-		
+		hitDate = false;
 	}
 	
 	public void PrintDTO()
 	{
-		System.out.println("DATE : " + this.date);
-		System.out.println("Time : " + this.time);
+		System.out.println("DATE : " + this.server_date);
+		System.out.println("Time : " + this.server_time);
 		
 		System.out.println("proces_ProcessCnt : " + this.proces_ProcessCnt);
 		System.out.println("proces_IOwait : " + this.proces_IOwait);
 		
-		System.out.println("swpd : " + this.swpd);
-		System.out.println("free : " + this.free);
-		System.out.println("buffer : " + this.buffer);
-		System.out.println("cache : " + this.cache);
-		System.out.println("si : " + this.si);
-		System.out.println("so : " + this.so);
-		System.out.println("bi : " + this.bi);
-		System.out.println("bo : " + this.bo);
+		System.out.println("swpd : " + this.memory_swpd);
+		System.out.println("free : " + this.memory_free);
+		System.out.println("buffer : " + this.memory_buffer);
+		System.out.println("cache : " + this.memory_cache);
+		System.out.println("si : " + this.swap_si);
+		System.out.println("so : " + this.swap_so);
+		System.out.println("bi : " + this.io_bi);
+		System.out.println("bo : " + this.io_bo);
 		
-		System.out.println("in : " + this.in);
-		System.out.println("cs : " + this.cs);
-		System.out.println("us : " + this.us);
-		System.out.println("sy : " + this.sy);
-		System.out.println("id : " + this.id);
-		System.out.println("wa : " + this.wa);
-		System.out.println("st : " + this.st);
+		System.out.println("in : " + this.system_in);
+		System.out.println("cs : " + this.system_cs);
+		System.out.println("us : " + this.cpu_us);
+		System.out.println("sy : " + this.cpu_sy);
+		System.out.println("id : " + this.cpu_id);
+		System.out.println("wa : " + this.cpu_wa);
+		System.out.println("st : " + this.cpu_st);
 		
 	}
 	
 	public ServerInfoDTO(String date, String time, int proces_ProcessCnt, int proces_IOwait, int swpd, int free,
 			int buffer, int cache, int si, int so, int bi, int bo, int in, int cs, int us, int sy, int id, int wa, int st) {
 		super();
-		this.date = date;
-		this.time = time;
+		this.server_date = date;
+		this.server_time = time;
 		this.proces_ProcessCnt = proces_ProcessCnt;
 		this.proces_IOwait = proces_IOwait;
-		this.swpd = swpd;
-		this.free = free;
-		this.buffer = buffer;
-		this.cache = cache;
-		this.si = si;
-		this.so = so;
-		this.bi = bi;
-		this.bo = bo;
+		this.memory_swpd = swpd;
+		this.memory_free = free;
+		this.memory_buffer = buffer;
+		this.memory_cache = cache;
+		this.swap_si = si;
+		this.swap_so = so;
+		this.io_bi =  bi;
+		this.io_bo = bo;
 		
-		this.in = in;
-		this.cs = cs;
-		this.us = us;
-		this.sy = sy;
-		this.id = id;
-		this.wa = wa;
-		this.st = st;
+		this.system_in = in;
+		this.system_cs = cs;
+		this.cpu_us = us;
+		this.cpu_sy = sy;
+		this.cpu_id = id;
+		this.cpu_wa = wa;
+		this.cpu_st = st;
+		
+		hitDate = false;
 	}
 
-	public String getDate() {
-		return date;
+	
+	public String getServer_date() {
+		return server_date;
 	}
-	public void setDate(String date) {
-		this.date = date;
+
+	public void setServer_date(String server_date) {
+		this.server_date = server_date;
 	}
-	public String getTime() {
-		return time;
+
+	public String getServer_time() {
+		return server_time;
 	}
-	public void setTime(String time) {
-		this.time = time;
+
+	public void setServer_time(String server_time) {
+		this.server_time = server_time;
 	}
+
 	public int getProces_ProcessCnt() {
 		return proces_ProcessCnt;
 	}
@@ -123,88 +126,135 @@ public class ServerInfoDTO
 	public void setProces_IOwait(int proces_IOwait) {
 		this.proces_IOwait = proces_IOwait;
 	}
-	public int getSwpd() {
-		return swpd;
+
+	public int getMemory_swpd() {
+		return memory_swpd;
 	}
-	public void setSwpd(int swpd) {
-		this.swpd = swpd;
+
+	public void setMemory_swpd(int memory_swpd) {
+		this.memory_swpd = memory_swpd;
 	}
-	public int getFree() {
-		return free;
+
+	public int getMemory_free() {
+		return memory_free;
 	}
-	public void setFree(int free) {
-		this.free = free;
+
+	public void setMemory_free(int memory_free) {
+		this.memory_free = memory_free;
 	}
-	public int getBuffer() {
-		return buffer;
+
+	public int getMemory_buffer() {
+		return memory_buffer;
 	}
-	public void setBuffer(int buffer) {
-		this.buffer = buffer;
+
+	public void setMemory_buffer(int memory_buffer) {
+		this.memory_buffer = memory_buffer;
 	}
-	public int getCache() {
-		return cache;
+
+	public int getMemory_cache() {
+		return memory_cache;
 	}
-	public void setCache(int cache) {
-		this.cache = cache;
+
+	public void setMemory_cache(int memory_cache) {
+		this.memory_cache = memory_cache;
 	}
-	public int getSi() {
-		return si;
+
+	public int getSwap_si() {
+		return swap_si;
 	}
-	public void setSi(int si) {
-		this.si = si;
+
+	public void setSwap_si(int swap_si) {
+		this.swap_si = swap_si;
 	}
-	public int getSo() {
-		return so;
+
+	public int getSwap_so() {
+		return swap_so;
 	}
-	public void setSo(int so) {
-		this.so = so;
+
+	public void setSwap_so(int swap_so) {
+		this.swap_so = swap_so;
 	}
-	public int getBi() {
-		return bi;
+
+	public int getIo_bi() {
+		return io_bi;
 	}
-	public void setBi(int bi) {
-		this.bi = bi;
+
+	public void setIo_bi(int io_bi) {
+		this.io_bi = io_bi;
 	}
-	public int getBo() {
-		return bo;
+
+	public int getIo_bo() {
+		return io_bo;
 	}
-	public void setBo(int bo) {
-		this.bo = bo;
+
+	public void setIo_bo(int io_bo) {
+		this.io_bo = io_bo;
 	}
-	public int getIn() {
-		return in;
+
+	public int getSystem_in() {
+		return system_in;
 	}
-	public void setIn(int in) {
-		this.in = in;
+
+	public void setSystem_in(int system_in) {
+		this.system_in = system_in;
 	}
-	public int getCs() {
-		return cs;
+
+	public int getSystem_cs() {
+		return system_cs;
 	}
-	public void setCs(int cs) {
-		this.cs = cs;
+
+	public void setSystem_cs(int system_cs) {
+		this.system_cs = system_cs;
 	}
-	public int getUs() {
-		return us;
+
+	public int getCpu_us() {
+		return cpu_us;
 	}
-	public void setUs(int us) {
-		this.us = us;
+
+	public void setCpu_us(int cpu_us) {
+		this.cpu_us = cpu_us;
 	}
-	public int getSy() {
-		return sy;
+
+	public int getCpu_sy() {
+		return cpu_sy;
 	}
-	public void setSy(int sy) {
-		this.sy = sy;
+
+	public void setCpu_sy(int cpu_sy) {
+		this.cpu_sy = cpu_sy;
 	}
-	public int getId() {
-		return id;
+
+	public int getCpu_id() {
+		return cpu_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public void setCpu_id(int cpu_id) {
+		this.cpu_id = cpu_id;
 	}
-	public int getWa() {
-		return wa;
+
+	public int getCpu_wa() {
+		return cpu_wa;
 	}
-	public void setWa(int wa) {
-		this.wa = wa;
+
+	public void setCpu_wa(int cpu_wa) {
+		this.cpu_wa = cpu_wa;
 	}
+
+	public int getCpu_st() {
+		return cpu_st;
+	}
+
+	public void setCpu_st(int cpu_st) {
+		this.cpu_st = cpu_st;
+	}
+
+	public boolean isHitDate() {
+		return hitDate;
+	}
+
+	public void setHitDate(boolean hitDate) {
+		this.hitDate = hitDate;
+	}
+	
+	
+
 }

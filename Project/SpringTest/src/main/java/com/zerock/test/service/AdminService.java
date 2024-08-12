@@ -22,6 +22,11 @@ public class AdminService {
 		return mapper.selectAll();
 	}
 	
+	public List<ServerInfoDTO> Get_ServerInfo(int cnt)
+	{
+		return mapper.Get_ServerInfo(cnt);
+	}
+	
 	public int ServerLogUpdate(List<ServerInfoDTO> list)
 	{
 		//야랄하지말고 싹다 가져온다음 ?		

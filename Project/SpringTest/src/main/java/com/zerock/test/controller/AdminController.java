@@ -7,8 +7,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +24,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zerock.test.dto.AdminTestDTO;
 import com.zerock.test.dto.ServerInfoDTO;
@@ -45,6 +50,68 @@ public class AdminController {
 	public String index(Model model)
 	{		
 		return "admin/index";
+	}	
+
+	@PostMapping("/getServerInfo")
+	@ResponseBody
+	public List<ServerInfoDTO> Get_ServerInfo(@RequestParam("date") String date, 
+								@RequestParam("time") String time,
+								@RequestParam("cnt") int cnt
+								)
+	{
+		
+		List<ServerInfoDTO> list =  this.service.Get_ServerInfo(cnt);
+		List<ServerInfoDTO> result = new ArrayList<ServerInfoDTO>();
+		
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		for(int i  = 0; i < cnt; ++i)
+		{
+			Date nowDate = new Date();
+			
+			 Calendar cal = Calendar.getInstance();
+			 cal.setTime(nowDate);
+			 cal.add(Calendar.MINUTE, -(i+1));
+			 nowDate = cal.getTime();
+			 boolean roofResult = false;
+			 
+			 for(int j = 0; j < list.size(); ++j)
+			 {
+				 ServerInfoDTO dto = list.get(j);
+				 String dateTimeString = dto.getServer_date() + " " + dto.getServer_time();
+				 Date dateFromString = new Date();
+				 
+				 try 
+			     {
+					dateFromString = dateFormat.parse(dateTimeString);		
+					String nowString = dateFormat.format(nowDate);
+					nowDate = dateFormat.parse(nowString);
+			     } 
+			     catch (ParseException e) 
+			     {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			     }
+				 
+				 if(nowDate.equals(dateFromString))
+				 {
+					 dto.setHitDate(true);					 
+					 result.add(dto);
+					 
+					 roofResult = true;					 
+					 break;
+				 }
+			 }	
+			 
+			 if(roofResult == false)
+			 {//해당 시간의 로그가 없다면
+				 ServerInfoDTO temp = new ServerInfoDTO();
+				 result.add(temp);
+			 }
+		}
+		
+		return result;
 	}
 	
 	@GetMapping("/adminTest")
@@ -56,14 +123,16 @@ public class AdminController {
 		//model.addAttribute("list",list);
 		
 		System.out.println("Admin function Enter");
-		Update_ServerLog();
+		//Update_ServerLog();
 		return "admin/adminHome";
 	}
+	
 	
 	@Scheduled(cron = "59 */1 * * * *")
 	public void cron_serverLogFunc()
 	{
-		Update_ServerLog();
+		System.out.println("cron unable state...");
+		//Update_ServerLog();
 	}
 	
 	public void Update_ServerLog()
@@ -135,7 +204,7 @@ public class AdminController {
 						fileValues.add(line.trim().split("\s+"));
 					} 
 					
-					System.out.println(fileValues.size());
+					//System.out.println(fileValues.size());
 				}			
 			} catch (IOException  e) 
 			{

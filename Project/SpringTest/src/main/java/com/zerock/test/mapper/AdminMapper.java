@@ -10,4 +10,5 @@ public interface AdminMapper
 	List<AdminTestDTO> selectAll();
 	int ServerLogUpdate(List<ServerInfoDTO> list);
 	int ServerLogUpdate2(ServerInfoDTO dto);
+	List<ServerInfoDTO> Get_ServerInfo(int cnt);
 }
