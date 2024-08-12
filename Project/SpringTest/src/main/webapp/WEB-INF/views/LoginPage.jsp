@@ -11,7 +11,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<link href="/css/main.css" rel="stylesheet" type="text/css">
 <link href="/css/LoginPage.css" rel="stylesheet" type="text/css">		
 <jsp:include page="../Common/header.jsp"></jsp:include>
 <div class="container login-container">
@@ -47,6 +46,22 @@
 	$(document).ready(function(){
 		var id = $('#username');
 		var pwd = $('#password');
+		
+		var urlParams = new URLSearchParams(window.location.search);
+	    var error = urlParams.get('error');
+
+	    // 'error' 파라미터가 'true'일 경우 모달을 띄웁니다.
+	    if (error === 'true') {
+	        Swal.fire({
+	            icon: 'error',
+	            title: '로그인 실패',
+	            text: '아이디 또는 비밀번호가 잘못되었습니다.'
+	        }).then(() => {
+	            
+	            window.location.href = '/login';
+	        });
+	       
+	    }
 		
 		$('.login-btn').on('click', function(){
 			event.preventDefault();

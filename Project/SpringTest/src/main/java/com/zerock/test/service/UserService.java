@@ -45,8 +45,14 @@ public class UserService  {
 	   return mapper.existById(id);
    }
    
+   public Integer existByemail(String email) {
+	   return mapper.existByemail(email);
+   }
+   
    public Integer findResetUser(String id) {
+	  
 	   return mapper.findResetUser(id);
+	
    }
    
    public void ChangePassWord(String id, String pwd) {
