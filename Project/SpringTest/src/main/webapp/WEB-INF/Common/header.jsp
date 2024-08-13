@@ -49,6 +49,7 @@
         <% if (Boolean.TRUE.equals(isAdmin)) { %>
         <button id="admin-btn">관리자 페이지</button>
         <% } %>
+        <button id="mypage-btn">마이페이지</button>
         <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px;">
             <button type="submit" style="background: none; border: none; padding: 0; text-decoration: underline; cursor: pointer;">
                 로그아웃
@@ -74,8 +75,12 @@
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
-		var id = '<%= userid %>';
 		
+		var id = '<%= userid != null ? userid : "" %>';
+		
+		
+	function checkid()	{
+		if (id !== null && id.trim() !== '') {
 		$.ajax({
 			url : '/reset-password',
 			type: 'POST',
@@ -131,9 +136,15 @@
 				}
 			}
 		});
-		
+		}
+	}
+	checkid();
 		$("#admin-btn").on('click',function(){
 			 window.location.href = '/admin';
+		});
+		
+		$("#mypage-btn").on('click',function(){
+			 window.location.href = '/mypage';
 		});
 		
 		function isValiPassword(password){

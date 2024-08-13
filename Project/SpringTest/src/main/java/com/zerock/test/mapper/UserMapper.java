@@ -1,5 +1,6 @@
 package com.zerock.test.mapper;
 
+import com.zerock.test.dto.ShopDTO;
 import com.zerock.test.dto.UserDTO;
 
 public interface UserMapper {
@@ -20,4 +21,6 @@ public interface UserMapper {
 	Integer findResetUser(String id);
 	
 	void ChangePassWord(String id, String pwd);
+	
+	void insertShop(ShopDTO dto);
 }

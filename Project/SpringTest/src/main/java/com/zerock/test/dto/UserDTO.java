@@ -15,12 +15,13 @@ public class UserDTO {
     private String detail_address;
     private String expJibunAddr;
     private int password_reset;
+    private boolean is_admin;
 
 
     public UserDTO() {
     }
 
-    public UserDTO(String id, String pwd, String name, String mail, String number, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr) {
+    public UserDTO(String id, String pwd, String name, String mail, String number, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr, boolean is_admin) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
@@ -31,6 +32,7 @@ public class UserDTO {
         this.setStreet_address(Street_address);
         this.setDetail_address(detail_address);
         this.setPassword_reset(password_reset);
+        this.is_admin = is_admin;
     }
 
  
@@ -120,5 +122,13 @@ public class UserDTO {
 
 	public void setExpJibunAddr(String expJibunAddr) {
 		this.expJibunAddr = expJibunAddr;
+	}
+
+	public boolean isIs_admin() {
+		return is_admin;
+	}
+
+	public void setIs_admin(boolean is_admin) {
+		this.is_admin = is_admin;
 	}
 }

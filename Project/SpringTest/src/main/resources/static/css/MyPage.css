@@ -1,135 +1,202 @@
 @charset "UTF-8";
 
 .gothic-a1-regular {
-  font-family: "Gothic A1", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+	font-family: "Gothic A1", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
-
 
 .do-hyeon-regular {
-  font-family: "Do Hyeon", sans-serif;
-  font-weight: 400; /* 기본 폰트 굵기 */
-  font-style: normal; /* 기본 폰트 스타일 */
+	font-family: "Do Hyeon", sans-serif;
+	font-weight: 400; /* 기본 폰트 굵기 */
+	font-style: normal; /* 기본 폰트 스타일 */
 }
 
-.Mypage-banner{
+.Mypage-banner {
 	font-size: 40px;
 	color: #333;
 	justify-content: center;
-    display: flex;
-    
-    width: 1024px;
+	display: flex;
+	width: 1024px;
 }
 
-.Mypage-container{
+.Mypage-container {
 	display: grid;
-    justify-content: center;
-    margin-top: 30px;
-    margin-bottom: 60px;
-    
+	justify-content: center;
+	margin-top: 30px;
+	margin-bottom: 60px;
 }
 
-.user-info{
+.user-info {
 	border-top: 1px solid rgb(238, 238, 238);
-    border-right: 1px solid rgb(238, 238, 238);
-    border-bottom: 1px solid rgb(238, 238, 238);
-    border-left: 1px solid rgb(238, 238, 238);
-    max-height: 310px;
-    width : 100%;
-    margin-top: 30px;
-    padding: 0 !important;
+	border-right: 1px solid rgb(238, 238, 238);
+	border-bottom: 1px solid rgb(238, 238, 238);
+	border-left: 1px solid rgb(238, 238, 238);
+	max-height: 310px;
+	width: 100%;
+	margin-top: 30px;
+	padding: 0 !important;
 }
 
-.user-profile{
-	width : 100%;
-    display: flex;
+.user-profile {
+	width: 100%;
+	display: flex;
 }
 
-.left-profile{
+.left-profile {
 	width: 310px;
-    height: 310px;
-    position: relative;
+	height: 310px;
+	position: relative;
 }
 
-.back-container{
+.back-container {
 	position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
-.background-img{
+.background-img {
 	position: absolute;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/back-img.png);
-    background-color: rgb(181, 181, 181);
+	background-size: cover;
+	background-repeat: no-repeat;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url(/img/back-img.png);
+	background-color: rgb(181, 181, 181);
 }
 
-.background-content{
+.background-content {
 	position: inherit;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    flex-direction: column;
-    
+	display: flex;
+	width: 100%;
+	height: 100%;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	flex-direction: column;
 }
 
-.shop-img{
+.shop-img {
 	border-radius: 50%;
 	margin-bottom: 15px;
 	cursor: pointer;
 }
 
-.shop-name{
+.shop-name {
 	font-size: 16px;
-    margin-bottom: 10px;
-    color : white;
-    letter-spacing: -0.5px;
-    font-family: "Noto Sans KR", sans-serif;
+	margin-bottom: 10px;
+	color: white;
+	letter-spacing: -0.5px;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
-.shop-control{
+.shop-control {
 	display: flex;
 	margin-top: 20px;
 }
 
-.star-img{
+.star-img {
 	width: 15px;
 	height: 14px;
 }
 
-.star{
+.star {
 	display: flex;
 }
 
-.shop-link{
+.shop-link {
 	width: 106px;
-    border: 1px solid rgb(255, 255, 255);
-    color: rgb(255, 255, 255);
-    height: 40px;
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    font-size: 13px;
-    letter-spacing: -0.5px;
-    font-family: "Noto Sans KR", sans-serif;
-    text-decoration-line: none;
+	border: 1px solid rgb(255, 255, 255);
+	color: rgb(255, 255, 255);
+	height: 40px;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	font-size: 13px;
+	letter-spacing: -0.5px;
+	font-family: "Noto Sans KR", sans-serif;
+	text-decoration-line: none;
 }
 
-.shop-link:hover{
+.shop-link:hover {
 	color: white;
 }
 
+.right-profile {
+	flex: 1 0 0%;
+	padding: 0px 30px;
+	border-top: 1px solid rgb(238, 238, 238);
+	border-right: 1px solid rgb(238, 238, 238);
+	border-bottom: 1px solid rgb(238, 238, 238);
+	display: flex;
+	height: 310px;
+	flex-direction: column;
+}
+
+.name-container {
+	font-size: 18px;
+	font-weight: 600;
+	height: 75px;
+	display: flex;
+	align-items: center;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+.name-update {
+	height: 20px;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	padding: 0px 5px;
+	color: rgb(136, 136, 136);
+	border: 1px solid rgb(238, 238, 238);
+	font-size: 11px;
+	background-color: white;
+}
+
+.edit-btn {
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	padding: 0px 5px;
+	color: rgb(136, 136, 136);
+	border: 1px solid rgb(238, 238, 238);
+	font-size: 20px;
+	background-color: white;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+.update-shopname {
+	display: flex;
+	border: 1px solid rgb(238, 238, 238);
+	height: 32px;
+	width: 305px;
+}
+
+.input-shopname {
+	margin: 0px 15px;
+	font-size: 14px;
+	-webkit-box-flex: 1;
+	flex-grow: 1;
+	border: none;
+	outline: none;
+}
+
+
+.shopname-submit {
+	ont-size: 13px;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	padding: 0px 15px;
+	color: rgb(136, 136, 136);
+	background: rgb(250, 250, 250);
+	border: 1px solid rgb(238, 238, 238);
+}

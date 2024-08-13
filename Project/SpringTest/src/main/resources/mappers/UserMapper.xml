@@ -43,4 +43,12 @@
 		PASSWORD_RESET = 0
 		WHERE ID = #{id}
 	</update>
+	
+	<insert id="insertShop" parameterType="com.zerock.test.dto.ShopDTO">
+		INSERT INTO SHOP (shop_id, shop_owner, shop_name, shop_star)
+		VALUES (shop_seq.NEXTVAL, #{shop_owner}, #{shop_name}, #{shop_star})
+	</insert>
+
+
 </mapper>
+

@@ -24,10 +24,11 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		if("TEST_ID".equals(username)) {
-			return Collections.singleton(() -> "ROLE_ADMIN");
-		}
-		return Collections.singleton(() -> "ROLE_USER");
+		  if (userDTO != null && userDTO.isIs_admin() == true) {
+		        return Collections.singleton(() -> "ROLE_ADMIN");
+		    }else {
+		    	return Collections.singleton(()-> "ROLE_USER");
+		    }
 	}
 
 	@Override
