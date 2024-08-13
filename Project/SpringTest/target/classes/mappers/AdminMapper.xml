@@ -25,25 +25,25 @@
     <insert id="ServerLogUpdate2" parameterType="com.zerock.test.dto.ServerInfoDTO">
     	INSERT INTO SERVERLOG VALUES
 			(
-				#{date},
-				#{time},
+				#{server_date},
+				#{server_time},
 				#{proces_ProcessCnt},				
 				#{proces_IOwait},				
-				#{swpd},
-				#{free},
-				#{buffer},
-				#{cache},				
-				#{si},
-				#{so},
-				#{bi},
-				#{bo},
-				#{in},
-				#{cs},
-				#{us},
-				#{sy},
-				#{id},
-				#{wa},
-				#{st}
+				#{memory_swpd},
+				#{memory_free},
+				#{memory_buffer},
+				#{memory_cache},				
+				#{swap_si},
+				#{swap_so},
+				#{io_bi},
+				#{io_bo},
+				#{system_in},
+				#{system_cs},
+				#{cpu_us},
+				#{cpu_sy},
+				#{cpu_id},
+				#{cpu_wa},
+				#{cpu_st}
 			)
     </insert>
    <update id="ServerLogUpdate" parameterType="list">
@@ -51,60 +51,34 @@
         <foreach collection="list" item="item" index="idx" separator="">
          MERGE INTO SERVERLOG trg
             USING (
-                SELECT #{item.date} AS SERVER_DATE, #{item.time} AS SERVER_TIME FROM DUAL
+                SELECT #{item.server_date} AS SERVER_DATE, #{item.server_time} AS SERVER_TIME FROM DUAL
             ) src
             ON (trg.SERVER_DATE = src.SERVER_DATE AND trg.SERVER_TIME = src.SERVER_TIME)
             WHEN NOT MATCHED THEN
             	INSERT VALUES
             	(
-					#{item.date},
-					#{item.time},
+					#{item.server_date},
+					#{item.server_time},
 					#{item.proces_ProcessCnt},				
 					#{item.proces_IOwait},				
-					#{item.swpd},
-					#{item.free},
-					#{item.buffer},
-					#{item.cache},				
-					#{item.si},
-					#{item.so},
-					#{item.bi},
-					#{item.bo},
-					#{item.in},
-					#{item.cs},
-					#{item.us},
-					#{item.sy},
-					#{item.id},
-					#{item.wa},
-					#{item.st}
+					#{item.memory_swpd},
+					#{item.memory_free},
+					#{item.memory_buffer},
+					#{item.memory_cache},				
+					#{item.swap_si},
+					#{item.swap_so},
+					#{item.io_bi},
+					#{item.io_bo},
+					#{item.system_in},
+					#{item.system_cs},
+					#{item.cpu_us},
+					#{item.cpu_sy},
+					#{item.cpu_id},
+					#{item.cpu_wa},
+					#{item.cpu_st}
 				);
 	    </foreach>
 	    END;
 	</update>
-    <insert id="ServerLogUpdate99" parameterType="list">
-    	<foreach collection="list" item="item" index="idx" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
-        INTO SERVERLOG VALUES
-			(
-				#{item.date},
-				#{item.time},
-				#{item.proces_ProcessCnt},				
-				#{item.proces_IOwait},				
-				#{item.swpd},
-				#{item.free},
-				#{item.buffer},
-				#{item.cache},				
-				#{item.si},
-				#{item.so},
-				#{item.bi},
-				#{item.bo},
-				#{item.in},
-				#{item.cs},
-				#{item.us},
-				#{item.sy},
-				#{item.id},
-				#{item.wa},
-				#{item.st}
-			)
-	    </foreach>
-	</insert>
 	
 </mapper>

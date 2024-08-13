@@ -70,33 +70,34 @@ public class ServerInfoDTO
 		
 	}
 	
-	public ServerInfoDTO(String date, String time, int proces_ProcessCnt, int proces_IOwait, int swpd, int free,
-			int buffer, int cache, int si, int so, int bi, int bo, int in, int cs, int us, int sy, int id, int wa, int st) {
-		super();
-		this.server_date = date;
-		this.server_time = time;
+	
+	
+	public ServerInfoDTO(String server_date, String server_time, int proces_ProcessCnt, int proces_IOwait,
+			int memory_swpd, int memory_free, int memory_buffer, int memory_cache, int swap_si, int swap_so, int io_bi,
+			int io_bo, int system_in, int system_cs, int cpu_us, int cpu_sy, int cpu_id, int cpu_wa, int cpu_st) 
+	{
+		this.server_date = server_date;
+		this.server_time = server_time;
 		this.proces_ProcessCnt = proces_ProcessCnt;
 		this.proces_IOwait = proces_IOwait;
-		this.memory_swpd = swpd;
-		this.memory_free = free;
-		this.memory_buffer = buffer;
-		this.memory_cache = cache;
-		this.swap_si = si;
-		this.swap_so = so;
-		this.io_bi =  bi;
-		this.io_bo = bo;
-		
-		this.system_in = in;
-		this.system_cs = cs;
-		this.cpu_us = us;
-		this.cpu_sy = sy;
-		this.cpu_id = id;
-		this.cpu_wa = wa;
-		this.cpu_st = st;
+		this.memory_swpd = memory_swpd;
+		this.memory_free = memory_free;
+		this.memory_buffer = memory_buffer;
+		this.memory_cache = memory_cache;
+		this.swap_si = swap_si;
+		this.swap_so = swap_so;
+		this.io_bi = io_bi;
+		this.io_bo = io_bo;
+		this.system_in = system_in;
+		this.system_cs = system_cs;
+		this.cpu_us = cpu_us;
+		this.cpu_sy = cpu_sy;
+		this.cpu_id = cpu_id;
+		this.cpu_wa = cpu_wa;
+		this.cpu_st = cpu_st;
 		
 		hitDate = false;
 	}
-
 	
 	public String getServer_date() {
 		return server_date;
