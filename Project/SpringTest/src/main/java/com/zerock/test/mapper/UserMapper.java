@@ -23,4 +23,8 @@ public interface UserMapper {
 	void ChangePassWord(String id, String pwd);
 	
 	void insertShop(ShopDTO dto);
+	
+	UserDTO GetUserInfo(String id);
+	
+	void UpdateUser(UserDTO dto);
 }

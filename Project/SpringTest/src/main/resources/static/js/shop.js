@@ -11,5 +11,10 @@ $(document).ready(function() {
 		$("#update-shopname").removeAttr("hidden");
 	});
 	
+	$('#info-btn').click(function(){
+		$('#shop-info').attr("hidden", true);
+		$('#infobtn-container').attr("hidden", true);
+		$('#text-container').removeAttr("hidden");
+	});
 	
 });

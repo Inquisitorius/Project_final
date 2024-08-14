@@ -10,9 +10,9 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 <head>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/MyPage.js"></script>
+<script src="/js/shop.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
-<link href="/css/MyPage.css" rel="stylesheet" type="text/css">	
+<link href="/css/shop.css" rel="stylesheet" type="text/css">	
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -66,7 +66,17 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 						
 					</div>
 					<div class="edit-info">
-							<button class="edit-btn">내 정보 수정</button>
+							<button class="edit-btn" id="edit-btn">내 정보 수정</button>
+						</div>
+						<div class="shop-info" id="shop-info">${shopInfo}</div>
+						<div hidden="text-container" class="text-container" id="text-container">
+						<div>
+						<textarea id="text-info">${shopInfo}</textarea>
+						</div>
+						<button type="button" id="input-btn">확인</button>
+						</div>
+						<div  class="infobtn-container" id="infobtn-container">
+							<button class="info-btn" id="info-btn">소개글 수정</button>
 						</div>
 				</div>
 			</div>
@@ -122,6 +132,34 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 					alert('update failed : ' + error);
 				}
 			});
+		});
+		
+		$("#input-btn").on('click', function () {
+			var newInfo = $('#text-info').val();
+			
+			$.ajax({
+				url: '/update-info',
+				method: 'POST',
+				data : {
+					shop_id : shopNum,
+					shop_info : newInfo
+				},
+				success: function (response) {
+					$('#shop-info').removeAttr("hidden");
+					$('#infobtn-container').removeAttr("hidden");
+					$('#text-container').attr("hidden", true);
+					window.location.reload();
+				},
+				error: function(xhr, status, error){
+					console.log(shopNum);
+					console.log(newInfo);
+					alert('update failed : ' + error);
+				}
+			});
+		});
+		
+		$('#edit-btn').on('click', function () {
+			window.location.href = '/useredit';
 		});
 	});
 

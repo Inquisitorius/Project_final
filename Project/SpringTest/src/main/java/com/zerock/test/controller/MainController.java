@@ -1,7 +1,6 @@
 package com.zerock.test.controller;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.zerock.test.dto.CustomUserDetails;
 import com.zerock.test.dto.ShopDTO;
 import com.zerock.test.dto.UserDTO;
 import com.zerock.test.service.SendMailService;
@@ -47,6 +47,17 @@ public class MainController {
     }
 
     
+    @ModelAttribute("userid")
+    public String getUserID() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof CustomUserDetails) {
+        	CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+            return userDetails.getUserDTO().getId();  
+        }else {
+        	return null;
+        }
+//        return (auth != null && auth.isAuthenticated()) ? auth.getName() : null;
+    }
     
     @GetMapping("/login")
     public String Login() {
@@ -78,8 +89,8 @@ public class MainController {
     public String handleJoin(@RequestParam String id, 
                              @RequestParam String pwd,
                              @RequestParam String name,
-                             @RequestParam String mail,
-                             @RequestParam String number,
+                             @RequestParam String email,
+                             @RequestParam String phone,
                              @RequestParam String roadAddress,
                              @RequestParam String detailAddress,
                              @RequestParam String gender,
@@ -90,12 +101,9 @@ public class MainController {
                              Model model) {
     	
     	  
-        String birthdateString = year + "-" + month + "-" + day;
-        LocalDate birthdate = null;
-        
+       
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            birthdate = LocalDate.parse(birthdateString, dateTimeFormatter);
+            
             ShopDTO shop_dto = new ShopDTO();
             shop_dto.setShop_owner(id);
             
@@ -103,8 +111,8 @@ public class MainController {
             dto.setId(id); 
             dto.setPwd(pwd); // 암호화된 비밀번호 저장
             dto.setName(name);
-            dto.setMail(mail);
-            dto.setNumber(number);
+            dto.setEmail(email);
+            dto.setPhone(phone);
             dto.setStreet_address(roadAddress);
             dto.setDetail_address(detailAddress);
             dto.setExpJibunAddr(expJibunAddr);
@@ -160,6 +168,8 @@ public class MainController {
     	return response;
     }
     
+   
+    
     @ResponseBody
     @PostMapping("/updatePwd")
     public Map<String, Object> updatePwdByEmail(@RequestParam String email) {
@@ -211,6 +221,62 @@ public class MainController {
     	    
 		}
     	return response;
+    }
+    
+    @GetMapping("/useredit")
+    public String UserEdit(Model model, @ModelAttribute("userid") String id) {
+    	
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+    	
+	 	UserDTO dto = userService.GetUserInfo(id);
+	 	if(dto != null) {
+	 	model.addAttribute("user", dto);
+	 	return "UserEdit";
+	 	}else {
+	 		return "/hello";
+	 	}
+	 	
+    }
+    
+    @PostMapping("/useredit")
+    public String handleEdit(
+    						 @RequestParam String id,
+    						 @RequestParam String name,
+    						 @RequestParam String pwd,	
+    						 @RequestParam String phone,
+    						 @RequestParam String roadAddress,
+    						 @RequestParam String detailAddress,
+    						 @RequestParam String expJibunAddr,
+    						 @RequestParam String gender,
+    						 @RequestParam String year,
+    						 @RequestParam String month,
+    						 @RequestParam String day) {
+    	
+        try {
+        	System.out.println(name + " "+ pwd + " " +phone + " " + roadAddress+ " " + detailAddress+ " " +expJibunAddr+ " " +gender+ " " +year+ " " +month+ " " +day);
+           
+            UserDTO dto = new UserDTO();
+            dto.setId(id);
+            dto.setName(name);
+            dto.setPwd(pwd);
+            dto.setPhone(phone);
+            dto.setStreet_address(roadAddress);
+            dto.setDetail_address(detailAddress);
+            dto.setExpJibunAddr(expJibunAddr);
+            dto.setGender(gender);
+            dto.setBirthDate(year, month, day);
+            
+            userService.UpdateUser(dto);
+        }
+        catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+        return "redirect:/logout";				
     }
     
     

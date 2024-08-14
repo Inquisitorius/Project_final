@@ -3,7 +3,7 @@ package com.zerock.test.dto;
 public class TestDTO {
     private Long userCode; 
     private String userName; 
-
+    
     public TestDTO() {
     }
 

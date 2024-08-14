@@ -1,6 +1,7 @@
 package com.zerock.test.dto;
 
 
+
 public class ShopDTO {
 	private int shop_id;
 	private String shop_owner;

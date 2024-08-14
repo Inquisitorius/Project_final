@@ -69,6 +69,14 @@ public class UserService  {
 	   mapper.ChangePassWord(id, encodedPassword);
    }
    
+   public UserDTO GetUserInfo(String id) {
+	   return mapper.GetUserInfo(id);
+   }
    
+   public void UpdateUser(UserDTO dto) {
+	   String encodedPassword = passwordEncoder.encode(dto.getPwd());
+	   dto.setPwd(encodedPassword);
+	   mapper.UpdateUser(dto);
+   }
   
 }

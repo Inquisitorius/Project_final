@@ -7,8 +7,8 @@ public class UserDTO {
     private String id;
     private String pwd;
     private String name;
-    private String mail;
-    private String number;
+    private String email;
+    private String phone;
     private String gender;
     private LocalDate birthDate; 
     private String Street_address;
@@ -21,12 +21,12 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String id, String pwd, String name, String mail, String number, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr, boolean is_admin) {
+    public UserDTO(String id, String pwd, String name, String email, String phone, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr, boolean is_admin) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
-        this.mail = mail;
-        this.number = number;
+        this.setEmail(email);
+        this.setPhone(phone);
         this.gender = gender;
         this.birthDate = birthDate;
         this.setStreet_address(Street_address);
@@ -60,21 +60,9 @@ public class UserDTO {
         this.name = name;
     }
 
-    public String getMail() {
-        return mail;
-    }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
 
-    public String getNumber() {
-        return number;
-    }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
 
     public String getGender() {
         return gender;
@@ -130,5 +118,21 @@ public class UserDTO {
 
 	public void setIs_admin(boolean is_admin) {
 		this.is_admin = is_admin;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

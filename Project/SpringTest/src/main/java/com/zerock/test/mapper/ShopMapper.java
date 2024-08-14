@@ -10,4 +10,6 @@ public interface ShopMapper {
 	public ShopDTO viewShop(Integer shop_id);
 	
 	public int updateShopName(Map<String, Object> params);
+	
+	public int updateShopInfo(Map<String, Object> params);
 }

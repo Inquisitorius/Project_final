@@ -24,4 +24,8 @@ public class ShopService {
 	public boolean updateShopName(Map<String, Object> params) {
 		return mapper.updateShopName(params) > 0;
 	}
+	
+	public boolean updateShopInfo(Map<String, Object> params) {
+		return mapper.updateShopInfo(params) > 0;
+	}
 }

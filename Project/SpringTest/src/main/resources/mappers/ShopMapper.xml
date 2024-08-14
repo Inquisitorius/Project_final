@@ -18,4 +18,10 @@
         SET shop_name = #{shop_name}
         WHERE shop_id = #{shop_id} AND shop_owner = #{shop_owner}
     </update>
+    
+    <update id="updateShopInfo" parameterType="map">
+    	UPDATE SHOP
+    	SET shop_info = #{shop_info}
+    	WHERE shop_id = #{shop_id}
+    </update>
 </mapper>

@@ -3,7 +3,7 @@
 <mapper namespace="com.zerock.test.mapper.UserMapper">
 	<insert id="insertUser" parameterType="com.zerock.test.dto.UserDTO">
 		INSERT INTO USERINFO (id, pwd, name, email, phone, street_address, detail_address, gender, birthdate, expJibunAddr)
-		VALUES (#{id}, #{pwd}, #{name}, #{mail}, #{number}, #{Street_address}, #{detail_address}, #{gender}, #{birthDate}, #{expJibunAddr})
+		VALUES (#{id}, #{pwd}, #{name}, #{email}, #{phone}, #{Street_address}, #{detail_address}, #{gender}, #{birthDate}, #{expJibunAddr})
 	</insert>
 	
 	<select id="findById" parameterType="String" resultType="com.zerock.test.dto.UserDTO">
@@ -48,7 +48,25 @@
 		INSERT INTO SHOP (shop_id, shop_owner, shop_name, shop_star)
 		VALUES (shop_seq.NEXTVAL, #{shop_owner}, #{shop_name}, #{shop_star})
 	</insert>
-
+	
+	<select id="GetUserInfo" parameterType="String" resultType="com.zerock.test.dto.UserDTO">
+		SELECT * FROM userinfo WHERE id = #{id}
+	</select>
+	
+	<update id="UpdateUser" parameterType="com.zerock.test.dto.UserDTO">
+	UPDATE userinfo
+	SET 
+		name = #{name},
+		pwd = #{pwd},
+		phone = #{phone},
+		street_address = #{street_address},
+		detail_address = #{detail_address},
+		expJibunAddr = #{expJibunAddr},
+		gender = #{gender},
+		birthdate = #{birthDate}
+		WHERE id = #{id}
+	
+	</update>
 
 </mapper>
 

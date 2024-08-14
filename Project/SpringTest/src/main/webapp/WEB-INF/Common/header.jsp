@@ -144,7 +144,7 @@
 		});
 		
 		$("#mypage-btn").on('click',function(){
-			 window.location.href = '/mypage';
+			 window.location.href = '/shop';
 		});
 		
 		function isValiPassword(password){

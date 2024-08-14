@@ -109,7 +109,7 @@ $(document).ready(function() {
 					$('#btn-container').css('display', 'block'); // 보이기
 					$('#Addressbtn-container').css('display', 'none'); // 숨기기
 				} else {
-				    $('#sample4_extraAddress').val(''); // 빈 문자열로 설정
+					$('#sample4_extraAddress').val(''); // 빈 문자열로 설정
 					$('#result-container').css('display', 'none'); // 보이기
 					$('#btn-container').css('display', 'none'); // 보이기
 					$('#Addressbtn-container').css('display', 'block'); // 숨기기
@@ -213,8 +213,8 @@ $(document).ready(function() {
 		var pwd = $('#pwd').val();
 		var rpwd = $('#rpwd').val();
 		var name = $('#name').val();
-		var mail = $('#mail').val();
-		var number = $('#number').val();
+		var mail = $('#email').val();
+		var number = $('#phone').val();
 		var roadAddress = $('#roadAddress').val();
 		var detailAddress = $('#detailAddress').val();
 		var gender = $('input[name="gender"]:checked').val();
@@ -315,6 +315,32 @@ $(document).ready(function() {
 			});
 			return false;
 		}
+		if (year <= 1920 || year > 2024) {
+			Swal.fire({
+				icon: 'error',
+				title: '연도 확인',
+				text: '연도는 1920부터 2024까지 입력 가능합니다.',
+			});
+			return false;
+		}
+		// 월 검증: 01부터 12까지
+		if (!/^0[1-9]|1[0-2]$/.test(month)) {
+			Swal.fire({
+				icon: 'error',
+				title: '월 확인',
+				text: '월은 01부터 12까지 두 자리 숫자로 입력해야 합니다.',
+			});
+			return false;
+		}
+		// 일 검증: 01부터 31까지
+		if (!/^0[1-9]|[12][0-9]|3[01]$/.test(day)) {
+			Swal.fire({
+				icon: 'error',
+				title: '일 확인',
+				text: '일은 01부터 31까지 두 자리 숫자로 입력해야 합니다.',
+			});
+			return false;
+		}
 
 		if (!termsagree1Checked || !termsagree2Checked || !termsagree3Checked) {
 			Swal.fire({
@@ -361,6 +387,11 @@ $(document).ready(function() {
 	}
 
 	$('#termsagree1, #termsagree2, #termsagree3').change(checkAgreeAll);
+
+
+	
+
+	
 
 });
 

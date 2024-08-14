@@ -1,7 +1,10 @@
 package com.zerock.test.controller;
 
+
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,27 +41,30 @@ public class ShopController {
         }
     }
 
-    @GetMapping("/mypage")
-    public String mypage(@ModelAttribute("userid") String userid) {
+    @GetMapping("/shop")
+    public String mypage(@ModelAttribute("userid") String userid, @RequestParam(required = false) String otherUserid ) {
     	
-        if (userid != null) {
-            Integer shopId = service.findNum(userid);
+    	String targetUserId = (otherUserid != null) ? otherUserid : userid;
+
+    	if (targetUserId != null) {
+            Integer shopId = service.findNum(targetUserId);
             if (shopId != null) {
-                return "redirect:/mypage/" + shopId;
+                return "redirect:/shop/" + shopId;
             }
         }
+    	
         return "redirect:/hello";
     }
     
     
-	@GetMapping("/mypage/{shop_id}")
+	@GetMapping("/shop/{shop_id}")
 	public ModelAndView myPageByShopId(@PathVariable Integer shop_id) {
 	   
 	    ShopDTO dto = service.viewShop(shop_id); 
 
 	    if (dto != null) {
 	       
-	        ModelAndView mav = new ModelAndView("MyPage"); 
+	        ModelAndView mav = new ModelAndView("shop"); 
 	        mav.addObject("shopId", dto.getShop_id());
 	        mav.addObject("shopName", dto.getShop_name());
 	        mav.addObject("shopOwner", dto.getShop_owner());
@@ -84,7 +90,7 @@ public class ShopController {
 		boolean success = service.updateShopName(params);
 		
 		if(success) {
-			return "redirect:/mypage/" + shop_id;
+			return "redirect:/shop/" + shop_id;
 		}else {
 			System.out.println(shop_name);
 			System.out.println(shop_id);
@@ -93,5 +99,24 @@ public class ShopController {
 		}
 	}
 	
+	@PostMapping("/update-info")
+	public String updateShopInfo(@RequestParam("shop_id") Integer shop_id, @RequestParam("shop_info") String shop_info) {
+		
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("shop_id", shop_id);
+		params.put("shop_info", shop_info);
+		
+		boolean success = service.updateShopInfo(params);
+		
+		if(success) {
+			return "redirect:/shop/" + shop_id;
+		}else {
+			System.out.println(shop_info);
+			System.out.println(shop_id);
+			return "error";
+		}
+	}
 	
 }
+
