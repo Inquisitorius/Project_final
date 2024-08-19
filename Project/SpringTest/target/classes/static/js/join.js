@@ -162,7 +162,7 @@ $(document).ready(function() {
 	});
 
 	$('#mail-btn').on('click', function() {
-		var email = $('#mail').val();
+		var email = $('#email').val();
 
 		if (email === "") {
 			Swal.fire({

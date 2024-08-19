@@ -3,7 +3,7 @@
 <%
 String userid = (String) request.getAttribute("shopOwner");
 Integer shopNum = (Integer) request.getAttribute("shopId");
-
+String currentUri = request.getRequestURI();
 %>
 <!DOCTYPE html>
 <html>
@@ -12,7 +12,8 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/shop.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
-<link href="/css/shop.css" rel="stylesheet" type="text/css">	
+<link href="/css/shop.css" rel="stylesheet" type="text/css">
+<link href="/css/shop_products.css" rel="stylesheet" type="text/css">		
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -31,7 +32,7 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 							<div class="background-content">
 								<div class="shop-panel">
     								<input type="file" id="file-input" style="display: none;">
-    								<img src="/img/shopimg.svg" class="shop-img" id="img-trigger" alt="내 상점 관리 이미지">
+    								<img src="${shopImg} " class="shop-img" id="img-trigger" alt="내 상점 관리 이미지" width="100" height="100">
 								</div>
 								<div class="shop-name">${shopName}</div>
 								<div class="star">
@@ -81,7 +82,23 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 				</div>
 			</div>
 		</div>
+		
+		<div class="container shop-container" style="margin-top:30px; padding: 0px;">
+			<div>
+				<div class="shop-menu" style="display: flex; height: 50px;">
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products">상품</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews">상점후기</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following">팔로잉</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers">팔로워</a>
+				</div>
+			</div>
+			<div id="shopContent">
+				
+			</div>
 	</div>
+	</div>
+	
+	
 <jsp:include page="../Common/footer.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -90,6 +107,7 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 		
 		console.log(userid);
 		console.log(shopNum)
+		
 		
 		$("#shopname-submit").on('click', function(){
 			var newShopName = $("#input-shopname").val();
@@ -126,7 +144,8 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 					$("#name").removeAttr("hidden");
 					$("#button-container").removeAttr("hidden");
 					$("#update-shopname").attr("hidden", true);
-					window.location.reload();
+					$('#name').text(newShopName);
+					$('.shop-name').text(newShopName);
 				},
 				error: function(xhr, status, error){
 					alert('update failed : ' + error);
@@ -148,7 +167,7 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 					$('#shop-info').removeAttr("hidden");
 					$('#infobtn-container').removeAttr("hidden");
 					$('#text-container').attr("hidden", true);
-					window.location.reload();
+					$('#shop-info').text(newInfo);
 				},
 				error: function(xhr, status, error){
 					console.log(shopNum);
@@ -161,7 +180,95 @@ Integer shopNum = (Integer) request.getAttribute("shopId");
 		$('#edit-btn').on('click', function () {
 			window.location.href = '/useredit';
 		});
-	});
+		
+		// 파일 업로드 처리
+	      $('#file-input').on('change', function() {
+	          var fileInput = $(this)[0];
+	          var file = fileInput.files[0];
+	          if (file) {
+	              var formData = new FormData();
+	              formData.append('shop_id', shopNum);
+	              formData.append('file', file);
+
+	              $.ajax({
+	                  url: '/file-spring',
+	                  type: 'POST',
+	                  data: formData,
+	                  contentType: false,
+	                  processData: false,
+	                  success: function(response) {
+	                	  
+	                  },
+	                  error: function(xhr, status, error) {
+	                      alert('File upload failed: ' + error);
+	                  }
+	              });
+	          }
+	      });
+		
+	      var defaultPath = '/shop/' + shopNum + '/products'; // 기본 경로 설정
+	      
+	      function setActiveTab() {
+              var currentPath = window.location.pathname;
+              $(".shopmenu-link").each(function() {
+                  var linkHref = $(this).attr("href");
+                  if (linkHref === currentPath) {
+                      $(this).addClass("focus");  
+                  } else {
+                      $(this).removeClass("focus");  
+                  }
+              });
+          }
+
+         
+
+	      function loadContent(url) {
+	          $.ajax({
+	              url: url,
+	              method: "GET",
+	              success: function(response) {
+	            	 
+	            	  history.replaceState(null, "", url);
+	                  setActiveTab(); 
+	                  if(url === defaultPath){
+	                	  $('#shopContent').load()
+	                  }
+	              },
+	              error: function() {
+	                  $("#shopContent").html('<p>데이터를 불러오는 데 실패했습니다.</p>');
+	              }
+	          });
+	      }
+
+          $(".shopmenu-link").on('click', function(event) {
+              event.preventDefault();
+              var targetUrl = $(this).attr("href");
+              if (targetUrl) {
+                  loadContent(targetUrl);
+              }
+          });
+			
+          
+          window.onpopstate = function() {
+              var path = window.location.pathname;
+              loadContent(path);
+              setActiveTab(); // 상태가 변경될 때 탭 상태 업데이트
+          };
+          
+          
+          
+          $(document).on('keydown', function(event) {
+              
+              if (event.keyCode === 116) { // F5 키 코드
+                 
+                  history.replaceState(null, "", window.location.pathname); 
+              }
+          });
+	        
+	  	});
+	
+	
+	
 
 </script>
 </body>

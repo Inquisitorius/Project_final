@@ -12,4 +12,6 @@ public interface ShopMapper {
 	public int updateShopName(Map<String, Object> params);
 	
 	public int updateShopInfo(Map<String, Object> params);
+	
+	public int updateImg(Map<String, Object> params);
 }

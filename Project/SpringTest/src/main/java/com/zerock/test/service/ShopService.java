@@ -28,4 +28,8 @@ public class ShopService {
 	public boolean updateShopInfo(Map<String, Object> params) {
 		return mapper.updateShopInfo(params) > 0;
 	}
+	
+	public boolean updateShopImg(Map<String, Object> params) {
+		return mapper.updateImg(params) > 0;
+	}
 }

@@ -24,4 +24,10 @@
     	SET shop_info = #{shop_info}
     	WHERE shop_id = #{shop_id}
     </update>
+    
+    <update id="updateImg" parameterType="map">
+		UPDATE shop
+		SET shop_img = #{shop_img}
+		WHERE shop_id = #{shop_id}
+	</update>
 </mapper>
