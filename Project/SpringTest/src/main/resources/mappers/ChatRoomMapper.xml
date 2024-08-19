@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zerock.test.mapper.ChatRoomMapper">
+
+<select id="selectAllRooms" resultType="com.zerock.test.dto.ChatRoom">
+        SELECT room_id, name FROM chat_rooms
+    </select>
+    
+    <!-- 방 생성 -->
+    <insert id="insertRoom" parameterType="com.zerock.test.dto.ChatRoom">
+        INSERT INTO chat_rooms (room_id,name) VALUES (#{room_id},#{name})
+    </insert>
+    
+    <!-- 방 정보 조회 -->
+    <select id="selectRoomById" parameterType="int" resultType="com.zerock.test.dto.ChatRoom">
+        SELECT room_id ,name
+        FROM chat_rooms
+        WHERE room_id = #{room_id}
+    </select>
+    
+    <!-- 방 삭제 -->
+    <delete id="deleteRoom" parameterType="int">
+        DELETE FROM chat_rooms
+        WHERE room_id = #{room_id}
+    </delete>
+	
+	<select id="getRoomById" parameterType="int" resultType="com.zerock.test.dto.ChatRoom">
+        SELECT room_id, name
+        FROM chat_room
+        WHERE room_id = #{room_id}
+    </select>
+
+</mapper>

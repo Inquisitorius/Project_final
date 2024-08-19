@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zerock.test.mapper.ChatMessageMapper">
+
+  <insert id="insertMessage" parameterType="com.zerock.test.dto.Chat_message">
+        INSERT INTO chat_message (room_id, sender, message, messageType)
+        VALUES (#{room_id}, #{sender}, #{message}, #{messageType})
+    </insert>
+    
+     <select id="selectMessagesByRoom" parameterType="int" resultType="com.zerock.test.dto.Chat_message">
+        SELECT messageType , room_id , sender, message
+        FROM chat_message	
+        WHERE room_id = #{room_id}
+    </select>
+    
+   
+    
+   
+</mapper>
