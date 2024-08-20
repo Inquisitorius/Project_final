@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zerock.test.mapper.ProductMapper">
+	<select id="selectProduct" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+		 SELECT * 
+    FROM products 
+    WHERE shop_id = #{shop_id} 
+    ORDER BY idx DESC
+	</select>
+	
+	<select id="countProductsByShopId" parameterType="Integer" resultType="Integer">
+    SELECT COUNT(*) 
+    FROM products
+    WHERE shop_id = #{shop_id}
+</select>
+</mapper>

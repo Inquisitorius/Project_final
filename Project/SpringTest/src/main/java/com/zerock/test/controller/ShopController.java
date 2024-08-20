@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zerock.test.dto.CustomUserDetails;
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ShopDTO;
+import com.zerock.test.service.ProductService;
 import com.zerock.test.service.ShopService;
 
 
@@ -33,6 +35,7 @@ import com.zerock.test.service.ShopService;
 public class ShopController {
 	
 	@Autowired ShopService service;
+	@Autowired ProductService productService;
 	
 	@ModelAttribute("userid")
     public String getUserID() {
@@ -44,7 +47,7 @@ public class ShopController {
             return null;
         }
     }
-
+	
     @GetMapping("/shop")
     public String mypage(@ModelAttribute("userid") String userid, @RequestParam(required = false) String otherUserid ) {
     	
@@ -53,115 +56,67 @@ public class ShopController {
     	if (targetUserId != null) {
             Integer shopId = service.findNum(targetUserId);
             if (shopId != null) {
-                return "redirect:/shop/" + shopId;
+                return "redirect:/shop/" + shopId + "/products";
             }
         }
     	
         return "redirect:/hello";
     }
     
+    @GetMapping("/shop/{shop_id}")
+    public String myPage(@PathVariable Integer shop_id) {
+    	return "redirect:/shop/"+shop_id+"/products";
+    }
+  
     
-	@GetMapping("/shop/{shop_id}")
-	public ModelAndView myPageByShopId(@PathVariable Integer shop_id) {
-	   
-	    ShopDTO dto = service.viewShop(shop_id); 
+    @GetMapping("/shop/{shop_id}/{type}")
+    public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type) {
+        ShopDTO dto = service.viewShop(shop_id); 
+        ProductDTO pdto = productService.selectProduct(shop_id);
+        int cnt = productService.countProductsByShopId(shop_id);
 
-	    if (dto != null) {
-	       
-	        ModelAndView mav = new ModelAndView("shop"); 
-	        mav.addObject("shopId", dto.getShop_id());
-	        mav.addObject("shopName", dto.getShop_name());
-	        mav.addObject("shopOwner", dto.getShop_owner());
-	        mav.addObject("shopImg", dto.getShop_img());
-	        mav.addObject("shopStar", dto.getShop_star());
-	        mav.addObject("shopInfo", dto.getShop_info());
-	      
-	        return mav;
-	    }
-
-	   
-	    return new ModelAndView("view");
-	}
-	
-	@GetMapping("/shop/{shop_id}/products")
-	public ModelAndView getProducts(@PathVariable Integer shop_id) {
-	    
-		ShopDTO dto = service.viewShop(shop_id); 
-
-	    
-	       
-	        ModelAndView mav = new ModelAndView("shop :: #shopContent"); 
-	        mav.addObject("shopId", dto.getShop_id());
-	        mav.addObject("shopName", dto.getShop_name());
-	        mav.addObject("shopOwner", dto.getShop_owner());
-	        mav.addObject("shopImg", dto.getShop_img());
-	        mav.addObject("shopStar", dto.getShop_star());
-	        mav.addObject("shopInfo", dto.getShop_info());
-	      
-	        return mav;
-	    
-	}
-
-	
-	@GetMapping("/shop/{shop_id}/reviews")
-	@ResponseBody
-	public ModelAndView myreviews(@PathVariable Integer shop_id) {
-		
-		ShopDTO dto = service.viewShop(shop_id); 
-
-	    
-	       
         ModelAndView mav = new ModelAndView("shop"); 
-        mav.addObject("shopId", dto.getShop_id());
-        mav.addObject("shopName", dto.getShop_name());
-        mav.addObject("shopOwner", dto.getShop_owner());
-        mav.addObject("shopImg", dto.getShop_img());
-        mav.addObject("shopStar", dto.getShop_star());
-        mav.addObject("shopInfo", dto.getShop_info());
-      
-        return mav;
-		    
-	}
-	
-	@GetMapping("/shop/{shop_id}/following")
-	@ResponseBody
-	public ModelAndView myPagefollowing(@PathVariable Integer shop_id) {
-		
-		ShopDTO dto = service.viewShop(shop_id); 
 
-	    
-	       
-        ModelAndView mav = new ModelAndView("shop"); 
-        mav.addObject("shopId", dto.getShop_id());
-        mav.addObject("shopName", dto.getShop_name());
-        mav.addObject("shopOwner", dto.getShop_owner());
-        mav.addObject("shopImg", dto.getShop_img());
-        mav.addObject("shopStar", dto.getShop_star());
-        mav.addObject("shopInfo", dto.getShop_info());
-      
-        return mav;
-		    
-	}
-	
-	@GetMapping("/shop/{shop_id}/followers")
-	@ResponseBody
-	public ModelAndView myPagefollowers(@PathVariable Integer shop_id) {
-		
-		ShopDTO dto = service.viewShop(shop_id); 
+        if (dto != null) {
+            mav.addObject("shopId", dto.getShop_id());
+            mav.addObject("shopName", dto.getShop_name());
+            mav.addObject("shopOwner", dto.getShop_owner());
+            mav.addObject("shopImg", dto.getShop_img());
+            mav.addObject("shopStar", dto.getShop_star());
+            mav.addObject("shopInfo", dto.getShop_info());
+            mav.addObject("type", type);
+            
+            if (type.equals("products")) {
+                if (pdto != null) {
+                    mav.addObject("idx", pdto.getIdx());
+                    mav.addObject("products_name", pdto.getProducts_name());
+                    mav.addObject("price", pdto.getProducts_price());
+                    mav.addObject("location", pdto.getProducts_location());
+                    mav.addObject("time", pdto.getCreated_at());
+                    mav.addObject("like_count", pdto.getLike_count());
+                } else {
+                    mav.addObject("idx", "N/A");
+                    mav.addObject("products_name", "N/A");
+                    mav.addObject("price", "N/A");
+                    mav.addObject("location", "N/A");
+                    mav.addObject("time", "N/A");
+                    mav.addObject("like_count", 0);
+                }
+                mav.addObject("cnt", cnt);  // 상품 수
+            } else {
+                mav.addObject("cnt", 0);  // 제품이 아닌 경우
+            }
+        } else {
+            return new ModelAndView("view"); // ShopDTO가 null인 경우 오류 페이지로 리다이렉트
+        }
 
-	    
-	       
-        ModelAndView mav = new ModelAndView("shop"); 
-        mav.addObject("shopId", dto.getShop_id());
-        mav.addObject("shopName", dto.getShop_name());
-        mav.addObject("shopOwner", dto.getShop_owner());
-        mav.addObject("shopImg", dto.getShop_img());
-        mav.addObject("shopStar", dto.getShop_star());
-        mav.addObject("shopInfo", dto.getShop_info());
-      
         return mav;
-		    
-	}
+    }
+	
+	
+	    
+	
+
 
 
  

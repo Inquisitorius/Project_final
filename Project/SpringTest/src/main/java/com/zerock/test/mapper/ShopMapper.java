@@ -2,6 +2,7 @@ package com.zerock.test.mapper;
 
 import java.util.Map;
 
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ShopDTO;
 
 public interface ShopMapper {
@@ -14,4 +15,6 @@ public interface ShopMapper {
 	public int updateShopInfo(Map<String, Object> params);
 	
 	public int updateImg(Map<String, Object> params);
+
+	public ProductDTO selectProduct(Integer shop_id);
 }

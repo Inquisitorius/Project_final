@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%
 String userid = (String) request.getAttribute("shopOwner");
+String type = (String) request.getAttribute("type");
 Integer shopNum = (Integer) request.getAttribute("shopId");
 String currentUri = request.getRequestURI();
 %>
@@ -86,15 +87,26 @@ String currentUri = request.getRequestURI();
 		<div class="container shop-container" style="margin-top:30px; padding: 0px;">
 			<div>
 				<div class="shop-menu" style="display: flex; height: 50px;">
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products">상품</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews">상점후기</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following">팔로잉</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers">팔로워</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products" data-type="products">상품</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews" data-type="reviews">상점후기</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following" data-type="following">팔로잉</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers" data-type="followers">팔로워</a>
 				</div>
 			</div>
 			<div id="shopContent">
-				
+				<%if(type.equals("products")){
+					%>
+				<jsp:include page="../views/shop_products.jsp"></jsp:include>
+				<%} else if(type.equals("reviews")){%>
+				<jsp:include page="../views/shop_reviews.jsp"></jsp:include>
+				<%} else if(type.equals("following")){%>
+				<jsp:include page="../views/shop_following.jsp"></jsp:include>
+				<%} else if(type.equals("followers")){ %>
+				<jsp:include page="../views/shop_followers.jsp"></jsp:include>
+				<%} %>
 			</div>
+			
+			
 	</div>
 	</div>
 	
@@ -104,11 +116,8 @@ String currentUri = request.getRequestURI();
 	$(document).ready(function(){
 		var userid = '<%=userid%>';
 		var shopNum = '<%=shopNum%>';
-		
-		console.log(userid);
-		console.log(shopNum)
-		
-		
+		var type = $(this).data('type');
+		console.log(type);
 		$("#shopname-submit").on('click', function(){
 			var newShopName = $("#input-shopname").val();
 			
@@ -206,65 +215,56 @@ String currentUri = request.getRequestURI();
 	          }
 	      });
 		
-	      var defaultPath = '/shop/' + shopNum + '/products'; // 기본 경로 설정
-	      
+
 	      function setActiveTab() {
-              var currentPath = window.location.pathname;
-              $(".shopmenu-link").each(function() {
-                  var linkHref = $(this).attr("href");
-                  if (linkHref === currentPath) {
-                      $(this).addClass("focus");  
-                  } else {
-                      $(this).removeClass("focus");  
-                  }
-              });
-          }
-
-         
-
+	          var currentPath = window.location.pathname;
+	          $(".shopmenu-link").each(function() {
+	              var linkHref = $(this).attr("href");
+	              if (linkHref === currentPath) {
+	                  $(this).addClass("focus");
+	              } else {
+	                  $(this).removeClass("focus");
+	              }
+	          });
+	      }
+	      
+	     
 	      function loadContent(url) {
 	          $.ajax({
 	              url: url,
 	              method: "GET",
 	              success: function(response) {
-	            	 
-	            	  history.replaceState(null, "", url);
-	                  setActiveTab(); 
-	                  if(url === defaultPath){
-	                	  $('#shopContent').load()
-	                  }
+	            	  
+	            	  setActiveTab(); 
+	                  history.pushState({ url: url }, "", url); 
 	              },
 	              error: function() {
 	                  $("#shopContent").html('<p>데이터를 불러오는 데 실패했습니다.</p>');
 	              }
 	          });
 	      }
-
-          $(".shopmenu-link").on('click', function(event) {
-              event.preventDefault();
-              var targetUrl = $(this).attr("href");
-              if (targetUrl) {
-                  loadContent(targetUrl);
-              }
-          });
 			
-          
-          window.onpopstate = function() {
-              var path = window.location.pathname;
-              loadContent(path);
-              setActiveTab(); // 상태가 변경될 때 탭 상태 업데이트
-          };
-          
-          
-          
-          $(document).on('keydown', function(event) {
-              
-              if (event.keyCode === 116) { // F5 키 코드
-                 
-                  history.replaceState(null, "", window.location.pathname); 
-              }
-          });
-	        
+
+	      $(".shopmenu-link").on('click', function(event) {
+	          
+	          var targetUrl = $(this).attr("href");
+	          if (targetUrl) {
+	              loadContent(targetUrl);
+	              setActiveTab();
+	          }
+	      });
+
+	      var initialUrl = window.location.pathname;
+	      loadContent(initialUrl);
+
+	      window.onpopstate = function(event) {
+	          if (event.state && event.state.url) {
+	              loadContent(event.state.url); 
+	              setActiveTab(); 
+	          }
+	      };
+
+	      
 	  	});
 	
 	
