@@ -1,24 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="/css/main.css" rel="stylesheet" type="text/css">
+
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>adminHome</title>
 </head>
 <body>
-<link href="/css/main.css" rel="stylesheet" type="text/css">
+
 <jsp:include page="../../Common/header.jsp"></jsp:include>
 <main>
 <input id = "testInput" type = "hidden" value = "1234" ></input>
 <div class="container">
 	
 	<div class = "row" style = "margin-bottom: 50px; border-bottom: 1px solid #80808033;">
-		<div class = "col-12">
+		<div class = "col-6">
 			<h1>Server State Page</h1>
 		</div>	
+		<div class = "col-6" style = "display: inline-flex;justify-content: flex-end;align-items: flex-end;">
+			<button class = "btn btn-secondary" id = "userManagementPage" style = "margin-bottom: 10px;">전체 유저 관리</button>
+		</div>
 	</div>
 	<div class = "row">
 		<h3>Memory State </h3>
@@ -175,7 +180,12 @@ $(document).ready(function()
 	min = new Array();	
 	
 	
-	console.log($("#testInput").val());
+	$('#userManagementPage').click(function()
+	{
+		location.href='/userManagementPage';
+	});	
+	
+	
 	chartfunc();
 	setInterval(chartfunc, 30000);
 });
@@ -300,7 +310,7 @@ function cpu_chartInit(list, count)
 			      },
 			      {
 				        label: '# of cpu_id',	        
-				        borderColor: 'rgb(255, 99, 132)',
+				        borderColor: 'rgb(54, 162, 235)',
 				        data: [
 				        	list[9].cpu_id,
 				        	list[8].cpu_id,

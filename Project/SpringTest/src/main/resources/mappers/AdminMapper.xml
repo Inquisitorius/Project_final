@@ -21,6 +21,27 @@
 	]]>
     </select>
     
+    <select id="GetUserList" resultType="com.zerock.test.dto.UserDTO">
+        	SELECT * FROM USERINFO
+    </select>
+    
+    <update id="UpdateUserInfo_Admin" parameterType="com.zerock.test.dto.UserDTO">
+    	UPDATE USERINFO SET 
+		NAME = #{name}, 
+		email = #{email},
+		gender = #{gender},
+		expJibunAddr = #{expJibunAddr},
+		detail_address = #{detail_address},
+		birthDate = #{brithString},
+		is_admin = #{is_admin}
+		WHERE id = #{id}
+    </update>
+    
+    <delete id="DeleteUserInfo_Admin" parameterType="com.zerock.test.dto.UserDTO">
+    	DELETE FROM USERINFO 
+		WHERE id = #{id}
+    </delete>
+    
     
     <insert id="ServerLogUpdate2" parameterType="com.zerock.test.dto.ServerInfoDTO">
     	INSERT INTO SERVERLOG VALUES

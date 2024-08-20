@@ -1,11 +1,13 @@
 package com.zerock.test.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.zerock.test.dto.AdminTestDTO;
 import com.zerock.test.dto.ServerInfoDTO;
+import com.zerock.test.dto.UserDTO;
 import com.zerock.test.mapper.AdminMapper;
 
 @Service
@@ -31,6 +33,21 @@ public class AdminService {
 	{
 		//야랄하지말고 싹다 가져온다음 ?		
 		return mapper.ServerLogUpdate(list);
+	}
+	
+	public List<UserDTO> GetUserList()
+	{
+		return mapper.GetUserList();
+	}
+
+	public int UpdateUserInfo_Admin(UserDTO dto) 
+	{
+		return mapper.UpdateUserInfo_Admin(dto);
+	}
+
+	public int DeleteUserInfo_Admin(UserDTO dto) 
+	{		
+		return mapper.DeleteUserInfo_Admin(dto);
 	}
 	
 }

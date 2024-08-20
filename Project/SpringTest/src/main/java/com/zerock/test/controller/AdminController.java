@@ -24,12 +24,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zerock.test.dto.AdminTestDTO;
 import com.zerock.test.dto.ServerInfoDTO;
+import com.zerock.test.dto.UserDTO;
 import com.zerock.test.service.AdminService;
 
 @Controller
@@ -51,6 +54,53 @@ public class AdminController {
 	{		
 		return "admin/index";
 	}	
+	
+	@PostMapping("/userManagementDetail")
+	public String userManagementDetail_go(@ModelAttribute UserDTO dto, 
+			Model model)
+	{
+		
+		System.out.println("bth: " + dto.getBrithString());
+		System.out.println("street: " + dto.getStreet_address());
+		
+		model.addAttribute("id", dto.getId());
+		
+		model.addAttribute("email", dto.getEmail());
+		model.addAttribute("birthDate", dto.getBrithString() );
+		model.addAttribute("expJibunAddr", dto.getExpJibunAddr());
+		model.addAttribute("street_address", dto.getStreet_address());
+		model.addAttribute("detail_address", dto.getDetail_address());
+		model.addAttribute("gender", dto.getGender());
+		model.addAttribute("name", dto.getName());
+		
+		model.addAttribute("is_admin", dto.isIs_admin());
+		model.addAttribute("password_reset", dto.getPassword_reset());
+		
+		return "admin/userManagement_Detail";
+	}
+	
+	@PostMapping("/file-spring_12")
+	@ResponseBody
+	public int file_spring(@RequestParam String name, @RequestParam MultipartFile file)
+	{
+		
+		String fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/upload/";
+		//home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img# 
+		  
+		  //Path directoryPath = Paths.get("src", "main", "resources","static", "img", "upload");
+		  		  
+		  try {
+			file.transferTo(new File(fileDir + file.getOriginalFilename()));
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		    
+		return 0;
+	}
 
 	@PostMapping("/getServerInfo")
 	@ResponseBody
@@ -114,19 +164,42 @@ public class AdminController {
 		return result;
 	}
 	
-	@GetMapping("/adminTest")
+	@GetMapping("/adminHome")
 	public String adminHome(Model model)
 	{
-		//List<AdminTestDTO> list = this.service.getAllTables();
-		//System.out.println("adminHome Test list cnt : " + list.size());
-		
-		//model.addAttribute("list",list);
-		
 		System.out.println("Admin function Enter");
-		//Update_ServerLog();
+		
 		return "admin/adminHome";
 	}
 	
+	@GetMapping("/userManagementPage")
+	public String userManagementPage(Model model)
+	{
+		return "admin/userManagementPage";
+	}
+	
+	@ResponseBody
+	@GetMapping("/admin_GetUserList")
+	public List<UserDTO> GetUserList(Model model)
+	{
+		List<UserDTO> list = this.service.GetUserList();	
+		
+		return list;
+	}	
+	
+	@ResponseBody
+	@PostMapping("/DeleteUserInfo_Admin")
+	public int DeleteUserInfo_Admin(@ModelAttribute UserDTO dto)
+	{
+		return this.service.DeleteUserInfo_Admin(dto);
+	}
+	
+	@ResponseBody
+	@PostMapping("/UpdateUserInfo_Admin")
+	public int UpdateUserInfo_Admin(@ModelAttribute UserDTO dto)
+	{
+		return this.service.UpdateUserInfo_Admin(dto);
+	}
 	
 	@Scheduled(cron = "59 */1 * * * *")
 	public void cron_serverLogFunc()

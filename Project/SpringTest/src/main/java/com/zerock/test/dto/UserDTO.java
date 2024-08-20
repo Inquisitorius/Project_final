@@ -16,9 +16,10 @@ public class UserDTO {
     private String expJibunAddr;
     private int password_reset;
     private boolean is_admin;
+    
+    private String brithString;
 
-
-    public UserDTO() {
+	public UserDTO() {
     }
 
     public UserDTO(String id, String pwd, String name, String email, String phone, String gender, LocalDate birthDate, String Street_address, String detail_address, int password_reset, int expJibunAddr, boolean is_admin) {
@@ -34,6 +35,14 @@ public class UserDTO {
         this.setPassword_reset(password_reset);
         this.is_admin = is_admin;
     }
+    
+    public String getBrithString() {
+		return brithString;
+	}
+
+	public void setBrithString(String brithString) {
+		this.brithString = brithString;
+	}
 
  
     public String getId() {
