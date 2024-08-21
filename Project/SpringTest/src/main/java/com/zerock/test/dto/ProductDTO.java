@@ -4,7 +4,6 @@ import java.sql.Date;
 
 public class ProductDTO {
 	private int shop_id;
-	private String products_seller;
 	private int idx;
 	private String products_name;
 	private String products_category;
@@ -96,12 +95,5 @@ public class ProductDTO {
 	public void setLike_count(int like_count) {
 		this.like_count = like_count;
 	}
-	public String getProducts_seller() {
-		return products_seller;
-	}
-	public void setProducts_seller(String products_seller) {
-		this.products_seller = products_seller;
-	}
-	
 	
 }

@@ -86,7 +86,7 @@ img {
             </div>
             <div class="row" style="display: flex;">
                 <div class="col-md-12 fontCommon_nomal" style="display: flex; font-size: 22px; font-weight: 600; margin-bottom: 30px;">
-                   ${Product.products_price}
+                   ${Product.products_price}<strong>&nbsp원</strong>
                 </div>
             </div>
             <hr style="height: 1px; border: none; background-color: gray;">

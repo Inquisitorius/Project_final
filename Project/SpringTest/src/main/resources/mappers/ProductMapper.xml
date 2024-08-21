@@ -13,9 +13,4 @@
     FROM products
     WHERE shop_id = #{shop_id}
 </select>
-
-        <select id="selectPro" resultType="com.zerock.test.dto.ProductDTO">
-            SELECT * FROM products WHERE idx = #{idx}
-        </select>
-
 </mapper>

@@ -19,12 +19,12 @@ public class ProductController {
 	private ProductService productService;
 	
 
-	@GetMapping("/product")
+	/*@GetMapping("/product")
 	public String product(@RequestParam int idx ,Model model) {	
-		List<ProductDTO> product = productService.selectPro(idx);
+		List<ProductDTO> product = productService.selectProduct(idx);
 		model.addAttribute("product",product);
 		return "ProductInfo";
-	}
+	}*/
 	
 	
 }

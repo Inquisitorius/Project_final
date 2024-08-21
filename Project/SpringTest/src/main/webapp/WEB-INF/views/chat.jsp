@@ -53,7 +53,7 @@
 <jsp:include page="../Common/header.jsp"></jsp:include>
 
 <div class="container" style="display:flex;justify-content: space-around;max-width: 1050px; min-width:1050px;" >
-	<div class="flex flex-col w-6/12 min-w-[700px] max-w-[800px] mt-6"
+	<div class="flex flex-col w-6/12 min-w-[800px] max-w-[800px] mt-6"
 		id="app">
 		<div class="text-3xl font-semibold">채팅</div>
 		<div class="border border-inherit mt-4"></div>
