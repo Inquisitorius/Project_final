@@ -41,4 +41,8 @@
 		WHERE shop_id = #{shop_id}
 		ORDER BY LIKE_COUNT DESC
 	</select>
+	
+	<select id="selectPro" resultType="com.zerock.test.dto.ProductDTO">
+            SELECT * FROM products WHERE idx = #{idx}
+        </select>
 </mapper>
