@@ -91,6 +91,19 @@ String username = (String) request.getAttribute("username");
 		</div>
 	</div>
 	
+            
+            <div class="row">
+                <div class="col-3" style="padding-bottom: 50px; display: flex;justify-content: flex-end">
+                    <form id="productForm" action="product" method="get">
+                    <input type="hidden" name="idx" id="idxInput">
+                    
+                        <button type="submit" class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
+                            판매자와 채팅하기
+                        </button>
+                    </form>
+                </div>
+            </div>
+	
 <div class="container list-container" style="padding: 0px; margin: 0 auto;">
 	<% for (int i = 0; i < 60; i ++){ %>
 	
@@ -123,6 +136,12 @@ String username = (String) request.getAttribute("username");
 			$('html, body').scrollTop(0);
 		});
 	});
+	
+
+
+    var idx = 4	; 
+    document.getElementById('idxInput').value = idx;
+
 </script>
 </body>
 </html>

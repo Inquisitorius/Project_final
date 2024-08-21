@@ -37,9 +37,17 @@ public class ChatRoomController {
 		return "redirect:chat";
 	}
 	
+	/*
+	 * @PostMapping("/chat/room1") public List<ChatRoom> createroom2() {
+	 * 
+	 * }
+	 */
+	
 	 @GetMapping("/chat/room/{room_id}")
 	 @ResponseBody
 	    public ChatRoom getRoomById(@PathVariable("room_id") int room_id) {
 	        return chatRoomService.getRoomById(room_id);
 	    } 
+	 
+	
 }

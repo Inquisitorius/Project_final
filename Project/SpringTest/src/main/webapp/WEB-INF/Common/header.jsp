@@ -24,7 +24,7 @@
 				</ul>
 				<ul class="menu-ul">
 					<li class="menu-li">
-						<a class="menu-link" href="">동네업체</a>
+						<a class="menu-link" href="chat/rooms">채팅하기</a>
 					</li>
 				</ul>
 			</nav>

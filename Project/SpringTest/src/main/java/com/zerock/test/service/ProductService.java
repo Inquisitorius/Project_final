@@ -1,5 +1,7 @@
 package com.zerock.test.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +20,9 @@ public class ProductService {
 	public Integer countProductsByShopId(Integer shop_id) {
 		return mapper.countProductsByShopId(shop_id);
 	}
+	
+
+	    public List<ProductDTO> selectPro(int idx) {
+	        return mapper.selectPro(idx);
+	    }
 }

@@ -11,13 +11,17 @@
 <style>
 .message-container {
     overflow-y: scroll;
-    min-height: 800px; /* 예시: 최대 높이 설정 */
+    min-height: 400	px; /* 예시: 최대 높이 설정 */
 }
 
  .message-join {
     padding: 10px;
     margin: 5px 0;
-    background-color: #e0fafa;
+    background-color: #e1e5e6;
+    text-align: center;
+    border-radius: 10px;
+    margin-right:10px;
+    margin-left:10px;
 }
 .message-sent {
    background-color: #faf3e0;
@@ -46,21 +50,21 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
 </head>
+<jsp:include page="../Common/header.jsp"></jsp:include>
 
-<body class="flex justify-center h-screen">
-	<div class="flex flex-col w-7/12 min-w-[800px] max-w-[900px] mt-6"
+<div class="container" style="display:flex;justify-content: space-around;max-width: 1050px; min-width:1050px;" >
+	<div class="flex flex-col w-6/12 min-w-[700px] max-w-[800px] mt-6"
 		id="app">
 		<div class="text-3xl font-semibold">채팅</div>
 		<div class="border border-inherit mt-4"></div>
 		<div class="flex justify-start h-5/6 w-full">
-			<div class="border border-inherit h-full"></div>
-			<div class="flex flex-col w-2/6 justify-between">
+			<div class="border border-inherit "></div>
+			<div class="flex flex-col w-2/6 justify-between overflow-y-scroll">
 				<div class="flex flex-col" id="rooms">
 					<c:forEach var="chatRoom" items="${rooms}">
 						<button class="flex p-3 hover:bg-zinc-200"
-							onclick="connectRoom(${chatRoom.room_id})">
-							<div
-								class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
+							 onclick="connectRoom(${chatRoom.room_id}, this)">
+							<div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
 							<div class="flex flex-col items-start ml-2">
 								<div class="font-semibold">${chatRoom.name}</div>
 								<div class="text-xs text-zinc-500">2분전</div>
@@ -69,40 +73,53 @@
 					</c:forEach>
 				</div>
 
-				<form action="${pageContext.request.contextPath}/chat/room"
-					method="post" id="createRoomForm">
-					<input type="number" name="room_id" id="room_id"
-						placeholder="방 ID 입력" required /> <input type="text" name="name"
-						id="name" placeholder="방 이름 입력" class="w-full" required />
+				<form action="${pageContext.request.contextPath}/chat/room" method="post" id="createRoomForm">
+					<input type="number" name="room_id" id="room_id" placeholder="방 ID 입력" required /> 
+					<input type="text" name="name" id="name" placeholder="방 이름 입력" class="w-full" required />
 					<button type="submit">방 만들기</button>
 				</form>
 			</div>
 
 			<div class="border border-inherit"></div>
-			<div class="flex flex-col-reverse justify-start w-full overflow-y-scroll message-container">
-				<div class="mb-3 mt-5">
-					<div class="flex justify-between">
-						<label class="w-full ml-3"> 
-						<input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full" />
-						</label>
-						<button class="min-w-[8%]" onclick="sendMessage()">전송</button>
-					</div>
-				</div>
+			<div class="flex flex-col w-full h-full">
+    <!-- 수신된 메시지를 출력 -->
+    <div class="flex-grow overflow-y-auto message-container">
 
-				<!-- 수신된 메시지를 출력 -->
-			</div>
+        <div class="message-item">
+        </div>
+    </div>
+
+    <!-- 메시지 입력 칸 -->
+    <div class="w-full p-3 border-t border-gray-300">
+        <div class="flex justify-between items-center">
+            <label class="flex-grow">
+                <input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full p-2 border border-gray-300 rounded" />
+            </label>	
+            <button class="min-w-[80px] ml-2 p-2 bg-blue-500 text-white rounded" onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+</div>
+			
+			
 			<div class="border border-inherit"></div>
 		</div>
 
 <div class="border border-inherit"></div>
 		
 	</div>
-
+	</div>
+	
+	
+	
+<jsp:include page="../Common/footer.jsp"></jsp:include>
 	<script>
         let ws;
         let sender = "wlstjd";
         let currentRoomId = "";
 		let message = "";
+		let currentSelectedButton = null;
+		
+		
         function connect() {
             console.log("Connecting to WebSocket for room: ", currentRoomId);
             let socket = new SockJS('/ws-stomp');
@@ -113,11 +130,8 @@
             ws.connect({}, function (frame) {
                 console.log("Connected to WebSocket")
 
-                
                 ws.subscribe("/sub/chat/room/" + currentRoomId, function(message) {
-                	console.log("Received message:", message.body);  // 메시지 내용을 콘솔에 출력
-                    let recv = JSON.parse(message.body);  // JSON 문자열을 객체로 변환
-                    console.log("Parsed message:", recv); 	
+                    let recv = JSON.parse(message.body); 
                   	addMessage(recv);
 				});
                 
@@ -188,7 +202,7 @@
      // 초기 메시지 로드
         function fetchMessages() {
         	
-            axios.get(`/messages/`)
+            axios.get(`/messages/${currentRoomId}`)
                 .then(response => {
                     const messages = response.data;
                     messages.forEach(messages => {
@@ -205,18 +219,23 @@
                 });
         }
         // 주기적으로 메시지 조회 (5초마다)
-        setInterval(fetchMessages, 100000);
+        setInterval(fetchMessages, 10000);
 
-        function connectRoom(room_id) {
+        function connectRoom(room_id, buttonElement) {
+
         	 if (room_id === currentRoomId) {
         	        console.log("Already connected to room:", room_id);
         	        return;
         	    }
-        	    
+        	 if(currentSelectedButton) {
+        		 currentSelectedButton.classList.remove('bg-blue-100');
+        	}
+        	 buttonElement.classList.add('bg-blue-100');
+        	 currentSelectedButton = buttonElement
         	    // 방 ID 업데이트 및 메시지 로드
         	    currentRoomId = room_id;
         	    connect();  // WebSocket 연결
-        	  
+        	    
         	}
         
 
@@ -227,6 +246,7 @@
             }
         });	
 
+       
 
 
         function sendMessage() {
