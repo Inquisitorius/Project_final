@@ -87,10 +87,10 @@ String currentUri = request.getRequestURI();
 		<div class="container shop-container" style="margin-top:30px; padding: 0px;">
 			<div>
 				<div class="shop-menu" style="display: flex; height: 50px;">
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products" data-type="products">상품</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews" data-type="reviews">상점후기</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following" data-type="following">팔로잉</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers" data-type="followers">팔로워</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products" data-sort="products">상품</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews" data-sort="reviews">상점후기</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following" data-sort="following">팔로잉</a>
+					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers" data-sort="followers">팔로워</a>
 				</div>
 			</div>
 			<div id="shopContent">
@@ -263,8 +263,10 @@ String currentUri = request.getRequestURI();
 	              setActiveTab(); 
 	          }
 	      };
-
 	      
+	      
+
+
 	  	});
 	
 	

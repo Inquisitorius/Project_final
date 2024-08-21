@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zerock.test.dto.ProductDTO;
+
 import com.zerock.test.dto.ShopDTO;
 import com.zerock.test.mapper.ShopMapper;
 
@@ -34,7 +34,5 @@ public class ShopService {
 		return mapper.updateImg(params) > 0;
 	}
 	
-	public ProductDTO selectProduct(Integer shop_id) {
-		return mapper.selectProduct(shop_id);
-	}
+	
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zerock.test.dto.Chat_message;
 import com.zerock.test.service.ChatMessageService;
 
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -56,7 +58,7 @@ public class ChatController {
 	     
 	    System.out.println("Send	ing message: " + chatMessage.getSender() + ", Message: " + chatMessage.getMessage());
 	    log.info("chatmessage:sendmessage :" + chatMessage.getSender() + ", Message: " + chatMessage.getMessage());
-
+	    
 	    messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoom_id(), chatMessage);
 	}
 	

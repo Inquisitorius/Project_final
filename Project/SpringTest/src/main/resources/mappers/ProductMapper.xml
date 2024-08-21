@@ -13,4 +13,32 @@
     FROM products
     WHERE shop_id = #{shop_id}
 </select>
+	
+	<select id="selectLowPrice" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+		SELECT * 
+		FROM products
+		WHERE shop_id = #{shop_id}
+		ORDER BY products_price ASC
+	</select>
+	
+	<select id="selectHighPrice" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+		SELECT * 
+		FROM products
+		WHERE shop_id = #{shop_id}
+		ORDER BY products_price DESC
+	</select>
+	
+	<select id="selectNewst" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+		SELECT * 
+		FROM products
+		WHERE shop_id = #{shop_id}
+		ORDER BY CREATED_AT ASC
+	</select>
+	
+	<select id="selectpopularity" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+		SELECT * 
+		FROM products
+		WHERE shop_id = #{shop_id}
+		ORDER BY LIKE_COUNT DESC
+	</select>
 </mapper>

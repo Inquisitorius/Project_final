@@ -36,7 +36,6 @@ import com.zerock.test.dto.UserDTO;
 import com.zerock.test.service.AdminService;
 
 @Controller
-@MapperScan("com.zerock.test.mapper")
 public class AdminController {
 	
 	private final AdminService service;	

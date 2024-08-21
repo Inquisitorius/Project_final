@@ -3,7 +3,9 @@ package com.zerock.test.controller;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,7 +33,6 @@ import com.zerock.test.service.ShopService;
 
 
 @Controller
-@MapperScan("com.zerock.test.mapper")
 public class ShopController {
 	
 	@Autowired ShopService service;
@@ -70,9 +71,9 @@ public class ShopController {
   
     
     @GetMapping("/shop/{shop_id}/{type}")
-    public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type) {
+    public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type, @RequestParam(value = "sort", required = false) String sort) {
         ShopDTO dto = service.viewShop(shop_id); 
-        ProductDTO pdto = productService.selectProduct(shop_id);
+        
         int cnt = productService.countProductsByShopId(shop_id);
 
         ModelAndView mav = new ModelAndView("shop"); 
@@ -85,34 +86,50 @@ public class ShopController {
             mav.addObject("shopStar", dto.getShop_star());
             mav.addObject("shopInfo", dto.getShop_info());
             mav.addObject("type", type);
-            
-            if (type.equals("products")) {
-                if (pdto != null) {
-                    mav.addObject("idx", pdto.getIdx());
-                    mav.addObject("products_name", pdto.getProducts_name());
-                    mav.addObject("price", pdto.getProducts_price());
-                    mav.addObject("location", pdto.getProducts_location());
-                    mav.addObject("time", pdto.getCreated_at());
-                    mav.addObject("like_count", pdto.getLike_count());
-                } else {
-                    mav.addObject("idx", "N/A");
-                    mav.addObject("products_name", "N/A");
-                    mav.addObject("price", "N/A");
-                    mav.addObject("location", "N/A");
-                    mav.addObject("time", "N/A");
-                    mav.addObject("like_count", 0);
-                }
-                mav.addObject("cnt", cnt);  // 상품 수
-            } else {
-                mav.addObject("cnt", 0);  // 제품이 아닌 경우
-            }
-        } else {
+        }   else {
             return new ModelAndView("view"); // ShopDTO가 null인 경우 오류 페이지로 리다이렉트
+        }
+        
+        List<ProductDTO> pdto = null;
+
+        if (type.equals("products")) {
+            if (sort != null) {
+            	System.out.println(sort);
+            	if(sort.equals("price-asc")) {
+            		mav = new ModelAndView("shop_products"); 
+            		pdto = productService.selectLowPrice(shop_id);
+            		mav.addObject("products", pdto);
+                    
+            	}
+            	else if(sort.equals("price-desc")) {
+            		mav = new ModelAndView("shop_products"); 
+            		pdto = productService.selectHighPrice(shop_id);
+            		mav.addObject("products", pdto);
+            	}
+            	else if(sort.equals("newest")) {
+            		mav = new ModelAndView("shop_products"); 
+            		pdto = productService.selectNewst(shop_id);
+            		mav.addObject("products", pdto);
+            	}else if(sort.equals("popularity")) {
+            		mav = new ModelAndView("shop_products"); 
+            		pdto = productService.selectpopularity(shop_id);
+            		mav.addObject("products", pdto);
+            	}
+            } else {
+                pdto = productService.selectProduct(shop_id);  // 기본 정렬
+            }
+            mav.addObject("shopId",dto.getShop_id());
+            mav.addObject("products", pdto);
+            mav.addObject("cnt", cnt);  // 상품 수
+        } else if(pdto == null){
+            mav.addObject("cnt", 0);  // 제품이 아닌 경우
         }
 
         return mav;
     }
 	
+    
+    
 	
 	    
 	

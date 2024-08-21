@@ -28,7 +28,6 @@ import com.zerock.test.service.UserService;
 
 
 @Controller
-@MapperScan("com.zerock.test.mapper")
 public class MainController {
 
 
