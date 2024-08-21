@@ -49,5 +49,20 @@ public class AdminService {
 	{		
 		return mapper.DeleteUserInfo_Admin(dto);
 	}
+
+	public int get_imgseqCurr() 
+	{		
+		return mapper.get_imgseqCurr();
+	}
+
+	public int saveImgName(String filePath) 
+	{
+		return mapper.saveImgName(filePath);
+	}
+
+	public List<String> getImgNameList() 
+	{
+		return mapper.getImgNameList();
+	}
 	
 }

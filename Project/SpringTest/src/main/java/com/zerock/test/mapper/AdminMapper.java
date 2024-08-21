@@ -16,4 +16,7 @@ public interface AdminMapper
 	List<UserDTO> GetUserList();
 	int UpdateUserInfo_Admin(UserDTO dto);
 	int DeleteUserInfo_Admin(UserDTO dto);
+	int get_imgseqCurr();
+	int saveImgName(String filePath);
+	List<String> getImgNameList();
 }

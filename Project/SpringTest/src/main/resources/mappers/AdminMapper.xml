@@ -20,6 +20,20 @@
 			ORDER BY SERVER_DATE ASC, SERVER_TIME ASC
 	]]>
     </select>
+    <select id = "get_imgseqCurr" resultType = "int">
+    	SELECT img_seq.NEXTVAL AS img_seq  FROM DUAL
+    </select>
+    
+    <insert id="saveImgName" parameterType = "String">
+    	INSERT INTO IMGNAMESAVE VALUES
+		(
+			#{filePath}
+		)    
+    </insert>
+    
+    <select id = "getImgNameList" resultType = "String">
+    	select * from IMGNAMESAVE
+    </select>
     
     <select id="GetUserList" resultType="com.zerock.test.dto.UserDTO">
         	SELECT * FROM USERINFO

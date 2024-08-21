@@ -55,6 +55,34 @@ public class AdminController {
 		return "admin/index";
 	}	
 	
+	@GetMapping("/adminTest")
+	public String adminTest()
+	{
+		return "admin/adminTestPage";
+	}
+	
+	@GetMapping("/adminResult")
+	public String adminResult()
+	{
+		return "admin/adminTestPage2";
+	}
+	
+	@PostMapping("/getImgNameList")
+	@ResponseBody
+	public List<String> getImgNameList()
+	{
+		
+		System.out.println("contorller");
+		
+		
+		List<String> aa = this.service.getImgNameList();
+		for(int i = 0; i < aa.size(); ++i)
+			System.out.println(aa.get(i));
+		
+		return aa;
+	}
+	
+	
 	@PostMapping("/userManagementDetail")
 	public String userManagementDetail_go(@ModelAttribute UserDTO dto, 
 			Model model)
@@ -81,23 +109,57 @@ public class AdminController {
 	
 	@PostMapping("/file-spring_12")
 	@ResponseBody
-	public int file_spring(@RequestParam String name, @RequestParam MultipartFile file)
+	public int file_spring(@RequestParam MultipartFile[] files)
 	{
 		
 		String fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/upload/";
+		String fileDir_local = "/img/upload/";
 		//home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img# 
 		  
 		  //Path directoryPath = Paths.get("src", "main", "resources","static", "img", "upload");
-		  		  
-		  try {
-			file.transferTo(new File(fileDir + file.getOriginalFilename()));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		 
+		
+		for (MultipartFile file : files)
+		{
+			//쉽게 하기 위해 비효율적인 방법을 채택
+	        int cnt = this.service.get_imgseqCurr();
+	        
+			String originalFileName = file.getOriginalFilename();	
+			
+			String filePath = fileDir + cnt + "_" + originalFileName;			
+			String db_filePath = fileDir_local + cnt + "_" + originalFileName;
+			
+			System.out.println(db_filePath);
+            try
+            {
+            	//server 에 사진 파일 저장
+            	file.transferTo(new File(filePath));
+            	
+            	this.service.saveImgName(db_filePath);
+            	
+	   	    } catch (IllegalStateException e) {
+	   	         // TODO Auto-generated catch block
+	   	         e.printStackTrace();
+	   	      } catch (IOException e) {
+	   	         // TODO Auto-generated catch block
+	   	         e.printStackTrace();
+	   	      }	
 		}
+		
+		
+		
+		//1. 사진이름 명명규칙 필요
+		//2. db 에 해당 사진의 이름 저장
+		//3. 저장된 db 이름을 통해 해당 게시물의 사진 가져오기
+		
+		// 2-1 프로덕트 db 에 해당 사진 이름이 올라가야한다.
+		
+		
+		// 현재 필요한 기술 
+		//- 멀티 사진 업로드 작동 여부
+		//- db에 올릴 이름 명명 user_id+시퀸스 느낌으로 작성하면 될듯
+		//- 테스트는 db 에 올라가는지
+		//- 마지막으로 해당 부분 로드 되는지 확인되면 일단 모듈 테스트 끝
 		    
 		return 0;
 	}
