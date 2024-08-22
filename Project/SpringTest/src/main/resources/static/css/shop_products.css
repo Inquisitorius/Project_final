@@ -79,7 +79,7 @@
     border-right: 1px solid rgb(204, 204, 204);
 }
 
-.sort.link.active{
+.sort-link.focus{
 	color: rgb(247, 47, 51) !important;
 	font-weight: bold !important;
 }

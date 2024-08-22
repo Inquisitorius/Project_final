@@ -2,9 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%
 String userid = (String) request.getAttribute("shopOwner");
+Integer size = (Integer) request.getAttribute("size");
 String type = (String) request.getAttribute("type");
 Integer shopNum = (Integer) request.getAttribute("shopId");
 String currentUri = request.getRequestURI();
+Integer cnt = (Integer) request.getAttribute("cnt");
 %>
 <!DOCTYPE html>
 <html>
@@ -114,9 +116,12 @@ String currentUri = request.getRequestURI();
 <jsp:include page="../Common/footer.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var cnt = '<%=cnt%>';
 		var userid = '<%=userid%>';
 		var shopNum = '<%=shopNum%>';
 		var type = $(this).data('type');
+		var size = parseInt('<%= request.getAttribute("size") %>');
+		
 		console.log(type);
 		$("#shopname-submit").on('click', function(){
 			var newShopName = $("#input-shopname").val();
@@ -233,6 +238,7 @@ String currentUri = request.getRequestURI();
 	          $.ajax({
 	              url: url,
 	              method: "GET",
+	              	
 	              success: function(response) {
 	            	  
 	            	  setActiveTab(); 
@@ -255,8 +261,10 @@ String currentUri = request.getRequestURI();
 	      });
 
 	      var initialUrl = window.location.pathname;
-	      loadContent(initialUrl);
-
+	      
+		  
+	     
+	      
 	      window.onpopstate = function(event) {
 	          if (event.state && event.state.url) {
 	              loadContent(event.state.url); 

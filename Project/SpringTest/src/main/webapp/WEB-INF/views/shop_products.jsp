@@ -15,8 +15,11 @@
 	</div>
 </div>
 <%	
+	Integer size = (Integer) request.getAttribute("size");
+	String CurrentSort = (String) request.getAttribute("sort");
 	Integer shopNum = (Integer) request.getAttribute("shopId");
 	Integer cnt = (Integer) request.getAttribute("cnt");
+	
 	if(cnt == 0 || cnt == null){
 %>
 <div class="noneproducts-container">등록된 상품이 없습니다.</div>
@@ -65,29 +68,56 @@
 <%} %>
 <script type="text/javascript">
 	$('document').ready(function () {
+		var size = parseInt('<%= request.getAttribute("size") %>');
+		var cnt = '<%=cnt%>';
+		 var shopNum = <%= shopNum %>; 
+		 var sortType = $(this).data('sort');
 		
 		$('.sort-link').on('click', function () {
+			event.preventDefault();
             var sortType = $(this).data('sort');
-            var shopNum = <%= shopNum %>;  
+            size = '30';
 			console.log('sort : ' + sortType);
-            $.ajax({
-                url: '/shop/' + shopNum + '/products',  
-                method: 'GET',
-                data: { sort: sortType },
-                success: function (response) {
-                	$('#shopContent').html(response);
-                },
-                error: function () {
-                    alert('정렬 데이터를 가져오는 데 실패했습니다.');
-                }
-            });
+			
+			   $.ajax({
+	                url: '/shop/' + shopNum + '/products',  
+	                method: 'GET',
+	                data: { sort: sortType,
+	                	},
+	                success: function (response) {
+	                	$('#shopContent').html(response);
+	                	setActiveTab(sortType);
+	                },
+	                error: function () {
+	                    alert('정렬 데이터를 가져오는 데 실패했습니다.');
+	                }
+	            });
         });
 		
-		function setLinkCss(){
-			$('.sort-link').each(function () {
-				
-			});
+		
+		
+
+		
+		 
+		
+		
+		
+		function setActiveTab(sortType) {
+		    $(".sort-link").each(function() {
+		        var linkSort = $(this).data("sort");
+		        if (linkSort === sortType) {
+		            $(this).addClass("focus");
+		        } else {
+		            $(this).removeClass("focus");
+		        }
+		    });
 		}
+		
+		
+		
+
+		
+
 		
 	});
 </script>

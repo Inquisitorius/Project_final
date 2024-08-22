@@ -71,13 +71,14 @@ public class ShopController {
   
     
     @GetMapping("/shop/{shop_id}/{type}")
-    public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type, @RequestParam(value = "sort", required = false) String sort) {
+    public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type, @RequestParam(value = "sort", required = false) String sort)
+    	         {
         ShopDTO dto = service.viewShop(shop_id); 
         
         int cnt = productService.countProductsByShopId(shop_id);
 
         ModelAndView mav = new ModelAndView("shop"); 
-
+        int size = 30;
         if (dto != null) {
             mav.addObject("shopId", dto.getShop_id());
             mav.addObject("shopName", dto.getShop_name());
@@ -97,30 +98,39 @@ public class ShopController {
             	System.out.println(sort);
             	if(sort.equals("price-asc")) {
             		mav = new ModelAndView("shop_products"); 
-            		pdto = productService.selectLowPrice(shop_id);
+            		pdto = productService.selectLowPrice(shop_id, size);
             		mav.addObject("products", pdto);
+            		mav.addObject("sort", sort);	
+            		
                     
             	}
             	else if(sort.equals("price-desc")) {
             		mav = new ModelAndView("shop_products"); 
-            		pdto = productService.selectHighPrice(shop_id);
+            		pdto = productService.selectHighPrice(shop_id,  size);
             		mav.addObject("products", pdto);
+            		mav.addObject("sort", sort);
+            		
             	}
             	else if(sort.equals("newest")) {
             		mav = new ModelAndView("shop_products"); 
-            		pdto = productService.selectNewst(shop_id);
+            		pdto = productService.selectNewst(shop_id, size);
             		mav.addObject("products", pdto);
+            		mav.addObject("sort", sort);
+            		
             	}else if(sort.equals("popularity")) {
             		mav = new ModelAndView("shop_products"); 
-            		pdto = productService.selectpopularity(shop_id);
+            		//pdto = productService.selectpopularity(shop_id,  size);
             		mav.addObject("products", pdto);
+            		mav.addObject("sort", sort);
+            		
             	}
             } else {
-                pdto = productService.selectProduct(shop_id);  // 기본 정렬
+                pdto = productService.selectProduct(shop_id, size);  // 기본 정렬
             }
             mav.addObject("shopId",dto.getShop_id());
             mav.addObject("products", pdto);
             mav.addObject("cnt", cnt);  // 상품 수
+    		mav.addObject("size", size);
         } else if(pdto == null){
             mav.addObject("cnt", 0);  // 제품이 아닌 경우
         }
@@ -129,14 +139,7 @@ public class ShopController {
     }
 	
     
-    
-	
-	    
-	
 
-
-
- 
 	@PostMapping("/update-name")
 	public String updateShopName(@RequestParam("shop_name") String shop_name, @RequestParam("shop_id") Integer shop_id, @RequestParam("shop_owner") String userid) {
 	

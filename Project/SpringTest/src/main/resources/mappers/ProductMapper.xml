@@ -2,10 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zerock.test.mapper.ProductMapper">
 	<select id="selectProduct" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
-		 SELECT * 
-    FROM products 
-    WHERE shop_id = #{shop_id} 
-    ORDER BY idx DESC
+
+    SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.IDX DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
+    
 	</select>
 	
 	<select id="countProductsByShopId" parameterType="Integer" resultType="Integer">
@@ -15,31 +20,43 @@
 </select>
 	
 	<select id="selectLowPrice" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
-		SELECT * 
-		FROM products
-		WHERE shop_id = #{shop_id}
-		ORDER BY products_price ASC
+     SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.products_price ASC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
 	
 	<select id="selectHighPrice" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
-		SELECT * 
-		FROM products
-		WHERE shop_id = #{shop_id}
-		ORDER BY products_price DESC
+         SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.products_price DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
 	
 	<select id="selectNewst" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
-		SELECT * 
-		FROM products
-		WHERE shop_id = #{shop_id}
-		ORDER BY CREATED_AT ASC
+             SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.CREATED_AT DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
 	
 	<select id="selectpopularity" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
-		SELECT * 
-		FROM products
-		WHERE shop_id = #{shop_id}
-		ORDER BY LIKE_COUNT DESC
+                 SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.LIKE_COUNT DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
 	
 	<select id="selectPro" resultType="com.zerock.test.dto.ProductDTO">

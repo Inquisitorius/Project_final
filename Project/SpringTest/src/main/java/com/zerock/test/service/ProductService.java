@@ -13,28 +13,31 @@ public class ProductService {
 	@Autowired
 	ProductMapper mapper;
 	
-	public List<ProductDTO> selectProduct(Integer shop_id) {
-		return mapper.selectProduct(shop_id);
+	public List<ProductDTO> selectProduct(Integer shop_id, int size) {
+		
+		return mapper.selectProduct(shop_id, size);
 	}
 	
 	public Integer countProductsByShopId(Integer shop_id) {
 		return mapper.countProductsByShopId(shop_id);
 	}
 	
-	public List<ProductDTO> selectLowPrice(Integer shop_id){
-		return mapper.selectLowPrice(shop_id);
+	public List<ProductDTO> selectLowPrice(Integer shop_id, int size){
+	
+		return mapper.selectLowPrice(shop_id,size);
 	}
 	
-	public List<ProductDTO> selectHighPrice(Integer shop_id){
-		return mapper.selectHighPrice(shop_id);
+	public List<ProductDTO> selectHighPrice(Integer shop_id, int size){
+		return mapper.selectHighPrice(shop_id, size);
 	}
 	
-	public List<ProductDTO> selectNewst(Integer shop_id){
-		return mapper.selectNewst(shop_id);
+	public List<ProductDTO> selectNewst(Integer shop_id, int size){
+		return mapper.selectNewst(shop_id, size);
 	}
 	
-	public List<ProductDTO> selectpopularity(Integer shop_id){
-		return mapper.selectpopularity(shop_id);
+	public List<ProductDTO> selectpopularity(Integer shop_id, int page, int size){
+		int offset = (page-1) * size;
+		return mapper.selectpopularity(shop_id, offset, size);
 	}
 	
 	public List<ProductDTO> selectPro(int idx){
