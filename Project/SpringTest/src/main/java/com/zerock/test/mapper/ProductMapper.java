@@ -19,4 +19,5 @@ public interface ProductMapper {
 	List<ProductDTO> selectpopularity(Integer shop_id);
 	
 	List<ProductDTO> selectPro(int idx);
+	
 }

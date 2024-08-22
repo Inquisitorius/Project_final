@@ -85,7 +85,6 @@ public class ChatController {
     }
 
 
-
 	@GetMapping("/chat1/{room_id}")
 	public String getChatPage1(@PathVariable("room_id") int room_id, Model model) {
 		// 방 ID를 모델에 추가하여 JSP 페이지로 전달

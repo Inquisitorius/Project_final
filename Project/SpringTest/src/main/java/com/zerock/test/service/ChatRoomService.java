@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zerock.test.dto.ChatRoom;
+import com.zerock.test.dto.ChatRoom4;
 import com.zerock.test.mapper.ChatRoomMapper;
 
 @Service
@@ -14,7 +15,7 @@ public class ChatRoomService {
 	@Autowired
 	private ChatRoomMapper chatRoomMapper;
 	
-	public List<ChatRoom> getAllRooms() {
+	public List<ChatRoom4> getAllRooms() {
 		return chatRoomMapper.selectAllRooms();
 	}
 	public void createRoom(ChatRoom chatRoom) {
@@ -25,5 +26,11 @@ public class ChatRoomService {
 	}
 	public void deleteRoom(int room_id) {
 		chatRoomMapper.deleteRoom(room_id);
+	}
+	public List<ChatRoom4> searchRoom(int product_idx){
+		return chatRoomMapper.searchRoom(product_idx);
+	}
+	public void insertchatRoom(ChatRoom4 chatRoom4) {
+		chatRoomMapper.insertchatroom(chatRoom4);
 	}
 }

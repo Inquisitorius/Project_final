@@ -6,10 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.zerock.test.dto.ChatRoom;
+import com.zerock.test.dto.ChatRoom4;
 
 @Mapper
 public interface ChatRoomMapper {
-	List<ChatRoom> selectAllRooms();
+	List<ChatRoom4> selectAllRooms();
 	
     void insertRoom(ChatRoom chatRoom);
     
@@ -18,4 +19,8 @@ public interface ChatRoomMapper {
     void deleteRoom(int room_id);
     
     ChatRoom getRoomById(@Param("room_id") int roomId);
+    
+    List<ChatRoom4> searchRoom(int product_idx);
+    
+    void insertchatroom(ChatRoom4 chatRoom4);
 }

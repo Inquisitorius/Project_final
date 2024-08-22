@@ -111,12 +111,16 @@ img {
                 <div class="col" style="padding-bottom: 50px; display: flex;justify-content: flex-end">
                     <form id="chatForm" action="chat/rooms" method="get">
                     <input type="hidden">
-                        <button type="submit" class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
+                        <button id="chatWithSellerButton" data-seller-id="${Product.products_seller}"
+                         class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
                             판매자와 채팅하기
                         </button>
                     </form>
                 </div>
             </div>
+           
+            
+            
         </div>
     </div>
     
@@ -156,5 +160,35 @@ img {
 	
 
 	<jsp:include page="../Common/footer.jsp"></jsp:include>
+	
+<script>
+	
+document.querySelector("#chatWithSellerButton").addEventListener("click", function() {
+
+    let Product_seller = this.getAttribute("Product.products_seller");
+    let room_name = this.getAttribute("Product.products_seller");
+    let product_idx = this.getAttribute("Product.idx");
+    let sender = this.getAttribute("Product.")
+    
+    console.log("Product_seller :" + Product_seller);
+    console.log("room_name :" + room_name);
+    console.log("product_idx :" + product_idx);
+    console.log("sender :" + sender);
+
+    axios.post('/chat/room1', {
+        userId: loggedInUserId, // 로그인한 사용자의 ID
+        sellerId: sellerId
+        // 판매자의 ID
+    })
+    .then(function(response) {
+        let chatRoomId = response.data.roomId;
+         // 채팅방으로 이동
+    })
+    .catch(function(error) {
+        console.error("Error creating chat room", error);
+    });
+});
+
+</script>
 </body>
 </html>
