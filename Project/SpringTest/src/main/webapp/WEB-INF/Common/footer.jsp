@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <link href="/css/footer.css" rel="stylesheet" type="text/css">	
-<footer class="flex-nowrap">
+<footer class="flex-nowrap" style="margin-top:50px;">
 	<div class="container footer-container" style="padding:20px 0px 50px;">
 	<div class="row footer-content">
 		<div class="col" style="padding: 0px;">

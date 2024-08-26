@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%
 String userid = (String) request.getAttribute("shopOwner");
-Integer size = (Integer) request.getAttribute("size");
 String type = (String) request.getAttribute("type");
 Integer shopNum = (Integer) request.getAttribute("shopId");
 String currentUri = request.getRequestURI();
 Integer cnt = (Integer) request.getAttribute("cnt");
+String sortType = (String) request.getAttribute("sort");
+Integer size = (Integer) request.getAttribute("size");
 %>
 <!DOCTYPE html>
 <html>
@@ -21,7 +22,9 @@ Integer cnt = (Integer) request.getAttribute("cnt");
 <title>Insert title here</title>
 </head>
 <body>
+<div class="main-content">
 <jsp:include page="../Common/header.jsp"></jsp:include>
+
 	<div class="container Mypage-container">
 		<div class="Mypage-banner do-hyeon-regular">
 			
@@ -111,18 +114,20 @@ Integer cnt = (Integer) request.getAttribute("cnt");
 			
 	</div>
 	</div>
+
 	
 	
 <jsp:include page="../Common/footer.jsp"></jsp:include>
+	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
 		var cnt = '<%=cnt%>';
 		var userid = '<%=userid%>';
 		var shopNum = '<%=shopNum%>';
 		var type = $(this).data('type');
-		var size = parseInt('<%= request.getAttribute("size") %>');
+		var sortType = '<%= sortType %>';
+		var size = 30;
 		
-		console.log(type);
 		$("#shopname-submit").on('click', function(){
 			var newShopName = $("#input-shopname").val();
 			
@@ -238,11 +243,12 @@ Integer cnt = (Integer) request.getAttribute("cnt");
 	          $.ajax({
 	              url: url,
 	              method: "GET",
-	              	
+	              data: {size:size},
 	              success: function(response) {
-	            	  
+	            	  console.log("초기화");
 	            	  setActiveTab(); 
-	                  history.pushState({ url: url }, "", url); 
+	            	  
+	              
 	              },
 	              error: function() {
 	                  $("#shopContent").html('<p>데이터를 불러오는 데 실패했습니다.</p>');
@@ -255,25 +261,24 @@ Integer cnt = (Integer) request.getAttribute("cnt");
 	          
 	          var targetUrl = $(this).attr("href");
 	          if (targetUrl) {
+	        	  
 	              loadContent(targetUrl);
 	              setActiveTab();
 	          }
 	      });
 
 	      var initialUrl = window.location.pathname;
-	      
+	      loadContent(initialUrl, size);
 		  
 	     
 	      
 	      window.onpopstate = function(event) {
 	          if (event.state && event.state.url) {
-	              loadContent(event.state.url); 
+	              loadContent(event.state.url, size); 
 	              setActiveTab(); 
 	          }
 	      };
 	      
-	      
-
 
 	  	});
 	
