@@ -10,7 +10,7 @@ import com.zerock.test.dto.ChatRoom4;
 
 @Mapper
 public interface ChatRoomMapper {
-	List<ChatRoom4> selectAllRooms();
+	List<ChatRoom> selectAllRooms();
 	
     void insertRoom(ChatRoom chatRoom);
     
@@ -23,4 +23,9 @@ public interface ChatRoomMapper {
     List<ChatRoom4> searchRoom(int product_idx);
     
     void insertchatroom(ChatRoom4 chatRoom4);
+    
+    List <ChatRoom4> getRoom(String userid);
+    
+    ChatRoom4 findChatRoomByParticipants(String sender,String seller_id,int  product_idx);
+    
 }

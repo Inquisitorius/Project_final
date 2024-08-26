@@ -24,7 +24,7 @@
 				</ul>
 				<ul class="menu-ul">
 					<li class="menu-li">
-						<a class="menu-link" href="chat/rooms">채팅하기</a>
+						<a class="menu-link" href="myRoomsPage">채팅하기</a>
 					</li>
 				</ul>
 			</nav>
@@ -38,6 +38,7 @@
     </div>
     	
     <% 
+		
     	String userid = (String) request.getAttribute("userid");
         String username = (String) request.getAttribute("username");
         Boolean isAdmin = (Boolean) request.getAttribute("isAdmin");

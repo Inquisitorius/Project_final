@@ -7,7 +7,7 @@ public class ChatRoom4 {
 	private int room_id;
 	private String room_name;
 	private int product_idx;
-	private String product_seller;
+	private String seller_id;
 	private String sender;
 	private String room_stauts;
 	private Timestamp created_at;
@@ -48,11 +48,11 @@ public class ChatRoom4 {
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
-	public String getProduct_seller() {
-		return product_seller;
+	public String getSeller_id() {
+		return seller_id;
 	}
-	public void setProduct_seller(String product_seller) {
-		this.product_seller = product_seller;
+	public void setSeller_id(String seller_id) {
+		this.seller_id = seller_id;
 	}
 	
 	

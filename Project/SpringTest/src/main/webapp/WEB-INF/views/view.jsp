@@ -95,8 +95,7 @@ String username = (String) request.getAttribute("username");
             <div class="row">
                 <div class="col-3" style="padding-bottom: 50px; display: flex;justify-content: flex-end">
                     <form id="productForm" action="product" method="get">
-                    <input type="hidden" name="idx" id="idxInput">
-                    
+                    <input type="hidden" name="p_idx" id="idxInput">
                         <button type="submit" class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
                             판매자와 채팅하기
                         </button>
@@ -139,8 +138,8 @@ String username = (String) request.getAttribute("username");
 	
 
 
-    var idx = 4	; 
-    document.getElementById('idxInput').value = idx;
+    var p_idx = 63; 
+    document.getElementById('idxInput').value = p_idx;
 
 </script>
 </body>

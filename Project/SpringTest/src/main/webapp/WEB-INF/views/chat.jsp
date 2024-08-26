@@ -5,6 +5,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<%
+String username = (String) request.getAttribute("username");
+String userid = (String) request.getAttribute("userid");
+%>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chat Example</title>
@@ -24,20 +30,21 @@
     margin-left:10px;
 }
 .message-sent {
-   background-color: #faf3e0;
-    text-align: right;
-    padding: 5px;
-    margin: 5px;
-    border-radius: 10px;
-    margin-right:30px;
-}
-
-.message-received {
-    background-color: #f5cb42;
+   background-color: #ffbd08	;
     text-align: left;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
+    margin-right:50px;
+}
+
+.message-received {
+    background-color: #79ff12;
+    text-align: right;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    margin-left:50px;
     
 }
 </style>
@@ -60,13 +67,13 @@
 		<div class="flex justify-start h-5/6 w-full">
 			<div class="border border-inherit "></div>
 			<div class="flex flex-col w-2/6 justify-between overflow-y-scroll">
-				<div class="flex flex-col" id="rooms">
-					<c:forEach var="chatRoom" items="${rooms}">
+				<div class="flex flex-col" id="chatRooms">
+					<c:forEach var="chatRoom" items="${chatRooms}">
 						<button class="flex p-3 hover:bg-zinc-200"
 							 onclick="connectRoom(${chatRoom.room_id}, this)">
 							<div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
 							<div class="flex flex-col items-start ml-2">
-								<div class="font-semibold">${chatRoom.name}</div>
+								<div class="font-semibold">${chatRoom.room_name}</div>
 								<div class="text-xs text-zinc-500">2분전</div>
 							</div>
 						</button>
@@ -103,7 +110,7 @@
 			
 			<div class="border border-inherit"></div>
 		</div>
-
+	
 <div class="border border-inherit"></div>
 		
 	</div>
@@ -112,13 +119,15 @@
 	
 	
 <jsp:include page="../Common/footer.jsp"></jsp:include>
+
 	<script>
         let ws;
-        let sender = "wlstjd";
+        let sender = "<%= username %>";
         let currentRoomId = "";
 		let message = "";
 		let currentSelectedButton = null;
 		
+		console.log("sender : " + sender);
 		
         function connect() {
             console.log("Connecting to WebSocket for room: ", currentRoomId);
@@ -219,7 +228,7 @@
                 });
         }
         // 주기적으로 메시지 조회 (5초마다)
-        setInterval(fetchMessages, 10000);
+        setInterval(fetchMessages, 100000);
 
         function connectRoom(room_id, buttonElement) {
 
@@ -232,10 +241,21 @@
         	}
         	 buttonElement.classList.add('bg-blue-100');
         	 currentSelectedButton = buttonElement
-        	    // 방 ID 업데이트 및 메시지 로드
+      
         	    currentRoomId = room_id;
-        	    connect();  // WebSocket 연결
-        	    
+        	 
+        	if(ws) {
+				ws.disconnect(function () {
+					console.log("Disconnected from previous WebSoucket");
+					
+					clearChatMessages();
+					connect();
+				
+				});
+        	} else{
+        		connect();  <!-- 웹소켓 -->
+        	}
+        
         	}
         
 

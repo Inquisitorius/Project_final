@@ -4,6 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<%
+        String username = (String) request.getAttribute("username");
+		String userid = (String) request.getAttribute("userid");
+%>
+
 <meta charset="UTF-8">
 <title>상품</title>
 </head>
@@ -14,6 +20,7 @@
 
 <body>
 	<style type="text/css">
+	
 .fontgray {
 	font-family: "Noto Sans KR", sans-serif;
 	font-optical-sizing: auto;
@@ -107,20 +114,23 @@ img {
                 <div class="col-md-3 fontgray">거래방법</div>
                 <div class="col-md-4 fontCommon_nomal">거래</div>
             </div>
-            <div class="row">
-                <div class="col" style="padding-bottom: 50px; display: flex;justify-content: flex-end">
-                    <form id="chatForm" action="chat/rooms" method="get">
-                    <input type="hidden">
-                        <button id="chatWithSellerButton" data-seller-id="${Product.products_seller}"
-                         class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
-                            판매자와 채팅하기
-                        </button>
-                    </form>
-                </div>
-            </div>
            
-            
-            
+           <div class="row">
+    <div class="col" style="padding-bottom: 50px; display: flex; justify-content: flex-end">
+        <form id="chatForm" action="/chat/room1" method="post">
+            <!-- Hidden input fields to store data -->
+            <input type="hidden" name="room_name" value="${Product.products_seller}">
+            <input type="hidden" name="product_idx" value="${Product.idx}">
+            <input type="hidden" name="sender" value="<%= userid %>">
+            <input type="hidden" name="product_seller" value="${Product.products_seller}">
+            <button id="chatWithSellerButton" class="btn btn-success" 
+                    style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
+                판매자와 채팅하기
+            </button>
+        </form>
+    </div>
+</div>
+
         </div>
     </div>
     
@@ -163,31 +173,7 @@ img {
 	
 <script>
 	
-document.querySelector("#chatWithSellerButton").addEventListener("click", function() {
 
-    let Product_seller = this.getAttribute("Product.products_seller");
-    let room_name = this.getAttribute("Product.products_seller");
-    let product_idx = this.getAttribute("Product.idx");
-    let sender = this.getAttribute("Product.")
-    
-    console.log("Product_seller :" + Product_seller);
-    console.log("room_name :" + room_name);
-    console.log("product_idx :" + product_idx);
-    console.log("sender :" + sender);
-
-    axios.post('/chat/room1', {
-        userId: loggedInUserId, // 로그인한 사용자의 ID
-        sellerId: sellerId
-        // 판매자의 ID
-    })
-    .then(function(response) {
-        let chatRoomId = response.data.roomId;
-         // 채팅방으로 이동
-    })
-    .catch(function(error) {
-        console.error("Error creating chat room", error);
-    });
-});
 
 </script>
 </body>

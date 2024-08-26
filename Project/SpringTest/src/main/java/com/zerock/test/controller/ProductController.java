@@ -20,8 +20,8 @@ public class ProductController {
 	
 
 	@GetMapping("/product")
-	public String product(@RequestParam int idx ,Model model) {	
-		List<ProductDTO> product = productService.selectPro(idx);
+	public String product(@RequestParam int p_idx ,Model model) {	
+		List<ProductDTO> product = productService.selectPro(p_idx);
 		model.addAttribute("product",product);
 		return "ProductInfo";
 	}
