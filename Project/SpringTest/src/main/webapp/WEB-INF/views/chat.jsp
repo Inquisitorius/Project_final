@@ -17,7 +17,8 @@ String userid = (String) request.getAttribute("userid");
 <style>
 .message-container {
     overflow-y: scroll;
-    min-height: 400	px; /* 예시: 최대 높이 설정 */
+    min-height:600px;
+ /* 예시: 최대 높이 설정 */
 }
 
  .message-join {
@@ -39,7 +40,7 @@ String userid = (String) request.getAttribute("userid");
 }
 
 .message-received {
-    background-color: #79ff12;
+    background-color: #8ded1f	;
     text-align: right;
     padding: 5px;
     margin: 5px;
@@ -59,64 +60,76 @@ String userid = (String) request.getAttribute("userid");
 </head>
 <jsp:include page="../Common/header.jsp"></jsp:include>
 
-<div class="container" style="display:flex;justify-content: space-around;max-width: 1050px; min-width:1050px;" >
-	<div class="flex flex-col w-6/12 min-w-[800px] max-w-[800px] mt-6"
-		id="app">
-		<div class="text-3xl font-semibold">채팅</div>
-		<div class="border border-inherit mt-4"></div>
-		<div class="flex justify-start h-5/6 w-full">
-			<div class="border border-inherit "></div>
-			<div class="flex flex-col w-2/6 justify-between overflow-y-scroll">
-				<div class="flex flex-col" id="chatRooms">
-					<c:forEach var="chatRoom" items="${chatRooms}">
-						<button class="flex p-3 hover:bg-zinc-200"
-							 onclick="connectRoom(${chatRoom.room_id}, this)">
-							<div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
-							<div class="flex flex-col items-start ml-2">
-								<div class="font-semibold">${chatRoom.room_name}</div>
-								<div class="text-xs text-zinc-500">2분전</div>
-							</div>
-						</button>
-					</c:forEach>
-				</div>
-
-				<form action="${pageContext.request.contextPath}/chat/room" method="post" id="createRoomForm">
-					<input type="number" name="room_id" id="room_id" placeholder="방 ID 입력" required /> 
-					<input type="text" name="name" id="name" placeholder="방 이름 입력" class="w-full" required />
-					<button type="submit">방 만들기</button>
-				</form>
-			</div>
-
-			<div class="border border-inherit"></div>
-			<div class="flex flex-col w-full h-full">
-    <!-- 수신된 메시지를 출력 -->
-    <div class="flex-grow overflow-y-auto message-container">
-
-        <div class="message-item">
+<div class="container" style="display: flex; justify-content: space-around; max-width: 1050px; margin: 0 auto;">
+  <!-- 왼쪽 사이드바 -->
+  <div class="flex flex-col w-6/12 min-w-[900px] max-w-[900px] mt-6" id="app">
+    <!-- 헤더 -->
+    <div class="text-3xl font-semibold mb-4">
+    <%= username %> 님의 채팅방입니다
+    </div>
+    
+    <div class="flex flex-grow h-[calc(100vh-140px)]"> <!-- 채팅방 목록과 채팅 영역의 높이를 조정 -->
+      <!-- 채팅방 목록 -->
+      <div class="flex flex-col w-2/6 bg-gray-50 border border-gray-300 overflow-y-auto">
+        <c:forEach var="chatRoom" items="${chatRooms}">
+          <button class="flex p-3 hover:bg-zinc-200" onclick="connectRoom(${chatRoom.room_id}, this)">
+            <div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
+            <div class="flex flex-col items-start ml-2">
+              <div class="font-semibold">${chatRoom.room_name}</div>
+              <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
+            </div>
+          </button>
+        </c:forEach>
+      </div>
+      
+     <div class="flex flex-col w-4/6 bg-gray-100">
+    <!-- 상단에 닉네임과 상품 정보 영역 -->
+    <div class="flex flex-col">
+        <!-- 채팅 상대방 닉네임 -->
+        <div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
+            <span id="nickname" class="font-semibold">상대방 닉네임</span>
+            <!-- 드롭다운 메뉴 -->
+            <div class="relative inline-block text-left">
+                <button onclick="toggleDropdown()" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                    메뉴
+                </button>
+                <!-- 드롭다운 메뉴 항목 -->
+                <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                    <div class="py-1">
+                        <button onclick="deleteChatRoom()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">채팅방 삭제</button>
+                        <button onclick="markTransactionComplete()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">상품 거래 완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 상품 목록 -->
+        <div id="productList" class="p-4 border border-gray-300 bg-white text-center font-semibold">
+            상품 목록
         </div>
     </div>
 
-    <!-- 메시지 입력 칸 -->
-    <div class="w-full p-3 border-t border-gray-300">
-        <div class="flex justify-between items-center">
+        <!-- 수신된 메시지를 출력 -->
+        <div class="flex-grow overflow-y-auto bg-white border border-gray-300 message-container">
+          <div class="message-item"></div>
+        </div>
+        
+        <!-- 메시지 입력 칸 -->
+        <div class="w-full p-3 border border-gray-300 bg-white">
+          <div class="flex justify-between items-center">
             <label class="flex-grow">
-                <input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full p-2 border border-gray-300 rounded" />
-            </label>	
+              <input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full p-2 border border-gray-300 rounded" />
+            </label>
             <button class="min-w-[80px] ml-2 p-2 bg-blue-500 text-white rounded" onclick="sendMessage()">전송</button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
 </div>
-			
-			
-			<div class="border border-inherit"></div>
-		</div>
-	
-<div class="border border-inherit"></div>
-		
-	</div>
-	</div>
-	
-	
+
+
+
 	
 <jsp:include page="../Common/footer.jsp"></jsp:include>
 
@@ -266,7 +279,13 @@ String userid = (String) request.getAttribute("userid");
             }
         });	
 
-       
+       function clearChatMessages() {
+			let chatContainer = document.querySelector('.message-container');
+			if (chatContainer) {
+				chatContainer.innerHTML = '';
+			}
+    	   
+       } 
 
 
         function sendMessage() {
@@ -347,6 +366,54 @@ String userid = (String) request.getAttribute("userid");
                 });
             });
         });
+        
+        function toggleDropdown() {
+            var dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // 채팅방 삭제 기능
+        function deleteChatRoom() {
+            if (confirm('정말 이 채팅방을 삭제하시겠습니까?')) {
+                // 서버에 채팅방 삭제 요청을 보냄
+                fetch(`/api/deleteChatRoom?roomId=${currentRoomId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('채팅방이 삭제되었습니다.');
+                        location.reload(); // 삭제 후 페이지 새로고침
+                    } else {
+                        alert('채팅방 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting chat room:', error);
+                });
+            }
+        }
+
+        // 상품 거래 완료 기능
+        function markTransactionComplete() {
+            if (confirm('이 거래를 완료로 표시하시겠습니까?')) {
+                // 서버에 거래 완료 요청을 보냄
+                fetch(`/api/completeTransaction?roomId=${currentRoomId}`, {
+                    method: 'POST'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('거래가 완료되었습니다.');
+                        // 추가 동작 필요시 여기에 추가
+                    } else {
+                        alert('거래 완료에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error marking transaction complete:', error);
+                });
+            }
+        }
+
     </script>
 </body>
 </html>

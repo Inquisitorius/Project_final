@@ -17,7 +17,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9f17632ae11c7da9b9b41cf75cdc6604&libraries=services"></script>
 <body>
 	<style type="text/css">
 	
@@ -142,39 +142,78 @@ img {
                     상품설명	
                 </div>
             <div class="row" style="margin-bottom: 15px;">
-                <div class="col-md-4 fontCommon_nomal" style="font-size: 20px;">
+                <div class="col-md-12 fontCommon_nomal" style="font-size: 20px;">
                    ${Product.products_details}
                 </div>
             </div>
             <hr style="height: 1px; border: none; background-color: gray;">
             <div class="row">
-                <div class="col-md-3 fontgray">거래희망지역</div>
-                <div class="col-md-4 fontCommon_nomal">${Product.products_location}</div>
-            </div>
-            <div class="row">
                 <div class="col-md-3 fontgray">카테고리</div>
                 <div class="col-md-4 fontCommon_nomal">${Product.products_category}</div>
             </div>
+            <div class="row"  style="margin-bottom:20px";>
+                <div class="col-md-3 fontgray">거래희망지역</div>
+                <div class="col-md-7 fontCommon_nomal">${Product.products_location}</div>
             </div>
+            
+         <div id="map" style="width:500px;height:400px;"></div>
+ 
+
+
+		</div>
+          
+            
             
             <div class="col-5">
             <div class="row">
-            <div class="col-md-4 fontCommon_nomal">판매자 shop</div>
+            <div class="col-md-4 fontCommon_nomal">상점정보</div>
             shop
+            </div>
             </div>
             </div>
             
             </div>
-        </c:forEach>
-</div>
+        	
+
+
 	
 
 	<jsp:include page="../Common/footer.jsp"></jsp:include>
 	
 <script>
-	
 
+var productLocation = "<c:out value='${Product.products_location}'/>";
+
+function initMap() {
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 지역명을 바탕으로 좌표를 검색
+    geocoder.addressSearch(productLocation, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 지도를 생성하고 중심 좌표를 설정
+            var map = new kakao.maps.Map(document.getElementById('map'), {
+                center: coords,
+                level: 3
+            });
+
+            // 마커를 생성하고 지도에 표시
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+        } else {
+            console.error("Geocode was not successful for the following reason: " + status);
+        }
+    });
+}
+
+// 페이지 로드 시 지도 초기화	
+window.onload = initMap;
+</c:forEach>
 
 </script>
+
 </body>
 </html>
