@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-String userid = (String) request.getAttribute("shopOwner");
+String shopOwner = (String) request.getAttribute("shopOwner");
+String userid = (String) request.getAttribute("userid");
 String type = (String) request.getAttribute("type");
 Integer shopNum = (Integer) request.getAttribute("shopId");
 String currentUri = request.getRequestURI();
 Integer cnt = (Integer) request.getAttribute("cnt");
 String sortType = (String) request.getAttribute("sort");
 Integer size = (Integer) request.getAttribute("size");
+Double shopRating = (Double) request.getAttribute("rating");
 %>
 <!DOCTYPE html>
 <html>
@@ -41,20 +43,29 @@ Integer size = (Integer) request.getAttribute("size");
     								<img src="${shopImg} " class="shop-img" id="img-trigger" alt="내 상점 관리 이미지" width="100" height="100">
 								</div>
 								<div class="shop-name">${shopName}</div>
+								<%
+   
+
+    // 별점 이미지를 저장할 StringBuilder
+    StringBuilder starsHtml = new StringBuilder();
+
+    // 5개의 별을 표현하기 위한 루프
+    for (int i = 0; i < 5; i++) {
+        if (shopRating >= 1.0) {
+            starsHtml.append("<img src='/img/2scorestar.png' width='15' height='14' >");
+            shopRating -= 1.0;
+        } else if (shopRating >= 0.5) {
+            starsHtml.append("<img src='/img/1scorestar.png' width='15' height='14' >");
+            shopRating -= 0.5;
+        } else {
+            starsHtml.append("<img src='/img/emptystar.png' width='15' height='14' >");
+        }
+    }
+%>
 								<div class="star">
-								<% Double shopStar = (Double) request.getAttribute("shopStar");
-									if(shopStar == 0){
-								%>
-									<img src="/img/emptystar.png" class="star-img">
-									<img src="/img/emptystar.png" class="star-img">
-									<img src="/img/emptystar.png" class="star-img">
-									<img src="/img/emptystar.png" class="star-img">
-									<img src="/img/emptystar.png" class="star-img">
-									<%} %>
+									<%= starsHtml.toString() %>
 								</div>
-								<div class="shop-control">
-									<a class="shop-link" href="#">내 상점 관리</a>
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -64,7 +75,9 @@ Integer size = (Integer) request.getAttribute("size");
 					<div class="name-container">
 						<div class="name" id="name">${shopName}</div>
 						<div class="button-container" id="button-container"  style="padding-left: 15px;">
+						<%if(shopOwner.equals(userid)){ %>
 						<button class="name-update" id="name-update">상점명 수정</button>
+						<%} %>
 						</div>
 						<div hidden="update-shopname" class="update-shopname" id="update-shopname">
 							<input type="text" class="input-shopname" id="input-shopname" name="input-shopname" value="${shopName }">
@@ -73,7 +86,9 @@ Integer size = (Integer) request.getAttribute("size");
 						
 					</div>
 					<div class="edit-info">
+					<%if(shopOwner.equals(userid)){ %>
 							<button class="edit-btn" id="edit-btn">내 정보 수정</button>
+							<%} %>
 						</div>
 						<div class="shop-info" id="shop-info">${shopInfo}</div>
 						<div hidden="text-container" class="text-container" id="text-container">
@@ -83,7 +98,9 @@ Integer size = (Integer) request.getAttribute("size");
 						<button type="button" id="input-btn">확인</button>
 						</div>
 						<div  class="infobtn-container" id="infobtn-container">
+								<%if(shopOwner.equals(userid)){ %>
 							<button class="info-btn" id="info-btn">소개글 수정</button>
+							<%} %>
 						</div>
 				</div>
 			</div>
@@ -127,6 +144,23 @@ Integer size = (Integer) request.getAttribute("size");
 		var type = $(this).data('type');
 		var sortType = '<%= sortType %>';
 		var size = 30;
+		var userid = '<%= userid %>';
+		var shopOwner = "<%= shopOwner %>";
+		
+		 
+        var $fileInput = $('#file-input');
+        var $imgTrigger = $('#img-trigger');
+
+        if (userid === shopOwner) {
+            // 클릭할 수 있는 상태로 변경
+            $imgTrigger.css('cursor', 'pointer');
+            
+        } else {
+            // 클릭할 수 없는 상태로 변경
+            $imgTrigger.addClass('disabled');
+            $imgTrigger.css('cursor', 'default');
+            $imgTrigger.off('click'); 
+        }
 		
 		$("#shopname-submit").on('click', function(){
 			var newShopName = $("#input-shopname").val();
@@ -240,14 +274,15 @@ Integer size = (Integer) request.getAttribute("size");
 	      
 	     
 	      function loadContent(url) {
+
 	          $.ajax({
 	              url: url,
 	              method: "GET",
-	              data: {size:size},
+	              data:{status:'all', size:5},
 	              success: function(response) {
-	            	  console.log("초기화");
+	            	  console.log("초기화" + status);
 	            	  setActiveTab(); 
-	            	  
+
 	              
 	              },
 	              error: function() {
@@ -255,8 +290,12 @@ Integer size = (Integer) request.getAttribute("size");
 	              }
 	          });
 	      }
-			
 
+	      
+	     
+	      
+	      
+	     
 	      $(".shopmenu-link").on('click', function(event) {
 	          
 	          var targetUrl = $(this).attr("href");
@@ -268,8 +307,9 @@ Integer size = (Integer) request.getAttribute("size");
 	      });
 
 	      var initialUrl = window.location.pathname;
-	      loadContent(initialUrl, size);
+	      loadContent(initialUrl);
 		  
+
 	     
 	      
 	      window.onpopstate = function(event) {

@@ -108,7 +108,7 @@ $(document).ready(function () {
 
             if (isBottom && size <= cnt && sortType) {
                 size += 10;
-                console.log("정렬하자 : " + sortType);
+                console.log("정렬하자 : " + size);
                 setTimeout(() => getsortList(), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
@@ -134,6 +134,10 @@ $(document).ready(function () {
             }
         });
     }
+    
+
+    
+
 
     // 활성화된 탭을 설정하는 함수
     function setActiveTab(sortType) {
@@ -158,8 +162,7 @@ $(document).ready(function () {
         size = 30; // 페이지 크기 초기화
         getsortList(sortType, size, status); // 데이터 요청
         
-        // 이전 스크롤 이벤트 핸들러 제거
-        $(window).off("scroll");
+      
 
         // 새로운 스크롤 이벤트 핸들러 등록
         $(window).on("scroll", function() {
@@ -173,16 +176,17 @@ $(document).ready(function () {
             console.log('Document Height:', documentHeight);
             console.log('Is Bottom:', isBottom);
 
-            if (isBottom && size <= cnt && status) {
+            if (isBottom && size <= cnt && status != null) {
                 size += 10;
                 console.log("정렬하자 : " + sortType);
                 console.log("Size:", size); // 추가된 코드
                 console.log("Status:", status); // 추가된 코드
-                setTimeout(() => getsortList(), 300); // 0.3초 딜레이 후 데이터 요청
+                setTimeout(() => getsortList(sortType, size, status), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
     });
-
+	
+    
     
     function setActiveselect(status, sortType) {
         $(".form-select").each(function() {

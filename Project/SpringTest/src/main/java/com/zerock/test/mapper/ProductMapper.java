@@ -44,6 +44,12 @@ public interface ProductMapper {
 	List<ProductDTO> selectdescProducts(Integer shop_id, int size, String status);
 	
 	List<ProductDTO> selectdescAllProducts(Integer shop_id, int size);
+
+	List<ProductDTO> selectnewestProducts(Integer shop_id, int size, String status);
+	
+	List<ProductDTO> selectpopularityProducts(Integer shop_id, int size, String status);
+
+	List<ProductDTO> statusProducts(Integer shop_id, int size, String status);
 				
 }
 

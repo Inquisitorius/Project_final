@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zerock.test.mapper.ReviewsMapper">
+	<select id="ReviewsCnt" parameterType="Integer"
+		resultType="Integer">
+		SELECT COUNT(*)
+		FROM REVIEW
+		WHERE shop_id = #{shop_id}
+	</select>
+
+	<select id="selectReview" parameterType="Integer"
+		resultType="com.zerock.test.dto.ReviewDTO">
+		SELECT *
+		FROM (
+		SELECT R.*, ROW_NUMBER() OVER (ORDER BY idx DESC) AS RNUM
+		FROM review R
+		WHERE R.SHOP_ID = #{shop_id}
+		)
+		WHERE RNUM <![CDATA[<=]]>
+		#{size}
+	</select>
+
+	<select id="ShopRating" parameterType="int" resultType="double">
+		SELECT AVG(rating) AS average_rating
+		FROM review
+		WHERE shop_id = #{shop_id}
+	</select>
+
+
+</mapper>

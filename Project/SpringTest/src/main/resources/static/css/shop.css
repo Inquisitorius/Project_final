@@ -343,3 +343,7 @@ a {
    text-decoration: none !important;
     cursor: pointer;
 }
+
+.disabled{
+	pointer-events: none;
+}

@@ -24,8 +24,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zerock.test.dto.CustomUserDetails;
 import com.zerock.test.dto.ProductDTO;
+import com.zerock.test.dto.ReviewDTO;
 import com.zerock.test.dto.ShopDTO;
 import com.zerock.test.service.ProductService;
+import com.zerock.test.service.ReviewsService;
 import com.zerock.test.service.ShopService;
 
 @Controller
@@ -33,8 +35,12 @@ public class ShopController {
 
 	@Autowired
 	ShopService service;
+	
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	ReviewsService reviewsService;
 
 	@ModelAttribute("userid")
 	public String getUserID() {
@@ -46,6 +52,7 @@ public class ShopController {
 			return null;
 		}
 	}
+	
 
 	@GetMapping("/shop")
 	public String mypage(@ModelAttribute("userid") String userid, @RequestParam(required = false) String otherUserid) {
@@ -69,116 +76,188 @@ public class ShopController {
 
 	@GetMapping("/shop/{shop_id}/{type}")
 	public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type,
-	        @RequestParam(value = "sort", required = false) String sort,
-	        @RequestParam(value = "size", required = false, defaultValue = "30") int size,
-	        @RequestParam(value = "status", required = false) String status) {
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "size", required = false, defaultValue = "30") int size,
+			@RequestParam(value = "status", required = false) String status) {
 
-	    ShopDTO dto = service.viewShop(shop_id);
-	    int cnt = productService.countProductsByShopId(shop_id);
+		ShopDTO dto = service.viewShop(shop_id);
+		double shopRating = reviewsService.ShopRating(shop_id);
+		ModelAndView mav = new ModelAndView("shop"); // 기본 뷰는 'shop'
+		if (dto != null) {
+			mav.addObject("shopId", dto.getShop_id());
+			mav.addObject("shopName", dto.getShop_name());
+			mav.addObject("shopOwner", dto.getShop_owner());
+			mav.addObject("shopImg", dto.getShop_img());
+			mav.addObject("shopStar", dto.getShop_star());
+			mav.addObject("shopInfo", dto.getShop_info());
+			mav.addObject("rating", shopRating);
+			mav.addObject("type", type);
+			mav.addObject("status", status);
+		} else {
+			return new ModelAndView("view"); // ShopDTO가 null인 경우 오류 페이지로 리다이렉트
+		}
 
-	    ModelAndView mav = new ModelAndView("shop"); // 기본 뷰는 'shop'
-	    if (dto != null) {
-	        mav.addObject("shopId", dto.getShop_id());
-	        mav.addObject("shopName", dto.getShop_name());
-	        mav.addObject("shopOwner", dto.getShop_owner());
-	        mav.addObject("shopImg", dto.getShop_img());
-	        mav.addObject("shopStar", dto.getShop_star());
-	        mav.addObject("shopInfo", dto.getShop_info());
-	        mav.addObject("type", type);
-	        mav.addObject("status", status);
-	    } else {
-	        return new ModelAndView("view"); // ShopDTO가 null인 경우 오류 페이지로 리다이렉트
-	    }
+		if (type.equals("products")) {
+			// 조건에 따라 모델을 설정하고 뷰를 반환합니다.
+			List<ProductDTO> pdto = null;
+			pdto = productService.selectProduct(shop_id, size);
+			int cnt = productService.countProductsByShopId(shop_id);
+			
+			
+			if (sort != null && status == null) {
+				switch (sort) {
+				
+				case "price-asc":
+					mav.setViewName("shop_products");
+					pdto = productService.selectLowPrice(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					
+					break;
+				case "price-desc":
+					mav.setViewName("shop_products");
+					pdto = productService.selectHighPrice(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					System.out.println("desc 호출");
+					break;
+				case "newest":
+					mav.setViewName("shop_products");
+					pdto = productService.selectNewst(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					break;
+				case "popularity":
+					mav.setViewName("shop_products");
+					pdto = productService.selectpopularity(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					break;
+				}
+				
+			}
 
-	    if (type.equals("products")) {
-	        // 조건에 따라 모델을 설정하고 뷰를 반환합니다.
-	        List<ProductDTO> pdto = null;
-	        pdto = productService.selectProduct(shop_id, size);
-	        if(sort != null) {
-	            switch (sort) {
-	           
-	                case "price-asc":
-	                	 mav.setViewName("shop_products");
-	                    pdto = productService.selectLowPrice(shop_id, size);
-	                    break;
-	                case "price-desc":
-	                	 mav.setViewName("shop_products");
-	                    pdto = productService.selectHighPrice(shop_id, size);
-	                    break;
-	                case "newest":
-	                	 mav.setViewName("shop_products");
-	                    pdto = productService.selectNewst(shop_id, size);
-	                    break;
-	                case "popularity":
-	                	mav.setViewName("shop_products");
-	                    pdto = productService.selectpopularity(shop_id, size);
-	                    break;
-	            }
-	        }
-	        
-	        if(sort == null && status != null) {
-	        	
-	        	 switch (status) {
-	                case "all":
-	                	mav.setViewName("shop_products");
-	                	System.out.println(status);
-	                    pdto =  productService.selectProduct(shop_id, size);
-	                    break;
-	                case "for-sale":
-	                	 mav.setViewName("shop_products");
-	                    pdto = productService.selectLowPrice(shop_id, size);
-	                    break;
-	                case "in-progress":
-	                	 mav.setViewName("shop_products");
-	                    pdto = productService.selectNewst(shop_id, size);
-	                    break;
-	                case "completed":
-	                	 mav.setViewName("shop_products");
-	                	 System.out.println("호출");
-	                    pdto = productService.completed(shop_id, size);
-	                    cnt = productService.completedcnt(shop_id);
-	                    break;
-	            }
-	        }
-	        if (sort != null && status != null) {
-	            mav.setViewName("shop_products");
+			if (sort == null && status != null) {
 
-	            if ("price-asc".equals(sort)) {
-	                if ("all".equals(status)) {
-	                    pdto = productService.selectAllPriceAsc(shop_id, size);
-	                } else if ("completed".equals(status)) {
-	                    pdto = productService.selectCompletedPriceAsc(shop_id, size);
-	                    cnt = productService.completedcnt(shop_id);
-	                } else if ("for-sale".equals(status)) {
-	                	pdto = productService.selectSalePriceAsc(shop_id, size);
-	                	cnt = productService.saleCnt(shop_id);
-	                } else {
-	                	pdto = productService.selectProgressPriceAsc(shop_id, size);
-	                	cnt = productService.progressCnt(shop_id);
-	                }
-	                mav.addObject("products", pdto);
-	            }
-	            
-	            if("desc".equals(sort)) {
-	            	pdto = productService.selectdescProducts(shop_id, size, status);
-	            	cnt = productService.sortCnt(shop_id, status);
-	            	if("all".equals(status)) {
-	            		pdto = productService.selectdescAllProducts(shop_id, size);
-	            		cnt = productService.countProductsByShopId(shop_id);
-	            	}
-	            }
-	        }
+				switch (status) {
+				case "all":
+					mav.setViewName("shop_products");
+					System.out.println("all 호출");
+					pdto = productService.selectProduct(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					break;
+				case "for-sale":
+					mav.setViewName("shop_products");
+					pdto = productService.statusProducts(shop_id, size, status);
+					cnt = productService.saleCnt(shop_id);
+					break;
+				case "in-progress":
+					mav.setViewName("shop_products");
+					pdto = productService.statusProducts(shop_id, size, status);
+					cnt = productService.progressCnt(shop_id);
+					
+					break;
+				case "completed":
+					mav.setViewName("shop_products");
+					pdto = productService.statusProducts(shop_id, size, status);
+					cnt = productService.completedcnt(shop_id);
+					break;
+				}
+			}
+			if (sort != null && status != null) {
+				mav.setViewName("shop_products");
+				
+				if ("price-asc".equals(sort)) {
+					pdto = productService.selectAllPriceAsc(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					if ("all".equals(status)) {
+						pdto = productService.selectAllPriceAsc(shop_id, size);
+						cnt = productService.countProductsByShopId(shop_id);
+					} else if ("completed".equals(status)) {
+						pdto = productService.selectCompletedPriceAsc(shop_id, size);
+						cnt = productService.completedcnt(shop_id);
+					} else if ("for-sale".equals(status)) {
+						pdto = productService.selectSalePriceAsc(shop_id, size);
+						cnt = productService.saleCnt(shop_id);
+					} else if ("in-progress".equals(status)){
+						pdto = productService.selectProgressPriceAsc(shop_id, size);
+						cnt = productService.progressCnt(shop_id);
+					}
+				}
+				if ("price-desc".equals(sort)) {
+					pdto = productService.selectdescAllProducts(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					if ("all".equals(status)) {
+						pdto = productService.selectdescAllProducts(shop_id, size);
+						cnt = productService.countProductsByShopId(shop_id);
+					} else if ("completed".equals(status)) {
+						pdto = productService.selectdescProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("for-sale".equals(status)) {
+						pdto = productService.selectdescProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("in-progress".equals(status)){
+						pdto = productService.selectdescProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					}
+				}
+				
+				if("newest".equals(sort)) {
+					pdto = productService.selectNewst(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					if ("all".equals(status)) {
+						pdto = productService.selectNewst(shop_id, size);
+						cnt = productService.countProductsByShopId(shop_id);
+					} else if ("completed".equals(status)) {
+						pdto = productService.selectnewestProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("for-sale".equals(status)) {
+						pdto = productService.selectnewestProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("in-progress".equals(status)){
+						pdto = productService.selectnewestProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					}
+				}
+				
+				if("popularity".equals(sort)) {
+					pdto = productService.selectpopularity(shop_id, size);
+					cnt = productService.countProductsByShopId(shop_id);
+					if ("all".equals(status)) {
+						pdto = productService.selectpopularity(shop_id, size);
+						cnt = productService.countProductsByShopId(shop_id);
+					} else if ("completed".equals(status)) {
+						pdto = productService.selectpopularityProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("for-sale".equals(status)) {
+						pdto = productService.selectpopularityProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					} else if ("in-progress".equals(status)){
+						pdto = productService.selectpopularityProducts(shop_id, size, status);
+						cnt = productService.sortCnt(shop_id, status);
+					}
+				}
 
-	        mav.addObject("products", pdto);
-	        mav.addObject("cnt", cnt); // 상품 수
-	        mav.addObject("size", size);
-	        
-	        
-	        
-	    }
+				
+			}
 
-	    return mav;
+			mav.addObject("products", pdto);
+			mav.addObject("cnt", cnt); // 상품 수
+			mav.addObject("size", size);
+
+		}
+		if(type.equals("reviews")) {
+			size = 5;
+			System.out.println("리뷰호출");
+			List<ReviewDTO> Rdto = null;
+			mav.setViewName("shop");
+			int Rcnt = reviewsService.ReviewsCnt(shop_id);
+			Rdto = reviewsService.selectReview(shop_id, size);
+			mav.addObject("cnt", Rcnt);
+			mav.addObject("reviews", Rdto);
+			mav.addObject("size", size);
+			return mav;
+		}
+
+		return mav;
 	}
+
 	@PostMapping("/update-name")
 	public String updateShopName(@RequestParam("shop_name") String shop_name, @RequestParam("shop_id") Integer shop_id,
 			@RequestParam("shop_owner") String userid) {

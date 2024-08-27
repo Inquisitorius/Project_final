@@ -11,7 +11,12 @@
 	WHERE RNUM <![CDATA[<=]]> #{size}
     
 	</select>
-	
+	<select id="sortCnt"  parameterType="map" resultType="Integer">
+	SELECT COUNT(*) 
+    FROM products
+    WHERE shop_id = #{shop_id}
+    AND products_status = #{status}
+	</select>
 	<select id="countProductsByShopId" parameterType="Integer" resultType="Integer">
     SELECT COUNT(*) 
     FROM products
@@ -21,18 +26,21 @@
 	SELECT COUNT(*) 
 	FROM PRODUCTS
 	WHERE PRODUCTS_STATUS = '거래완료'
+	AND shop_id = #{shop_id}
 	</select>
 	
 	<select id="saleCnt" parameterType="Integer" resultType="Integer">
 	SELECT COUNT(*) 
 	FROM PRODUCTS
 	WHERE PRODUCTS_STATUS = '판매중'
+	AND shop_id = #{shop_id}
 	</select>
 	
 	<select id="progressCnt" parameterType="Integer" resultType="Integer">
 	SELECT COUNT(*) 
 	FROM PRODUCTS
 	WHERE PRODUCTS_STATUS = '거래중'
+	AND shop_id = #{shop_id}
 	</select>
 	<select id="selectLowPrice" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
 			                 SELECT * 
@@ -154,6 +162,40 @@
 	)
 	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
+	
+	<select id="selectnewestProducts" parameterType="map" resultType="com.zerock.test.dto.ProductDTO">
+		                 SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY  P.CREATED_AT DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+    AND P.PRODUCTS_STATUS = #{status}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
+	</select>
+	
+	<select id="selectpopularityProducts" parameterType="map" resultType="com.zerock.test.dto.ProductDTO">
+		                 SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.LIKE_COUNT DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+    AND P.PRODUCTS_STATUS = #{status}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
+	</select>
+	
+		     			<select id="statusProducts" parameterType="map" resultType="com.zerock.test.dto.ProductDTO">
+		                 SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.PRODUCTS_PRICE DESC) AS RNUM
+    FROM PRODUCTS P
+    WHERE P.SHOP_ID = #{shop_id}
+    AND P.PRODUCTS_STATUS = #{status}
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
+	</select>
+
 	
        
 </mapper>
