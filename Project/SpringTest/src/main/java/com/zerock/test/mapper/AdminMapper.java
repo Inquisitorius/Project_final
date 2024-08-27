@@ -1,9 +1,9 @@
 package com.zerock.test.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.zerock.test.dto.AdminTestDTO;
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ServerInfoDTO;
 import com.zerock.test.dto.UserDTO;
 
@@ -19,4 +19,5 @@ public interface AdminMapper
 	int get_imgseqCurr();
 	int saveImgName(String filePath);
 	List<String> getImgNameList();
+	int CreateProduct(ProductDTO dto);
 }

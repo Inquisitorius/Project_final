@@ -1,11 +1,11 @@
 package com.zerock.test.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.zerock.test.dto.AdminTestDTO;
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ServerInfoDTO;
 import com.zerock.test.dto.UserDTO;
 import com.zerock.test.mapper.AdminMapper;
@@ -63,6 +63,11 @@ public class AdminService {
 	public List<String> getImgNameList() 
 	{
 		return mapper.getImgNameList();
+	}
+
+	public int CreateProduct(ProductDTO dto) 
+	{
+		return mapper.CreateProduct(dto);
 	}
 	
 }

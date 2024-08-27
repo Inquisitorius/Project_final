@@ -31,8 +31,7 @@ function init_forTest()
         {
         	var container = $('#imageContainer').empty();	
         	
-        	filePaths.forEach(function(filePath) {
-				//var path = filePath.replace('/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static', '');
+        	filePaths.forEach(function(filePath) {				
          var path = filePath;
 				var img = $('<img>').attr('src', path).attr('alt', '동적 이미지');
                 var div = $('<div>').addClass('image-item').append(img);

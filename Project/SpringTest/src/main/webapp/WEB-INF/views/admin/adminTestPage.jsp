@@ -51,7 +51,7 @@ function updateImgFile(file)
 {
 	console.log(file);
 	 $.ajax({
-         url: '/file-spring_12',
+         url: '/file-spring_local',
          type: 'POST',
          data: file,
          contentType: false,

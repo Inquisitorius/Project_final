@@ -20,74 +20,82 @@
 		</div>			
 	</div>
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User id : </label>
 		</div>
-		<div class = "col-9">
+		<div class = "col-5">
 			<input type = "text" class = "form-control" value = "${id}" disabled 
-			style="max-width: 300px;"/>
+			style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User email : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control" id = "user_email" value = "${email}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control" id = "user_email" value = "${email}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User birthDate : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control" id = "user_birthDate" value = "${birthDate}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control" id = "user_birthDate" value = "${birthDate}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User expJibunAddr : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control" id = "user_expJibunAddr" value = "${expJibunAddr}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control" id = "user_expJibunAddr" value = "${expJibunAddr}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User detail_address : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control"  id = "user_detail_address" value = "${detail_address}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control"  id = "user_detail_address" value = "${detail_address}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User gender : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control" id = "user_gender" value = "${gender}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control" id = "user_gender" value = "${gender}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User name : </label>
 		</div>
-		<div class = "col-9">
-			<input type = "text" class = "form-control" id = "user_name" value = "${name}"  style="max-width: 300px;"/>
+		<div class = "col-5">
+			<input type = "text" class = "form-control" id = "user_name" value = "${name}"  style="max-width: 100%;"/>
 		</div>
 	</div>
 	
 	<div class = "row" style = "margin-bottom: 10px;">
+		<div class = "col-2" ></div>
 		<div class = "col-2" style = "display: inline-flex; align-items: center;">
 			<label>User is_admin : </label>
 		</div>
-		<div class = "col-9">
+		<div class = "col-5">
 			<div class="form-check">
 			  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
 			  <label class="form-check-label" id = "isAdmin_CheckLabel" for="flexCheckChecked">
@@ -97,16 +105,13 @@
 		</div>
 	</div>
 	
-	<div class = "row" style = "margin-bottom: 10px;">
-		<div class = "col-12" style = "display: inline-flex; align-items: center;">
+	<div class = "row" style = "margin-bottom: 30px;">
+		<div class = "col-9" style = "display: inline-flex; align-items: center; justify-content: flex-end;">
 			<button class = "btn btn-danger" id = "deletebtn" style = "margin-right: 10px;">유저 삭제</button>
-			<button class = "btn btn-primary" id = "updatebtn">정보 수정</button>
+			<button class = "btn btn-primary" id = "updatebtn" style = "margin-right: 10px;">정보 수정</button>
+				<button class = "btn btn-secondary" id = "returnBtn">userListPage</button>
 		</div>
-	</div>
-	
-	<div class = "row" style = "margin-bottom: 10px; margin-top: 10px;">
-		<div class = "col-12" style = "display: inline-flex; justify-content: flex-end;">
-			<button class = "btn btn-secondary" id = "returnBtn">userListPage</button>
+		<div class = "col-3">
 		</div>
 	</div>	
 	
@@ -160,7 +165,13 @@ $(document).ready(function()
 			data: dto,
 			success: function(list)
 			{
-				console.log(list);				
+				Swal.fire({
+					  title: "회원 정보 삭제",
+					  text: "삭제가 완료 되었습니다.",
+					  icon: "success"
+					}).then((result) => {
+						window.location.href = '/userManagementPage';
+					});		
 			}
 		});
 	});
@@ -185,7 +196,13 @@ $(document).ready(function()
 			data: dto,
 			success: function(list)
 			{
-				console.log(list);				
+				Swal.fire({
+					  title: "회원 정보 수정",
+					  text: "수정이 완료 되었습니다.",
+					  icon: "success"
+					}).then((result) => {
+						window.location.href = '/userManagementPage';
+					});
 			}
 		});		
 	});

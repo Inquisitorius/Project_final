@@ -31,14 +31,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zerock.test.dto.AdminTestDTO;
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ServerInfoDTO;
 import com.zerock.test.dto.UserDTO;
 import com.zerock.test.service.AdminService;
 
 @Controller
-public class AdminController {
+public class AdminController 
+{
 	
 	private final AdminService service;	
+	private boolean serverEnv;
 	
 	@Autowired
     private ResourceLoader resourceLoader;
@@ -46,6 +49,7 @@ public class AdminController {
 	public AdminController(AdminService service)
 	{
 		this.service = service;
+		this.serverEnv = false;
 	}
 	
 	@GetMapping("/index")
@@ -145,22 +149,123 @@ public class AdminController {
 	   	      }	
 		}
 		
-		
-		
-		//1. 사진이름 명명규칙 필요
-		//2. db 에 해당 사진의 이름 저장
-		//3. 저장된 db 이름을 통해 해당 게시물의 사진 가져오기
-		
-		// 2-1 프로덕트 db 에 해당 사진 이름이 올라가야한다.
-		
-		
-		// 현재 필요한 기술 
-		//- 멀티 사진 업로드 작동 여부
-		//- db에 올릴 이름 명명 user_id+시퀸스 느낌으로 작성하면 될듯
-		//- 테스트는 db 에 올라가는지
-		//- 마지막으로 해당 부분 로드 되는지 확인되면 일단 모듈 테스트 끝
 		    
 		return 0;
+	}
+	
+	@PostMapping("/file-spring_local")
+	@ResponseBody
+	public int file_spring_local(@RequestParam MultipartFile[] files)
+	{
+		String fileDir = "D:/project_final/project/SpringTest/target/classes/static/img/upload/";
+	
+		
+		String fileDir_local = "/img/upload/";
+		
+		for (MultipartFile file : files)
+		{
+			//쉽게 하기 위해 비효율적인 방법을 채택
+	        int cnt = this.service.get_imgseqCurr();
+	        
+			String originalFileName = file.getOriginalFilename();	
+			System.out.println(originalFileName);
+			
+			String filePath = fileDir + cnt + "_" + originalFileName;			
+			String db_filePath = fileDir_local + cnt + "_" + originalFileName;
+			
+			System.out.println(db_filePath);
+            try
+            {
+            	//server 에 사진 파일 저장
+            	file.transferTo(new File(filePath));
+            	
+            	//this.service.saveImgName(db_filePath);
+            	
+	   	    } catch (IllegalStateException e) {
+	   	         // TODO Auto-generated catch block
+	   	         e.printStackTrace();
+	   	      } catch (IOException e) {
+	   	         // TODO Auto-generated catch block
+	   	         e.printStackTrace();
+	   	      }	
+		}
+		
+		    
+		return 0;
+	}
+	
+	@PostMapping("/upload_product")
+	@ResponseBody
+	public int upload_product(@ModelAttribute ProductDTO dto, 
+			@RequestParam("files_list") MultipartFile[] files)
+			
+	{
+		if(dto.getProducts_seller() == null)
+		{
+			System.out.println("dto.getProducts_seller()  is null!!");
+			return -1;
+		}
+			
+		
+		String fileDir = "D:/project_final/project/SpringTest/target/classes/static/img/upload/";
+		if(this.serverEnv == true)
+			fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/upload/";
+		
+		String fileDir_local = "/img/upload/";
+		
+		dto.setProducts_img1("");
+		dto.setProducts_img2("");
+		dto.setProducts_img3("");
+		
+		dto.setProducts_status("판매중");			
+		int i = 0;
+		
+		for (MultipartFile file : files)
+		{
+			String originalFileName = file.getOriginalFilename();
+			
+			int cnt = this.service.get_imgseqCurr();			
+			String filePath = fileDir + cnt + "_" + originalFileName;
+			String db_filePath = fileDir_local + cnt + "_" + originalFileName;	
+			
+			 try
+	            {
+	            	//server 에 사진 파일 저장
+	            	file.transferTo(new File(filePath));
+	            	System.out.println(db_filePath);
+	            	
+	            	switch (i) 
+	            	{
+						case 0: 
+							dto.setProducts_img1(db_filePath);
+							++i;
+							break;
+						case 1:
+							dto.setProducts_img2(db_filePath);
+							++i;
+							break;
+						case 2:
+							dto.setProducts_img3(db_filePath);
+							++i;
+							break;
+						default:
+							System.out.println("many img files.. Err !");
+							break;					
+					}
+	            	           	
+		   	    } catch (IllegalStateException e) {
+		   	         // TODO Auto-generated catch block
+		   	         e.printStackTrace();
+		   	      } catch (IOException e) {
+		   	         // TODO Auto-generated catch block
+		   	         e.printStackTrace();
+		   	      }
+		}
+		
+		//service 로 이동
+		int result = this.service.CreateProduct(dto);
+		
+		return result;
 	}
 
 	@PostMapping("/getServerInfo")
@@ -265,8 +370,10 @@ public class AdminController {
 	@Scheduled(cron = "59 */1 * * * *")
 	public void cron_serverLogFunc()
 	{
-		System.out.println("cron unable state...");
-		//Update_ServerLog();
+		if(serverEnv == false)
+			System.out.println("cron unable state...");
+		else
+			Update_ServerLog();
 	}
 	
 	public void Update_ServerLog()

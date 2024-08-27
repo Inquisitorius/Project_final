@@ -55,7 +55,38 @@
     	DELETE FROM USERINFO 
 		WHERE id = #{id}
     </delete>
-    
+    <insert id="CreateProduct" parameterType="com.zerock.test.dto.ProductDTO">
+    	INSERT INTO products (
+            shop_id,
+            idx,
+            PRODUCTS_SELLER,
+            products_name,
+            products_category,
+            products_status,
+            products_details,
+            products_price,
+            products_location,
+            products_img1,
+            products_img2,
+            products_img3,
+            created_at
+        ) VALUES
+        (
+       		(SELECT SHOP_ID FROM shop WHERE SHOP.SHOP_OWNER  = #{products_seller}),
+       		products_seq.nextval,
+       		#{products_seller},
+       		#{products_name},
+       		(SELECT CATEGORY_NAME FROM CATEGORY WHERE CATEGORY_NAME = #{products_category}),
+       		#{products_status},
+       		#{products_details},
+       		#{products_price},
+			#{products_location},
+			#{products_img1},
+			#{products_img2},
+			#{products_img3},
+			SYSDATE
+        )
+    </insert>
     
     <insert id="ServerLogUpdate2" parameterType="com.zerock.test.dto.ServerInfoDTO">
     	INSERT INTO SERVERLOG VALUES
