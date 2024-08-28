@@ -18,11 +18,6 @@
         WHERE room_id = #{room_id}
     </select>
     
-    <!-- 방 삭제 -->
-    <delete id="deleteRoom" parameterType="int">
-        DELETE FROM chat_rooms
-        WHERE room_id = #{room_id}
-    </delete>
 	
 	<select id="getRoomById" parameterType="int" resultType="com.zerock.test.dto.ChatRoom">
         SELECT room_id, name
@@ -37,7 +32,11 @@
 	</select>	
 	
 	<select id= "getRoom" parameterType="String" resultType="com.zerock.test.dto.ChatRoom4">
-	SELECT * FROM CHAT_ROOMS4 WHERE seller_id = #{userId} or sender = #{userId}
+	SELECT *
+	FROM chat_rooms4 cr 
+	JOIN products p ON cr.PRODUCT_IDX = p.idx
+	JOIN shop s ON s.SHOP_ID = p.SHOP_ID
+	WHERE seller_id =#{userId} or sender = #{userId}
 	</select>
 	
 	<insert id="insertchatroom" parameterType="com.zerock.test.dto.ChatRoom4">
@@ -50,5 +49,17 @@
     WHERE (sender = #{sender} AND seller_id = #{seller_id} AND product_idx = #{product_idx})
     OR (sender = #{seller_id} AND seller_id = #{sender} AND product_idx = #{product_idx}) FETCH FIRST ROW ONLY
 </select>
+
+	<delete id ="deleteChatRoom" parameterType="int">
+		DELETE FROM chat_rooms4 WHERE room_id = #{room_id}
+	</delete>
+	
+	<select id="getroomdetail" parameterType="int" resultType="com.zerock.test.dto.ChatRoom4">
+	 SELECT cr.*, p.products_name, s.shop_img , p.PRODUCTS_PRICE, p.PRODUCTS_STATUS , p.PRODUCTS_IMG1 
+    FROM chat_rooms4 cr 
+    JOIN products p ON cr.PRODUCT_IDX = p.idx
+    JOIN shop s ON s.SHOP_ID = p.SHOP_ID
+    WHERE cr.room_id = #{room_id}
+	</select> 
 
 </mapper>

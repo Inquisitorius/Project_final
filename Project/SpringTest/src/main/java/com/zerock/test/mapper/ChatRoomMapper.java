@@ -16,7 +16,6 @@ public interface ChatRoomMapper {
     
     ChatRoom selectRoomById(int room_id);
     
-    void deleteRoom(int room_id);
     
     ChatRoom getRoomById(@Param("room_id") int roomId);
     
@@ -28,4 +27,7 @@ public interface ChatRoomMapper {
     
     ChatRoom4 findChatRoomByParticipants(String sender,String seller_id,int  product_idx);
     
+    void deleteChatRoom(@Param("room_id") int room_id);
+    
+    ChatRoom4 getroomdetail(int room_id);
 }

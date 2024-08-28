@@ -1,6 +1,11 @@
 package com.zerock.test.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ChatRoom4 {
 	
@@ -10,7 +15,20 @@ public class ChatRoom4 {
 	private String seller_id;
 	private String sender;
 	private String room_stauts;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Timestamp created_at;
+	
+	private int shop_id;
+	private String products_name;
+	private String products_status;
+	private int products_price;
+	private String products_location;
+	private String products_img1;
+	private int like_count;
+	private String shop_img;
+	private String profileImg;
 	
 	public int getRoom_id() {
 		return room_id;
@@ -54,6 +72,59 @@ public class ChatRoom4 {
 	public void setSeller_id(String seller_id) {
 		this.seller_id = seller_id;
 	}
-	
-	
+	public int getShop_id() {
+		return shop_id;
+	}
+	public void setShop_id(int shop_id) {
+		this.shop_id = shop_id;
+	}
+	public String getProducts_name() {
+		return products_name;
+	}
+	public void setProducts_name(String products_name) {
+		this.products_name = products_name;
+	}
+	public String getProducts_status() {
+		return products_status;
+	}
+	public void setProducts_status(String products_status) {
+		this.products_status = products_status;
+	}
+	public int getProducts_price() {
+		return products_price;
+	}
+	public void setProducts_price(int products_price) {
+		this.products_price = products_price;
+	}
+	public String getProducts_location() {
+		return products_location;
+	}
+	public void setProducts_location(String products_location) {
+		this.products_location = products_location;
+	}
+	public String getProducts_img1() {
+		return products_img1;
+	}
+	public void setProducts_img1(String products_img1) {
+		this.products_img1 = products_img1;
+	}
+	public int getLike_count() {
+		return like_count;
+	}
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
+	}
+	public String getShop_img() {
+		return shop_img;
+	}
+	public void setShop_img(String shop_img) {
+		this.shop_img = shop_img;
+	}
+	public String getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
+
 }

@@ -139,7 +139,7 @@
 	</select>
 	
 	<select id="selectPro" resultType="com.zerock.test.dto.ProductDTO">
-            SELECT * FROM products WHERE idx = #{idx}
+            SELECT * FROM products p JOIN shop s ON s.shop_id= p.SHOP_ID WHERE idx =#{idx}
         </select>
         
      			<select id="selectdescProducts" parameterType="map" resultType="com.zerock.test.dto.ProductDTO">

@@ -2,6 +2,10 @@ package com.zerock.test.dto;
 
 import java.sql.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ProductDTO {
 	private int shop_id;
 	private String products_seller;
@@ -15,9 +19,19 @@ public class ProductDTO {
 	private String products_img1;
 	private String products_img2;
 	private String products_img3;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date created_at;
 	private int like_count;
 	
+	private String shop_owner;
+	private String shop_name;
+	private String shop_img;
+	private int shop_star;
+	private String  shop_info;
+	
+
 	public Date getCreated_at() {
 		return created_at;
 	}
@@ -102,5 +116,36 @@ public class ProductDTO {
 	public void setProducts_seller(String products_seller) {
 		this.products_seller = products_seller;
 	}
+	public String getShop_owner() {
+		return shop_owner;
+	}
+	public void setShop_owner(String shop_owner) {
+		this.shop_owner = shop_owner;
+	}
+	public String getShop_name() {
+		return shop_name;
+	}
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
+	}
+	public String getShop_img() {
+		return shop_img;
+	}
+	public void setShop_img(String shop_img) {
+		this.shop_img = shop_img;
+	}
+	public int getShop_star() {
+		return shop_star;
+	}
+	public void setShop_star(int shop_star) {
+		this.shop_star = shop_star;
+	}
+	public String getShop_info() {
+		return shop_info;
+	}
+	public void setShop_info(String shop_info) {
+		this.shop_info = shop_info;
+	}
+	
 	
 }

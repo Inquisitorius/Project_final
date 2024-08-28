@@ -24,9 +24,6 @@ public class ChatRoomService {
 	public ChatRoom getRoomById(int room_id) {
 		return chatRoomMapper.selectRoomById(room_id);
 	}
-	public void deleteRoom(int room_id) {
-		chatRoomMapper.deleteRoom(room_id);
-	}
 	public List<ChatRoom4> searchRoom(int product_idx){
 		return chatRoomMapper.searchRoom(product_idx);
 	}
@@ -38,5 +35,11 @@ public class ChatRoomService {
 	}
 	public ChatRoom4 findChatRoomByParticipants(String sender,String seller_id,int product_idx) {
 		return chatRoomMapper.findChatRoomByParticipants(sender, seller_id, product_idx);
+	}
+	public void deleteChatRoom(int room_id) {
+		chatRoomMapper.deleteChatRoom(room_id);
+	}
+	public ChatRoom4 getroomdetail(int room_id) {
+		return chatRoomMapper.getroomdetail(room_id);
 	}
 }

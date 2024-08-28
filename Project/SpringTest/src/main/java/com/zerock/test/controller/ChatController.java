@@ -92,4 +92,6 @@ public class ChatController {
 		// 필요한 다른 데이터가 있으면 여기에 추가
 		return "chat1"; // JSP 파일명
 	}
+	
+
 }

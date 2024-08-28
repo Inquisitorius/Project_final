@@ -165,7 +165,15 @@ img {
             <div class="col-5">
             <div class="row">
             <div class="col-md-4 fontCommon_nomal">상점정보</div>
-            shop
+            ${Product.shop_name}
+            </div>
+              <div class="shop-panel">
+                   <input type="file" id="file-input" style="display: none;">
+                <img src=" ${Product.shop_img}" class="shop-img"; style="width:100px;height:100px;";>
+              </div>
+            <div class="row">
+            <div class="col-md-4 fontCommon_nomal">상점정보</div>
+            ${Product.shop_info}
             </div>
             </div>
             </div>

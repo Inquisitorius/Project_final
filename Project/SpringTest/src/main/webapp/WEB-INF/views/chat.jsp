@@ -15,11 +15,7 @@ String userid = (String) request.getAttribute("userid");
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chat Example</title>
 <style>
-.message-container {
-    overflow-y: scroll;
-    min-height:600px;
- /* 예시: 최대 높이 설정 */
-}
+
 
  .message-join {
     padding: 10px;
@@ -31,7 +27,7 @@ String userid = (String) request.getAttribute("userid");
     margin-left:10px;
 }
 .message-sent {
-   background-color: #ffbd08	;
+   background-color: #f0e09c	;
     text-align: left;
     padding: 5px;
     margin: 5px;
@@ -40,7 +36,7 @@ String userid = (String) request.getAttribute("userid");
 }
 
 .message-received {
-    background-color: #8ded1f	;
+    background-color: #aef7a6	;
     text-align: right;
     padding: 5px;
     margin: 5px;
@@ -48,6 +44,74 @@ String userid = (String) request.getAttribute("userid");
     margin-left:50px;
     
 }
+
+.containerd {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+        .left-pane {
+            flex: 1;
+            min-width: 300px;
+            max-width: 300px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            height: 950px; /* 채팅방 목록의 높이를 조정 */
+            overflow-y: auto;
+        }
+        .right-pane {
+            flex: 1;
+            background-color: #f0f0f0;	
+            border: 1px solid #ddd;
+        }
+        .chat-room-button {
+            display: flex;
+            padding: 10px;
+            border: none;
+            background: #f4f4f4;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .chat-room-button:hover {
+            background: #e0e0e0;
+        }
+        .chat-room-button img {
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+        }
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            background: #fff;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        .dropdown-menu.visible {
+            display: block;
+        }
+        .dropdown-menu button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #fff;
+            text-align: left;
+            cursor: pointer;
+        }
+        .dropdown-menu button:hover {
+            background: #f0f0f0;
+        }
+        .message-container {
+            overflow-y: auto;
+            min-height: 710px; 
+
+        }
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,74 +124,84 @@ String userid = (String) request.getAttribute("userid");
 </head>
 <jsp:include page="../Common/header.jsp"></jsp:include>
 
-<div class="container" style="display: flex; justify-content: space-around; max-width: 1050px; margin: 0 auto;">
-  <!-- 왼쪽 사이드바 -->
-  <div class="flex flex-col w-6/12 min-w-[900px] max-w-[900px] mt-6" id="app">
-    <!-- 헤더 -->
-    <div class="text-3xl font-semibold mb-4">
-    <%= username %> 님의 채팅방입니다
-    </div>
-    
-    <div class="flex flex-grow h-[calc(100vh-140px)]"> <!-- 채팅방 목록과 채팅 영역의 높이를 조정 -->
-      <!-- 채팅방 목록 -->
-      <div class="flex flex-col w-2/6 bg-gray-50 border border-gray-300 overflow-y-auto">
-        <c:forEach var="chatRoom" items="${chatRooms}">
-          <button class="flex p-3 hover:bg-zinc-200" onclick="connectRoom(${chatRoom.room_id}, this)">
-            <div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
-            <div class="flex flex-col items-start ml-2">
-              <div class="font-semibold">${chatRoom.room_name}</div>
-              <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
+<div class="containerd" style="max-width: 1050px;";>
+        <!-- 왼쪽 사이드바 -->
+        <div class="left-pane">
+            <!-- 헤더 -->
+            <div class="text-3xl font-semibold mb-4  border border-gray-300" style="display:flex;justify-content: flex-start;">
+                <%= username %>의 채팅방
             </div>
-          </button>
-        </c:forEach>
-      </div>
-      
-     <div class="flex flex-col w-4/6 bg-gray-100">
-    <!-- 상단에 닉네임과 상품 정보 영역 -->
-    <div class="flex flex-col">
-        <!-- 채팅 상대방 닉네임 -->
-        <div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
-            <span id="nickname" class="font-semibold">상대방 닉네임</span>
-            <!-- 드롭다운 메뉴 -->
-            <div class="relative inline-block text-left">
-                <button onclick="toggleDropdown()" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
-                    메뉴
-                </button>
-                <!-- 드롭다운 메뉴 항목 -->
-                <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
-                    <div class="py-1">
-                        <button onclick="deleteChatRoom()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">채팅방 삭제</button>
-                        <button onclick="markTransactionComplete()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">상품 거래 완료</button>
+            
+            <!-- 채팅방 목록 -->
+            <c:forEach var="chatRoom" items="${chatRooms}">
+                <button class="chat-room-button" style="border: 1px solid #ddd;" onclick="connectRoom(${chatRoom.room_id}, this)">
+                    <div class="inline-block">
+                        <c:choose>
+                            <c:when test="${not empty chatRoom.shop_img}">
+                                <img src="${chatRoom.shop_img}" alt="Shop Image"/>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
+                    <div class="flex flex-col items-start ml-2">
+                        <div class="font-semibold">
+                            <c:choose>
+                                <c:when test="${username == chatRoom.sender}">${chatRoom.seller_id}</c:when>
+                                <c:when test="${username == chatRoom.seller_id}">${chatRoom.sender}</c:when>
+                                <c:otherwise>${chatRoom.room_name}</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
+                    </div>
+                </button>
+            </c:forEach>
+        </div>
+        
+        <!-- 오른쪽 채팅 영역 -->
+        <div class="right-pane">
+            <!-- 상단에 닉네임과 상품 정보 영역 -->
+            <div class="flex flex-col">
+                <div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
+                   <span id="nickname" class="font-semibold">닉네임</span>
+                    <!-- 드롭다운 메뉴 -->
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleDropdown()" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                            메뉴
+                        </button>
+                        <div id="dropdownMenu"  class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                         <div class="py-1">
+                          <button id="deleteChatRoomButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">채팅방 나가기</button>
+                        <button id="markTransactionCompleteButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">상품 거래 완료</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+    
+                <!-- 상품 목록 -->
+                <div id="productList" class="p-4 border border-gray-300 bg-white text-center font-semibold">
+				상품목록
+                </div>
+            </div>
+
+            <!-- 수신된 메시지를 출력 -->
+            <div class="message-container bg-white border border-gray-300">
+                <div class="message-item"></div>
+            </div>
+
+            <!-- 메시지 입력 칸 -->
+            <div class="w-full p-3 border border-gray-300 bg-white">
+                <div class="flex justify-between items-center">
+                    <label class="flex-grow">
+                        <input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full p-2 border border-gray-300 rounded"/>
+                    </label>
+                    <button class="min-w-[80px] ml-2 p-2 bg-blue-500 text-white rounded" onclick="sendMessage()">전송</button>
                 </div>
             </div>
         </div>
-        <!-- 상품 목록 -->
-        <div id="productList" class="p-4 border border-gray-300 bg-white text-center font-semibold">
-            상품 목록
-        </div>
     </div>
-
-        <!-- 수신된 메시지를 출력 -->
-        <div class="flex-grow overflow-y-auto bg-white border border-gray-300 message-container">
-          <div class="message-item"></div>
-        </div>
-        
-        <!-- 메시지 입력 칸 -->
-        <div class="w-full p-3 border border-gray-300 bg-white">
-          <div class="flex justify-between items-center">
-            <label class="flex-grow">
-              <input type="text" id="messageInput" placeholder="메시지를 입력해주세요" class="w-full p-2 border border-gray-300 rounded" />
-            </label>
-            <button class="min-w-[80px] ml-2 p-2 bg-blue-500 text-white rounded" onclick="sendMessage()">전송</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-</div>
-
 
 
 	
@@ -157,6 +231,15 @@ String userid = (String) request.getAttribute("userid");
                   	addMessage(recv);
 				});
                 
+                ws.subscribe("/topic/chatroom/delete", function (message) {
+                    let deletedRoomId = JSON.parse(message.body);
+                    console.log(" deletedroomid " + deletedRoomId);
+                    if (deletedRoomId === currentRoomId) {
+                        alert("이 채팅방이 삭제되었습니다.");
+                        window.location.href = '/myRoomsPage'; // 채팅 목록 페이지로 리다이렉트
+                    }
+                });
+                
                 ws.send("/pub/chat/message", {} , JSON.stringify({ 
 				messageType: "JOIN",
 				room_id: currentRoomId,
@@ -166,9 +249,7 @@ String userid = (String) request.getAttribute("userid");
                 }));       
         });
         }
-        
-        
-        
+
         function addMessage(recv) {
 
             // 1. recv 객체 확인
@@ -220,6 +301,31 @@ String userid = (String) request.getAttribute("userid");
             messageContainer.scrollBottom = messageContainer.scrollHeight;
         }
 
+        function loadChatRoomDetails(room_id) {
+        	console.log("loadChatRoomDetails " + room_id);
+            fetch(`/chatroom/details?room_id=${room_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // 닉네임과 상품 정보를 업데이트
+                    document.getElementById('nickname').innerText = data.seller_id;
+                    console.log("nickname " + data.seller_id);
+                    document.getElementById('productList').innerText = data.products_name;
+                    console.log("nickname " + data.products_name);
+                    // 드롭다운 버튼의 클릭 이벤트를 채팅방 ID와 함께 업데이트
+                    document.getElementById('deleteChatRoomButton').onclick = function() {
+                        deleteChatRoom(room_id);
+                    };
+                    document.getElementById('markTransactionCompleteButton').onclick = function() {
+                        markTransactionComplete(data.product_id);
+                    };
+
+                    // 드롭다운 메뉴 표시 (선택 사항)
+                    toggleDropdown();
+                })
+                .catch(error => {
+                    console.error('Error fetching chat room details:', error);
+                });
+        }
         
      // 초기 메시지 로드
         function fetchMessages() {
@@ -256,21 +362,24 @@ String userid = (String) request.getAttribute("userid");
         	 currentSelectedButton = buttonElement
       
         	    currentRoomId = room_id;
-        	 
+
         	if(ws) {
 				ws.disconnect(function () {
 					console.log("Disconnected from previous WebSoucket");
 					
 					clearChatMessages();
+					
+					loadChatRoomDetails(room_id);
 					connect();
 				
 				});
         	} else{
+
+        		loadChatRoomDetails(room_id);
         		connect();  <!-- 웹소켓 -->
         	}
         
         	}
-        
 
         document.querySelector("#messageInput").addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
@@ -327,45 +436,6 @@ String userid = (String) request.getAttribute("userid");
             messageContainer.appendChild(messageDiv);
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
-
-        $(document).ready(function() {
-            $("#createRoomForm").submit(function(event) {
-                event.preventDefault(); // Prevent form from submitting the traditional way
-                const room_id = $("#room_id").val();
-                const name = $("#name").val();
-
-                $.ajax({
-                    url: `${pageContext.request.contextPath}/chat/room`,
-                    type: "POST",
-                    data: {
-                        room_id: room_id,
-                        name: name
-                    },
-                    success: function(response) {
-                        // On success, append the new room to the list
-                        $("#rooms").append(`
-                            <button class="flex p-3 hover:bg-zinc-200"
-                                    onclick="connectRoom('${room_id}')">
-                                <div class="inline-block w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
-                                <div class="flex flex-col items-start ml-2">
-                                    <div class="flex items-baseline">
-                                        <div class="font-semibold">${name}</div>
-                                        <div class="ml-2 text-xs text-zinc-500">2분전</div>
-                                    </div>
-                                    <div class="truncate text-sm text-zinc-700 w-8/12">${room_id}</div>
-                                </div>
-                            </button>
-                        `);
-                        // Optionally clear the form inputs
-                        $("#room_id").val('');
-                        $("#name").val('');
-                    },
-                    error: function(error) {
-                        console.log("Error creating room", error);
-                    }
-                });
-            });
-        });
         
         function toggleDropdown() {
             var dropdown = document.getElementById('dropdownMenu');
@@ -373,25 +443,39 @@ String userid = (String) request.getAttribute("userid");
         }
 
         // 채팅방 삭제 기능
-        function deleteChatRoom() {
-            if (confirm('정말 이 채팅방을 삭제하시겠습니까?')) {
-                // 서버에 채팅방 삭제 요청을 보냄
-                fetch(`/api/deleteChatRoom?roomId=${currentRoomId}`, {
-                    method: 'DELETE'
+        function deleteChatRoom(room_id) {
+        if (confirm("정말로 이 채팅방을 삭제하시겠습니까?")) {
+        	console.log("Deleting room with ID:", room_id);
+            fetch('/chatroom/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'room_id': room_id
                 })
-                .then(response => {
-                    if (response.ok) {
-                        alert('채팅방이 삭제되었습니다.');
-                        location.reload(); // 삭제 후 페이지 새로고침
-                    } else {
-                        alert('채팅방 삭제에 실패했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error deleting chat room:', error);
-                });
-            }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // 성공적으로 삭제된 경우
+                    alert("채팅방이 삭제되었습니다.");
+                    
+                    ws.send("/pub/chatroom/delete", {}, JSON.stringify({ 
+                        'room_id': room_id 
+                    }));
+                    
+                    window.location.href = '/myRoomsPage'; // 채팅 목록 페이지로 리다이렉트
+                } else {
+                    // 삭제 실패한 경우
+                    alert("채팅방 삭제에 실패했습니다.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("채팅방 삭제 중 오류가 발생했습니다.");
+            });
         }
+    }
 
         // 상품 거래 완료 기능
         function markTransactionComplete() {

@@ -25,6 +25,10 @@ public class ProductController {
 		model.addAttribute("product",product);
 		return "ProductInfo";
 	}
-	
+	/*
+	 * @PostMapping("/product/status") public String product_trans() {
+	 * 
+	 * }
+	 */
 	
 }

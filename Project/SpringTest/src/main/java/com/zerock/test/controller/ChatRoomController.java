@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,9 @@ public class ChatRoomController {
 	
 	@Autowired
 	private ChatRoomService chatRoomService;
+	
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 	
 	@GetMapping("/chat/rooms")
 	public String getAllRooms(Model model) {
@@ -123,4 +127,36 @@ public class ChatRoomController {
 	    public ChatRoom getRoomById(@PathVariable("room_id") int room_id) {
 	        return chatRoomService.getRoomById(room_id);
 	    } 
+	 
+	/*	@PostMapping("/chatroom/delete")
+		public String deleteChatRoom(int room_id) {
+			System.out.println(" delete room_id " + room_id);
+			log.info("delete room_id" + room_id);
+			chatRoomService.deleteChatRoom(room_id);
+			return "redirect:/myRoomsPage";
+		}*/
+	 
+	 @PostMapping("/chatroom/delete")
+	 @ResponseBody
+	    public void deleteChatRoom(@RequestParam("room_id") int room_id) {
+	        // 채팅방 삭제
+		 System.out.println("deletechatroom : " + room_id);
+		 log.info("deletechatroom " + room_id);
+	        chatRoomService.deleteChatRoom(room_id);
+	        	
+	        // WebSocket으로 삭제 알림 전송
+	        messagingTemplate.convertAndSend("/topic/chatroom/delete", room_id);
+
+	    }
+	 @GetMapping("/chatroom/details")
+	 @ResponseBody
+	 public ChatRoom4 getChatRoomDetails(@RequestParam("room_id") int room_id) {
+		 System.out.println("getChatRoomDetails : " + room_id);
+		 log.info("getChatRoomDetails " + room_id);
+	     ChatRoom4 chatRoomDetails = chatRoomService.getroomdetail(room_id);
+	     
+	     return chatRoomDetails;
+	 }
+	 
+
 }
