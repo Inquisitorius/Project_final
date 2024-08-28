@@ -12,7 +12,8 @@
 		resultType="com.zerock.test.dto.ReviewDTO">
 		SELECT *
 		FROM (
-		SELECT R.*, ROW_NUMBER() OVER (ORDER BY idx DESC) AS RNUM
+		SELECT R.*, ROW_NUMBER() OVER (ORDER BY idx DESC) AS
+		RNUM
 		FROM review R
 		WHERE R.SHOP_ID = #{shop_id}
 		)
@@ -21,10 +22,27 @@
 	</select>
 
 	<select id="ShopRating" parameterType="int" resultType="double">
-		SELECT AVG(rating) AS average_rating
+		SELECT
+		AVG(rating) AS average_rating
 		FROM review
 		WHERE shop_id = #{shop_id}
 	</select>
 
+	<insert id="insertReview">
+		INSERT INTO review (IDX,id, shop_id, rating, content,
+		review_date, other_shopid, other_shopImg)
+		VALUES (reviews_seq.NEXTVAL,
+		#{id},
+		#{shopId}, #{rating}, #{content}, SYSDATE, #{other_shopid},
+		#{other_shopImg})
+	</insert>
 
+	<select id="getImg" parameterType="int" resultType="String">
+		SELECT
+		s.shop_img
+		FROM shop s
+		JOIN review r ON r.other_shopid = s.shop_id
+		WHERE r.other_shopid = #{other_shopid}
+		FETCH FIRST 1 ROW ONLY
+	</select>
 </mapper>

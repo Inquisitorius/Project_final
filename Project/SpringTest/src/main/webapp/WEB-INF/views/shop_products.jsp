@@ -93,7 +93,6 @@ $(document).ready(function () {
         var status = $(this).data('status'); // 상태 가져오기
         sortType = $(this).data('sort'); // 정렬 타입 가져오기
 
-        console.log('정렬 타입 : ' + sortType);
         getsortList(sortType, size, status);
 		
         // 이전 스크롤 이벤트 핸들러 제거
@@ -108,7 +107,6 @@ $(document).ready(function () {
 
             if (isBottom && size <= cnt && sortType) {
                 size += 10;
-                console.log("정렬하자 : " + size);
                 setTimeout(() => getsortList(), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
@@ -135,6 +133,7 @@ $(document).ready(function () {
         });
     }
     
+   
 
     
 
@@ -176,16 +175,14 @@ $(document).ready(function () {
             console.log('Document Height:', documentHeight);
             console.log('Is Bottom:', isBottom);
 
-            if (isBottom && size <= cnt && status != null) {
+            if (isBottom && size <= cnt && status) {
                 size += 10;
-                console.log("정렬하자 : " + sortType);
-                console.log("Size:", size); // 추가된 코드
-                console.log("Status:", status); // 추가된 코드
                 setTimeout(() => getsortList(sortType, size, status), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
     });
 	
+    
     
     
     function setActiveselect(status, sortType) {
