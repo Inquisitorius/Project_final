@@ -142,9 +142,7 @@ img {
                     상품설명	
                 </div>
             <div class="row" style="margin-bottom: 15px;">
-                <div class="col-md-12 fontCommon_nomal" style="font-size: 20px;">
-                   ${Product.products_details}
-                </div>
+                <div class="col-md-12 fontCommon_nomal" style="font-size: 20px;">${Product.products_details}</div>
             </div>
             <hr style="height: 1px; border: none; background-color: gray;">
             <div class="row">

@@ -21,7 +21,7 @@ public class Product_DetailController
 		this.service = service;
 	}
 	
-	@GetMapping("/pTest_1")
+	@GetMapping("/ProductInsert")
 	public String pTest(Model model)
 	{
 		return "pTest_1";

@@ -7,7 +7,7 @@
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/join.js"></script>
+<script src="/js/join2.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -127,8 +127,7 @@
 				</div>
 				<div class = "col-5">
 					<label for="fileUpload">사진 선택:</label>
-        		<input type="file" id="fileUpload" name="uploadedFiles" accept="image/*" multiple>
-        		<input type="button" id="uploadButton" value="업로드">
+        		<input type="file" id="fileUpload" name="uploadedFiles" accept="image/*" multiple>        		
 				</div>
 			</div>
 			
@@ -166,6 +165,10 @@ $(document).ready(function()
 		var products_location = $('#roadAddress').val();
 		var products_details = $('#product_detail').val();
 		var products_seller = $('#user_id').val();	
+		
+		products_details = products_details.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+		
+		console.log(products_details);
 		
 		var formData = new FormData();
 
