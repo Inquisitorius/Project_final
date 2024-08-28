@@ -11,56 +11,48 @@
 
 </Style>
 <header>
-	<div class="container header-container">
-		<div class="row menu-containner">
-			<a class="col-1 img-container" style="padding: 0px; align-content: center;" href="/hello">
-				<img src = "/img/logo_sample.svg" style = "width : 100%; height: 80%;">
-			</a>
-			<nav class="col-3 menu-nav">
-				<ul class="menu-ul">
-					<li class="menu-li">
-						<a class="menu-link" href="www.naver.com">중고거래</a>
-					</li>
-				</ul>
-				<ul class="menu-ul">
-					<li class="menu-li">
-						<a class="menu-link" href="myRoomsPage">채팅하기</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="col container-fluid search-container">
-        <nav class="navbar navbar-light bg-light search-nav">
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" style="width: 380px; height: 40px;" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </nav>
-    </div>
-    	
-    <% 
-		
+	<div class="container" style = "padding: 0px; padding-top: 12px; padding-bottom: 12px;">
+		<div class="row menu-containner" style = "min-width: 1320px; display: inline-flex; justify-content: space-between;">
+			<div class = "col-4" style = "display: inline-flex; justify-content: space-between; align-items: center; padding: 0px;">
+				<a style="padding: 0px; align-content: center;" href="/hello">
+					<img src = "/img/logo_sample.svg" style = "width : 100px; height: 40px; margin-top: 5px;">
+				</a>	
+				<nav class="menu-nav">
+					<ul class="menu-ul">
+						<li class="menu-li">
+							<a class="menu-link" href="www.naver.com">중고거래</a>
+						</li>
+					</ul>
+					<ul class="menu-ul">
+						<li class="menu-li">
+							<a class="menu-link" href="myRoomsPage">채팅하기</a>
+						</li>
+					</ul>
+				</nav>		
+			</div>
+			
+	<% 		
     	String userid = (String) request.getAttribute("userid");
         String username = (String) request.getAttribute("username");
         Boolean isAdmin = (Boolean) request.getAttribute("isAdmin");
         if (username != null) {
-    %>
-    <div class="col-3 login" style="max-height: 48px; padding: 10px 20px 0;">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-        <span class="ddd"> <%= username %> 님</span>
+    %>	
+    <div class="col-5 login" style="max-height: 48px; padding: 10px 20px 0;">
+    <div style="display: flex; align-items: center; justify-content: flex-end;">
+        <span class="ddd" style = "margin-right: 10px;"> <%= username %> 님</span>
         <% if (Boolean.TRUE.equals(isAdmin)) { %>
-        <button id="admin-btn">관리자 페이지</button>
+        <button class = "btn btn-danger" id="admin-btn" style = "margin-right: 10px;">관리자 페이지</button>
         <% } %>
-        <button id="mypage-btn">마이페이지</button>
+        <button class = "btn btn-secondary" id="mypage-btn">마이페이지</button>
         <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px;">
-            <button type="submit" style="background: none; border: none; padding: 0; text-decoration: underline; cursor: pointer;">
+            <button class = "btn btn-secondary" type="submit">
                 로그아웃
             </button>
         </form>
     </div>
-    </div>
-    
+    </div>    
     <% } else { %>
-    <div class="col-2 login" style="max-height: 48px;">
+    <div class="col-4 login" style="max-height: 48px;">
     	<div class="login-span" style="display: flex;">
             <a href="/login" style="display: flex; align-items: center; text-decoration: none;">
                 <img src="/img/login-btn.svg" style="width: auto; height: 50px;">
