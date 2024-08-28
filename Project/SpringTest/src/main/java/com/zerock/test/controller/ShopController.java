@@ -2,13 +2,10 @@ package com.zerock.test.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,17 +30,15 @@ import com.zerock.test.service.ProductService;
 import com.zerock.test.service.ReviewsService;
 import com.zerock.test.service.ShopService;
 
-import jakarta.servlet.http.HttpSession;
-
 @Controller
 public class ShopController {
 
 	@Autowired
 	ShopService service;
-
+	
 	@Autowired
 	ProductService productService;
-
+	
 	@Autowired
 	ReviewsService reviewsService;
 
@@ -57,6 +52,7 @@ public class ShopController {
 			return null;
 		}
 	}
+	
 
 	@GetMapping("/shop")
 	public String mypage(@ModelAttribute("userid") String userid, @RequestParam(required = false) String otherUserid) {
@@ -79,19 +75,13 @@ public class ShopController {
 	}
 
 	@GetMapping("/shop/{shop_id}/{type}")
-	@ResponseBody
 	public ModelAndView myPageByShopId(@PathVariable Integer shop_id, @PathVariable String type,
 			@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(value = "size", required = false, defaultValue = "30") int size,
-			@RequestParam(value = "status", required = false) String status,
-			@RequestParam(value = "load", required = false) String btn) {
+			@RequestParam(value = "status", required = false) String status) {
 
 		ShopDTO dto = service.viewShop(shop_id);
-		Double shopRating = reviewsService.ShopRating(shop_id);
-
-		if (shopRating == null) {
-			shopRating = 0.0;
-		}
+		double shopRating = reviewsService.ShopRating(shop_id);
 		ModelAndView mav = new ModelAndView("shop"); // 기본 뷰는 'shop'
 		if (dto != null) {
 			mav.addObject("shopId", dto.getShop_id());
@@ -112,15 +102,16 @@ public class ShopController {
 			List<ProductDTO> pdto = null;
 			pdto = productService.selectProduct(shop_id, size);
 			int cnt = productService.countProductsByShopId(shop_id);
-
+			
+			
 			if (sort != null && status == null) {
 				switch (sort) {
-
+				
 				case "price-asc":
 					mav.setViewName("shop_products");
 					pdto = productService.selectLowPrice(shop_id, size);
 					cnt = productService.countProductsByShopId(shop_id);
-
+					
 					break;
 				case "price-desc":
 					mav.setViewName("shop_products");
@@ -139,7 +130,7 @@ public class ShopController {
 					cnt = productService.countProductsByShopId(shop_id);
 					break;
 				}
-
+				
 			}
 
 			if (sort == null && status != null) {
@@ -160,7 +151,7 @@ public class ShopController {
 					mav.setViewName("shop_products");
 					pdto = productService.statusProducts(shop_id, size, status);
 					cnt = productService.progressCnt(shop_id);
-
+					
 					break;
 				case "completed":
 					mav.setViewName("shop_products");
@@ -171,7 +162,7 @@ public class ShopController {
 			}
 			if (sort != null && status != null) {
 				mav.setViewName("shop_products");
-
+				
 				if ("price-asc".equals(sort)) {
 					pdto = productService.selectAllPriceAsc(shop_id, size);
 					cnt = productService.countProductsByShopId(shop_id);
@@ -184,7 +175,7 @@ public class ShopController {
 					} else if ("for-sale".equals(status)) {
 						pdto = productService.selectSalePriceAsc(shop_id, size);
 						cnt = productService.saleCnt(shop_id);
-					} else if ("in-progress".equals(status)) {
+					} else if ("in-progress".equals(status)){
 						pdto = productService.selectProgressPriceAsc(shop_id, size);
 						cnt = productService.progressCnt(shop_id);
 					}
@@ -201,13 +192,13 @@ public class ShopController {
 					} else if ("for-sale".equals(status)) {
 						pdto = productService.selectdescProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
-					} else if ("in-progress".equals(status)) {
+					} else if ("in-progress".equals(status)){
 						pdto = productService.selectdescProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
 					}
 				}
-
-				if ("newest".equals(sort)) {
+				
+				if("newest".equals(sort)) {
 					pdto = productService.selectNewst(shop_id, size);
 					cnt = productService.countProductsByShopId(shop_id);
 					if ("all".equals(status)) {
@@ -219,13 +210,13 @@ public class ShopController {
 					} else if ("for-sale".equals(status)) {
 						pdto = productService.selectnewestProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
-					} else if ("in-progress".equals(status)) {
+					} else if ("in-progress".equals(status)){
 						pdto = productService.selectnewestProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
 					}
 				}
-
-				if ("popularity".equals(sort)) {
+				
+				if("popularity".equals(sort)) {
 					pdto = productService.selectpopularity(shop_id, size);
 					cnt = productService.countProductsByShopId(shop_id);
 					if ("all".equals(status)) {
@@ -237,12 +228,13 @@ public class ShopController {
 					} else if ("for-sale".equals(status)) {
 						pdto = productService.selectpopularityProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
-					} else if ("in-progress".equals(status)) {
+					} else if ("in-progress".equals(status)){
 						pdto = productService.selectpopularityProducts(shop_id, size, status);
 						cnt = productService.sortCnt(shop_id, status);
 					}
 				}
 
+				
 			}
 
 			mav.addObject("products", pdto);
@@ -250,66 +242,20 @@ public class ShopController {
 			mav.addObject("size", size);
 
 		}
-		if (type.equals("reviews")) {
-			if (size == 0 || btn == null) {
-				size = 5;
-			}
-
+		if(type.equals("reviews")) {
+			size = 5;
+			System.out.println("리뷰호출");
 			List<ReviewDTO> Rdto = null;
+			mav.setViewName("shop");
 			int Rcnt = reviewsService.ReviewsCnt(shop_id);
 			Rdto = reviewsService.selectReview(shop_id, size);
-			for (int i = 0; i < Rdto.size(); i++) {
-				ReviewDTO review = Rdto.get(i);
-				Integer otherShopId = review.getOther_shopid();
-
-				String ShopImg1 = reviewsService.getImg(otherShopId);
-
-				mav.addObject("shopImg1_" + i, ShopImg1);
-			}
-
-			if (btn != null && "load".equals(btn)) {
-				mav.setViewName("shop_reviews");
-				System.out.println("size : " + size);
-				for (int i = 0; i < Rdto.size(); i++) {
-					ReviewDTO review = Rdto.get(i);
-					Integer otherShopId = review.getOther_shopid();
-					System.out.println(otherShopId);
-					String ShopImg1 = reviewsService.getImg(otherShopId);
-					System.out.println(ShopImg1);
-					mav.addObject("shopImg1_" + i, ShopImg1);
-				}
-				Rcnt = reviewsService.ReviewsCnt(shop_id);
-				Rdto = reviewsService.selectReview(shop_id, size);
-			}
-
 			mav.addObject("cnt", Rcnt);
 			mav.addObject("reviews", Rdto);
 			mav.addObject("size", size);
+			return mav;
 		}
 
 		return mav;
-	}
-
-	@PostMapping("/insert-comment")
-	public String insertComment(@ModelAttribute("userid") String userid, @RequestParam("shop_id") Integer shop_id,
-			@RequestParam("rating") double rating, @RequestParam("content") String content, Integer other_shopid,
-			String other_shopImg) {
-
-		ReviewDTO review = new ReviewDTO();
-		review.setId(userid);
-		review.setShopId(shop_id);
-		review.setRating(rating);
-		review.setContent(content);
-		review.setReviewDate(new Date());
-		other_shopid = service.findNum(userid);
-		other_shopImg = reviewsService.getImg(other_shopid);
-		System.out.println(other_shopImg);
-		review.setOther_shopid(other_shopid);
-		review.setOther_shopImg(other_shopImg);
-
-		reviewsService.insertReview(review);
-
-		return "redirect:/shop/" + shop_id + "/reviews";
 	}
 
 	@PostMapping("/update-name")
