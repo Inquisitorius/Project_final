@@ -29,7 +29,15 @@ public class ProductService {
 			return "all"; // 기본값
 		}
 	}
-
+	
+	public Integer AllProductsCnt() {
+		return mapper.AllProductsCnt();
+	}
+	
+	public List<ProductDTO> AllProducts(int size){
+		return mapper.AllProducts(size);
+	}
+	
 	public List<ProductDTO> selectProduct(Integer shop_id, int size) {
 
 		return mapper.selectProduct(shop_id, size);
@@ -123,6 +131,9 @@ public class ProductService {
 		return mapper.statusProducts(shop_id, size, convertStatus(status));
 	}
 	
+	public ProductDTO selectOne(int idx) {
+		return mapper.selectOne(idx);
+	}
 	
 
 }

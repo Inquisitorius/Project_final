@@ -155,6 +155,33 @@
 	box-sizing: border-box;
 }
 
+.editstar_rating {
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	float: left;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.editstar_rating .editstar {
+	width: 15px;
+	height: 14px;
+	display: inline-block;
+	background: url('/img/emptystar.png') no-repeat;
+	background-size: 100%;
+	box-sizing: border-box;
+}
+
+.editstar_rating .editstar.on {
+	width: 15px;
+	height: 14px;
+	display: inline-block;
+	background: url('/img/2scorestar.png') no-repeat;
+	background-size: 100%;
+	box-sizing: border-box;
+}
+
 .content-form {
 	display: inline;
 }
@@ -196,4 +223,12 @@
 	padding: 15px;
 	font-size: 15px;
 	font-family: sans-serif;
+}
+
+.shop-r-link{
+	color: rgb(33,33,33);
+}
+
+.shop-r-link:hover{
+	color: rgb(33,33,33);
 }

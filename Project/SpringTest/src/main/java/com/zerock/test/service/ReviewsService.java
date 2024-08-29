@@ -33,4 +33,12 @@ public class ReviewsService {
 	public String getImg(Integer otherShopIds) {
 		return mapper.getImg(otherShopIds);
 	}
+	
+	public void UpdateReview(ReviewDTO dto) {
+		mapper.UpdateReview(dto);
+	}
+	
+	public void deleteReview(int idx) {
+		mapper.deleteReview(idx);
+	}
 }

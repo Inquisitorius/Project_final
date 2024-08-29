@@ -1,7 +1,14 @@
+<%@page import="com.zerock.test.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 String username = (String) request.getAttribute("username");
+List<ProductDTO> recentlyViewed = (List<ProductDTO>) session.getAttribute("recentlyViewed");
+Integer cnt = (Integer) request.getAttribute("cnt");
+if (cnt == null) {
+    cnt = 0; // 기본값으로 설정
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -51,33 +58,38 @@ String username = (String) request.getAttribute("username");
   </button>
 </div>
 <div class="sticky-sidebar" >
-	<div class="sc-box" style="border-color: rgb(102,102,102);">
-		<div class="Saved-item" style="text-align: center;">
-			찜한 상품
-		</div>
-		<div class="saved-link" style="text-align: center;">
-		<%if(username != null){ %>
-			<a href="">찜한상품</a>
-			<%} else { %>
-			<a href="/login">찜한상품</a>
-			<%} %>
-		</div>
-	</div>
+
 	<div class="sc-box">
 		<div class="recently-viewed">
 			최근본상품
 		</div>
+		
 		<div class="recently-count">
-			23
+		<%if(recentlyViewed != null){ %>
+			<%=recentlyViewed.size() %>
+			<%} else{%>
+			0
+			<%} %>
 		</div>
 		<div class="recently-itemcontainer">
-		<%for(int i = 0; i < 3; i ++){ %>
-			<div class="recently-item">
-				<a class="recently-link" href="">
-					<img class="recently-img" src="/img/2.jpg">
-				</a>
-			</div>
-		<%} %>
+		<% 
+        recentlyViewed = (List<ProductDTO>) session.getAttribute("recentlyViewed");
+        if (recentlyViewed != null && !recentlyViewed.isEmpty()) {
+            for (ProductDTO recentProduct : recentlyViewed) {
+        %>
+            <div class="recently-item">
+                <a class="recently-link" href="/product?p_idx=<%=recentProduct.getIdx() %>">
+                    <img class="recently-img" src="<%=recentProduct.getProducts_img1() %>">
+                </a>
+            </div>
+        <% 
+            } 
+        } else { 
+        %>
+            <div class="none-product">최근 본 상품이<br>&nbsp;&nbsp;&nbsp;&nbsp;없습니다.</div>
+        <% 
+        } 
+        %>
 		</div>
 	</div>
 	<div class="sc-box">
@@ -87,7 +99,7 @@ String username = (String) request.getAttribute("username");
 	<div class="container">
 
 		<div class="row" style="margin-top: 50px;">
-			<h2 style="padding: 0;font-size: 25px;font-family: sans-serif;">상품 목록</h2>
+			<h2 style="padding: 0;font-size: 25px;font-family: sans-serif;">상품 목록 </h2>
 		</div>
 	</div>
 	
@@ -104,36 +116,48 @@ String username = (String) request.getAttribute("username");
             </div>
 	
 <div class="container list-container" style="padding: 0px; margin: 0 auto;">
-	<% for (int i = 0; i < 60; i ++){ %>
 	
-		<div class="row" style="margin: 0 auto;">
-		<div class="col product_container">
-			<a href="www.naver.com" style="text-decoration: none;">
-				<img class="product_img" src="https://m.bunjang.co.kr/products/280245231?ref=%ED%99%88">
-				<div class="product-info">
-				<div class="product-title">
-					상품
-				</div>
-				<div class="price-location">
-				<div class="product-price">
-					100000원
-				</div>
-				<div class="product-location">
-					<span>경기도 의정부시 의정부동</span>
-				</div>
-				</div>
-			</div>
-			</a>	
-		</div>
-	</div>
-	<%} %>
 </div>
 <jsp:include page="../Common/footer.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var size = 40;
+		var cnt = '<%=cnt%>';
 		$('#top-btn').click(function(){
 			$('html, body').scrollTop(0);
 		});
+		
+		function getProducts(){
+			 $.ajax({
+		            url: '/getProducts',
+		            method: 'GET',
+		            data: {
+		                size: size,
+		            },
+		            success: function (response) {
+		               $('.list-container').html(response);
+		               console.log(cnt);
+		            },
+		            error: function () {
+		                alert('데이터를 가져오는 데 실패했습니다.');
+		            }
+		        });
+		}
+		getProducts();
+		 // 스크롤 이벤트 핸들러 등록
+        $(window).on("scroll", function(){
+            var scrollTop = $(window).scrollTop();
+            var windowHeight = $(window).height();
+            var documentHeight = $(document).height();
+            var isBottom = scrollTop + windowHeight + 10 >= documentHeight;
+
+            if (isBottom && size <= cnt ) {
+            	console.log(size);
+                size += 8;
+                setTimeout(() => getProducts(), 300); // 0.3초 딜레이 후 데이터 요청
+            }
+        });
+		
 	});
 	
 

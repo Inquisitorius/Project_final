@@ -3,9 +3,10 @@ package com.zerock.test.controller;
 
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.mybatis.spring.annotation.MapperScan;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,13 +18,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.zerock.test.dto.CustomUserDetails;
+import com.zerock.test.dto.ProductDTO;
 import com.zerock.test.dto.ShopDTO;
 import com.zerock.test.dto.UserDTO;
+import com.zerock.test.service.ProductService;
 import com.zerock.test.service.SendMailService;
 
 import com.zerock.test.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -38,11 +45,17 @@ public class MainController {
     @Autowired
     private SendMailService sendMailService;
     
+    @Autowired
+    ProductService productService;
+    
 
     @GetMapping("/hello")
-    public String hello() {
+    public ModelAndView hello() {
     	
-        return "view";
+        ModelAndView mav = new ModelAndView("view");
+        int cnt = productService.AllProductsCnt();
+        mav.addObject("cnt", cnt);
+        return mav;
     }
 
     
@@ -59,10 +72,11 @@ public class MainController {
     }
     
     @GetMapping("/login")
-    public String Login() {
+    public String Login(HttpSession session) {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	
     	if(authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+    		session.removeAttribute("recentlyViewed");
     		return "redirect:/hello";
     	}
     	return "LoginPage";
@@ -256,7 +270,7 @@ public class MainController {
     						 @RequestParam String day) {
     	
         try {
-        	System.out.println(name + " "+ pwd + " " +phone + " " + roadAddress+ " " + detailAddress+ " " +expJibunAddr+ " " +gender+ " " +year+ " " +month+ " " +day);
+        	
            
             UserDTO dto = new UserDTO();
             dto.setId(id);

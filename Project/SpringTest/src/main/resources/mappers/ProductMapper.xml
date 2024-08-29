@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zerock.test.mapper.ProductMapper">
+
+	<select id="AllProducts" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
+	 SELECT * 
+	FROM (
+    SELECT P.*, ROW_NUMBER() OVER (ORDER BY P.IDX DESC) AS RNUM
+    FROM PRODUCTS P
+	)
+	WHERE RNUM <![CDATA[<=]]> #{size}
+    
+	</select>
 	<select id="selectProduct" parameterType="Integer" resultType="com.zerock.test.dto.ProductDTO">
 			                 SELECT * 
 	FROM (
@@ -17,6 +27,12 @@
     WHERE shop_id = #{shop_id}
     AND products_status = #{status}
 	</select>
+	
+	<select id="AllProductsCnt" resultType="Integer">
+	SELECT COUNT(*) 
+    FROM products
+	</select>
+	
 	<select id="countProductsByShopId" parameterType="Integer" resultType="Integer">
     SELECT COUNT(*) 
     FROM products
@@ -195,7 +211,10 @@
 	)
 	WHERE RNUM <![CDATA[<=]]> #{size}
 	</select>
-
+	
+	<select id="selectOne" parameterType="int" resultType="com.zerock.test.dto.ProductDTO">
+            SELECT * FROM products p WHERE idx =#{idx}
+        </select>
 	
        
 </mapper>

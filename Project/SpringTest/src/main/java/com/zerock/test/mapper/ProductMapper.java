@@ -6,8 +6,10 @@ import com.zerock.test.dto.ProductDTO;
 
 public interface ProductMapper {
 
-
 	
+	Integer AllProductsCnt();
+	
+	List<ProductDTO> AllProducts(int size);
 
 	List<ProductDTO> selectProduct(Integer shop_id, int size);
 
@@ -50,6 +52,8 @@ public interface ProductMapper {
 	List<ProductDTO> selectpopularityProducts(Integer shop_id, int size, String status);
 
 	List<ProductDTO> statusProducts(Integer shop_id, int size, String status);
+
+	ProductDTO selectOne(int idx);
 				
 }
 

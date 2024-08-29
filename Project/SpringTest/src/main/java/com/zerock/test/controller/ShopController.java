@@ -305,10 +305,28 @@ public class ShopController {
 		other_shopImg = reviewsService.getImg(other_shopid);
 		System.out.println(other_shopImg);
 		review.setOther_shopid(other_shopid);
-		review.setOther_shopImg(other_shopImg);
+		
 
 		reviewsService.insertReview(review);
 
+		return "redirect:/shop/" + shop_id + "/reviews";
+	}
+	
+	@PostMapping("/edit-comment")
+	public String EditComment(@RequestParam("shop_id") Integer shop_id, @RequestParam("idx") int idx, @RequestParam("content") String content, @RequestParam("editrating") double rating) {
+		ReviewDTO review = new ReviewDTO();
+		
+		review.setIdx(idx);
+		review.setContent(content);
+		review.setRating(rating);
+		
+		reviewsService.UpdateReview(review);
+		return "redirect:/shop/" + shop_id + "/reviews";
+	}
+	
+	@PostMapping("/del-comment")
+	public String DelComment(@RequestParam("idx") int idx, @RequestParam("shop_id") Integer shop_id) {
+		reviewsService.deleteReview(idx);
 		return "redirect:/shop/" + shop_id + "/reviews";
 	}
 

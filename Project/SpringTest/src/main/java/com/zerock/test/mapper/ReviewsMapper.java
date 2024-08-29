@@ -14,4 +14,10 @@ public interface ReviewsMapper {
 	void insertReview(ReviewDTO dto);
 
 	String getImg(Integer otherShopIds);
+	
+	void UpdateReview(ReviewDTO dto);
+	
+	void deleteReview(int idx);
+
+	
 }

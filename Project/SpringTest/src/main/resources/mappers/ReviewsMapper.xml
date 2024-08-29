@@ -30,11 +30,11 @@
 
 	<insert id="insertReview">
 		INSERT INTO review (IDX,id, shop_id, rating, content,
-		review_date, other_shopid, other_shopImg)
+		review_date, other_shopid)
 		VALUES (reviews_seq.NEXTVAL,
 		#{id},
-		#{shopId}, #{rating}, #{content}, SYSDATE, #{other_shopid},
-		#{other_shopImg})
+		#{shopId}, #{rating}, #{content}, SYSDATE, #{other_shopid}
+		)
 	</insert>
 
 	<select id="getImg" parameterType="int" resultType="String">
@@ -42,7 +42,22 @@
 		s.shop_img
 		FROM shop s
 		JOIN review r ON r.other_shopid = s.shop_id
-		WHERE r.other_shopid = #{other_shopid}
+		WHERE
+		r.other_shopid = #{other_shopid}
 		FETCH FIRST 1 ROW ONLY
 	</select>
+
+	<update id="UpdateReview"
+		parameterType="com.zerock.test.dto.ReviewDTO">
+		UPDATE review
+		SET content
+		= #{content},
+		rating = #{rating}
+		WHERE idx = #{idx}
+	</update>
+
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM review
+		WHERE idx = #{idx}
+	</delete>
 </mapper>
