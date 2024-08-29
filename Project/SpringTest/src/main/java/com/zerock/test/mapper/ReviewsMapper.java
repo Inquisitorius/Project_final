@@ -10,4 +10,8 @@ public interface ReviewsMapper {
 	List<ReviewDTO> selectReview(Integer shop_id, int size);
 	
 	Double ShopRating(Integer shop_id);
+
+	void insertReview(ReviewDTO dto);
+
+	String getImg(Integer otherShopIds);
 }

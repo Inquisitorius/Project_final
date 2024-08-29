@@ -92,21 +92,108 @@
 }
 
 .morebtn-banner {
-    position: relative; /* 가상 요소를 정확한 위치에 배치하기 위한 relative 설정 */
+	position: relative; /* 가상 요소를 정확한 위치에 배치하기 위한 relative 설정 */
 }
 
 .morebtn-banner::after {
-    content: "";
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px;
-    left: -20px;
-    background-color: rgb(204, 204, 204);
-    background-image: url('/img/morebtn.png');
-    background-size: 7px 7px;
-    background-repeat: no-repeat;
-    background-position: center; /* 이미지를 원 안에서 중앙으로 배치 */
-    
+	content: "";
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	position: absolute;
+	top: 3px;
+	left: -20px;
+	background-color: rgb(204, 204, 204);
+	background-image: url('/img/morebtn.png');
+	background-size: 7px 7px;
+	background-repeat: no-repeat;
+	background-position: center; /* 이미지를 원 안에서 중앙으로 배치 */
+}
+
+.comment-btn {
+	height: 20px;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	padding: 0px 5px;
+	color: rgb(136, 136, 136);
+	border: 1px solid rgb(238, 238, 238);
+	font-size: 11px;
+	background-color: white;
+}
+
+.btn-container .comment-btn {
+	margin: 0 10px; /* 버튼 사이에 10px의 여백을 추가 */
+}
+
+.star_rating {
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	float: left;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.star_rating .star {
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+	display: inline-block;
+	background: url('/img/emptystar.png') no-repeat;
+	background-size: 100%;
+	box-sizing: border-box;
+}
+
+.star_rating .star.on {
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+	display: inline-block;
+	background: url('/img/2scorestar.png') no-repeat;
+	background-size: 100%;
+	box-sizing: border-box;
+}
+
+.content-form {
+	display: inline;
+}
+
+.content {
+	width: 100%;
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 15px 0;
+	background: #F3F4F8;
+	border: 0;
+	border-radius: 10px;
+	height: 150px;
+	resize: none;
+	padding: 15px;
+	font-size: 15px;
+	font-family: sans-serif;
+}
+
+.input-shopname {
+	margin: 0px 15px;
+	font-size: 14px;
+	-webkit-box-flex: 1;
+	flex-grow: 1;
+	border: none;
+	outline: none;
+}
+
+.content-edit {
+	width: 100%;
+	box-sizing: border-box;
+	display: inline-block;
+	margin: 15px 0;
+	background: #F3F4F8;
+	border: 0;
+	border-radius: 10px;
+	height: 150px;
+	resize: none;
+	padding: 15px;
+	font-size: 15px;
+	font-family: sans-serif;
 }

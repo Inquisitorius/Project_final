@@ -10,6 +10,9 @@ Integer cnt = (Integer) request.getAttribute("cnt");
 String sortType = (String) request.getAttribute("sort");
 Integer size = (Integer) request.getAttribute("size");
 Double shopRating = (Double) request.getAttribute("rating");
+if(shopRating == null){
+	shopRating = 0.0;
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -17,137 +20,153 @@ Double shopRating = (Double) request.getAttribute("rating");
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/shop.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
 <link href="/css/shop.css" rel="stylesheet" type="text/css">
-<link href="/css/shop_products.css" rel="stylesheet" type="text/css">		
+<link href="/css/shop_products.css" rel="stylesheet" type="text/css">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<div class="main-content">
-<jsp:include page="../Common/header.jsp"></jsp:include>
+	<div class="main-content">
+		<jsp:include page="../Common/header.jsp"></jsp:include>
 
-	<div class="container Mypage-container">
-		<div class="Mypage-banner do-hyeon-regular">
-			
-		</div>
-		<div class="container user-info">
-			<div class="user-profile">
-				<div class="left-profile">
-					<div class="left-content">
-						<div class="back-container">
-						<div class="background-img">
-							<div class="background-content">
-								<div class="shop-panel">
-    								<input type="file" id="file-input" style="display: none;">
-    								<img src="${shopImg} " class="shop-img" id="img-trigger" alt="내 상점 관리 이미지" width="100" height="100">
+		<div class="container Mypage-container">
+			<div class="Mypage-banner do-hyeon-regular"></div>
+			<div class="container user-info">
+				<div class="user-profile">
+					<div class="left-profile">
+						<div class="left-content">
+							<div class="back-container">
+								<div class="background-img">
+									<div class="background-content">
+										<div class="shop-panel">
+											<input type="file" id="file-input" style="display: none;">
+											<img src="${shopImg} " class="shop-img" id="img-trigger"
+												alt="내 상점 관리 이미지" width="100" height="100">
+										</div>
+										<div class="shop-name">${shopName}</div>
+										<%
+										// 별점 이미지를 저장할 StringBuilder
+										StringBuilder starsHtml = new StringBuilder();
+
+										for (int i = 0; i < 5; i++) {
+											if (shopRating >= 1.0) {
+												// 별점이 1.0 이상인 경우 채워진 별 이미지 추가
+												starsHtml.append("<img src='/img/2scorestar.png' width='15' height='14' alt='Filled Star'>");
+												shopRating -= 1.0; // 1.0 점 차감
+											} else if (shopRating >= 0.5) {
+												// 별점이 0.5 이상인 경우 반 별 이미지 추가
+												starsHtml.append("<img src='/img/1scorestar.png' width='15' height='14' alt='Half Star'>");
+												shopRating -= 0.5; // 0.5 점 차감
+											} else {
+												// 별점이 0.5 미만인 경우 빈 별 이미지 추가
+												starsHtml.append("<img src='/img/emptystar.png' width='15' height='14' alt='Empty Star'>");
+											}
+										}
+										%>
+										<div class="star">
+											<%=starsHtml.toString()%>
+										</div>
+
+									</div>
 								</div>
-								<div class="shop-name">${shopName}</div>
-								<%
-   
-
-    // 별점 이미지를 저장할 StringBuilder
-    StringBuilder starsHtml = new StringBuilder();
-
-    // 5개의 별을 표현하기 위한 루프
-    for (int i = 0; i < 5; i++) {
-        if (shopRating >= 1.0) {
-            starsHtml.append("<img src='/img/2scorestar.png' width='15' height='14' >");
-            shopRating -= 1.0;
-        } else if (shopRating >= 0.5) {
-            starsHtml.append("<img src='/img/1scorestar.png' width='15' height='14' >");
-            shopRating -= 0.5;
-        } else {
-            starsHtml.append("<img src='/img/emptystar.png' width='15' height='14' >");
-        }
-    }
-%>
-								<div class="star">
-									<%= starsHtml.toString() %>
-								</div>
-								
 							</div>
 						</div>
 					</div>
-					</div>
-				</div>
-				<div class="right-profile">
-					<div class="name-container">
-						<div class="name" id="name">${shopName}</div>
-						<div class="button-container" id="button-container"  style="padding-left: 15px;">
-						<%if(shopOwner.equals(userid)){ %>
-						<button class="name-update" id="name-update">상점명 수정</button>
-						<%} %>
+					<div class="right-profile">
+						<div class="name-container">
+							<div class="name" id="name">${shopName}</div>
+							<div class="button-container" id="button-container"
+								style="padding-left: 15px;">
+								<%
+								if (shopOwner.equals(userid)) {
+								%>
+								<button class="name-update" id="name-update">상점명 수정</button>
+								<%
+								}
+								%>
+							</div>
+							<div hidden="update-shopname" class="update-shopname"
+								id="update-shopname">
+								<input type="text" class="input-shopname" id="input-shopname"
+									name="input-shopname" value="${shopName }">
+								<button class="shopname-submit" id="shopname-submit">확인</button>
+							</div>
+
 						</div>
-						<div hidden="update-shopname" class="update-shopname" id="update-shopname">
-							<input type="text" class="input-shopname" id="input-shopname" name="input-shopname" value="${shopName }">
-							<button class="shopname-submit" id="shopname-submit">확인</button>
-						</div>
-						
-					</div>
-					<div class="edit-info">
-					<%if(shopOwner.equals(userid)){ %>
+						<div class="edit-info">
+							<%
+							if (shopOwner.equals(userid)) {
+							%>
 							<button class="edit-btn" id="edit-btn">내 정보 수정</button>
-							<%} %>
+							<%
+							}
+							%>
 						</div>
 						<div class="shop-info" id="shop-info">${shopInfo}</div>
-						<div hidden="text-container" class="text-container" id="text-container">
-						<div>
-						<textarea id="text-info">${shopInfo}</textarea>
+						<div hidden="text-container" class="text-container"
+							id="text-container">
+							<div>
+								<textarea id="text-info">${shopInfo}</textarea>
+							</div>
+							<button type="button" id="input-btn">확인</button>
 						</div>
-						<button type="button" id="input-btn">확인</button>
-						</div>
-						<div  class="infobtn-container" id="infobtn-container">
-								<%if(shopOwner.equals(userid)){ %>
+						<div class="infobtn-container" id="infobtn-container">
+							<%
+							if (shopOwner.equals(userid)) {
+							%>
 							<button class="info-btn" id="info-btn">소개글 수정</button>
-							<%} %>
+							<%
+							}
+							%>
 						</div>
+					</div>
 				</div>
+			</div>
+
+			<div class="container shop-container"
+				style="margin-top: 30px; padding: 0px;">
+				<div>
+					<div class="shop-menu" style="display: flex; height: 50px;">
+						<a class="shopmenu-link" href="/shop/<%=shopNum%>/products"
+							data-sort="products">상품</a> <a class="shopmenu-link"
+							href="/shop/<%=shopNum%>/reviews" data-sort="reviews">상점후기</a> 
+					</div>
+				</div>
+				<div id="shopContent">
+					<%
+					if (type.equals("products")) {
+					%>
+					<jsp:include page="../views/shop_products.jsp"></jsp:include>
+					<%
+					} else if (type.equals("reviews")) {
+					%>
+					<jsp:include page="../views/shop_reviews.jsp"></jsp:include>
+					<%
+					} %>
+				</div>
+
+
 			</div>
 		</div>
-		
-		<div class="container shop-container" style="margin-top:30px; padding: 0px;">
-			<div>
-				<div class="shop-menu" style="display: flex; height: 50px;">
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/products" data-sort="products">상품</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/reviews" data-sort="reviews">상점후기</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/following" data-sort="following">팔로잉</a>
-					<a class="shopmenu-link" href="/shop/<%=shopNum%>/followers" data-sort="followers">팔로워</a>
-				</div>
-			</div>
-			<div id="shopContent">
-				<%if(type.equals("products")){
-					%>
-				<jsp:include page="../views/shop_products.jsp"></jsp:include>
-				<%} else if(type.equals("reviews")){%>
-				<jsp:include page="../views/shop_reviews.jsp"></jsp:include>
-				<%} else if(type.equals("following")){%>
-				<jsp:include page="../views/shop_following.jsp"></jsp:include>
-				<%} else if(type.equals("followers")){ %>
-				<jsp:include page="../views/shop_followers.jsp"></jsp:include>
-				<%} %>
-			</div>
-			
-			
-	</div>
-	</div>
 
-	
-	
-<jsp:include page="../Common/footer.jsp"></jsp:include>
+
+
+		<jsp:include page="../Common/footer.jsp"></jsp:include>
 	</div>
-<script type="text/javascript">
+	<script type="text/javascript">
 	$(document).ready(function(){
 		var cnt = '<%=cnt%>';
 		var userid = '<%=userid%>';
 		var shopNum = '<%=shopNum%>';
 		var type = $(this).data('type');
-		var sortType = '<%= sortType %>';
-		var size = 30;
-		var userid = '<%= userid %>';
-		var shopOwner = "<%= shopOwner %>";
-		
+		var sortType = '<%=sortType%>';
+		var userid = '<%=userid%>';
+		var shopOwner = "<%=shopOwner%>";
+
 		 
+		
         var $fileInput = $('#file-input');
         var $imgTrigger = $('#img-trigger');
 
@@ -274,16 +293,19 @@ Double shopRating = (Double) request.getAttribute("rating");
 	      
 	     
 	      function loadContent(url) {
-
+	    	  var data = {};
+	    	  if (url === '/shop/' + shopNum + '/reviews') {
+	              data = { status: 'all', size: 5 };  
+	          }
 	          $.ajax({
 	              url: url,
 	              method: "GET",
-	              data:{status:'all', size:5},
+	              data:data,
 	              success: function(response) {
 	            	  console.log("초기화" + status);
+	            	  console.log(url);
 	            	  setActiveTab(); 
-
-	              
+	            	  
 	              },
 	              error: function() {
 	                  $("#shopContent").html('<p>데이터를 불러오는 데 실패했습니다.</p>');
@@ -314,7 +336,7 @@ Double shopRating = (Double) request.getAttribute("rating");
 	      
 	      window.onpopstate = function(event) {
 	          if (event.state && event.state.url) {
-	              loadContent(event.state.url, size); 
+	              loadContent(event.state.url); 
 	              setActiveTab(); 
 	          }
 	      };
