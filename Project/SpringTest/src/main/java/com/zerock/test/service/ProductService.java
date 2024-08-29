@@ -134,6 +134,8 @@ public class ProductService {
 	public ProductDTO selectOne(int idx) {
 		return mapper.selectOne(idx);
 	}
-	
+	public void updateproduct(int idx) {
+		mapper.updateproduct(idx);
+	}
 
 }

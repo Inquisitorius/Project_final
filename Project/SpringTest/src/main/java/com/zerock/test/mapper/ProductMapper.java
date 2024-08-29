@@ -2,6 +2,8 @@ package com.zerock.test.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zerock.test.dto.ProductDTO;
 
 public interface ProductMapper {
@@ -55,5 +57,6 @@ public interface ProductMapper {
 
 	ProductDTO selectOne(int idx);
 				
+	void updateproduct(@Param("product_idx") int idx);
 }
 

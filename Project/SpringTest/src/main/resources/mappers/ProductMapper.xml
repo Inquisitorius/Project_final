@@ -216,5 +216,8 @@
             SELECT * FROM products p WHERE idx =#{idx}
         </select>
 	
+	<update id="updateproduct" parameterType="int">
+	UPDATE products SET PRODUCTS_status ='거래완료' WHERE idx = #{product_idx}
+	</update>
        
 </mapper>

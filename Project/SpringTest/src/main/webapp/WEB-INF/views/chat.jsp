@@ -162,7 +162,7 @@ String userid = (String) request.getAttribute("userid");
                         </div>
                         <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
                     </div>
-                </button>
+                </button>	
             </c:forEach>
         </div>
         
@@ -203,7 +203,7 @@ String userid = (String) request.getAttribute("userid");
                <span id="productInfo" class="font-semibold"></span> <br/>
                <span id="productPrice" class="font-semibold"></span>
     			</div>	
-               <div class="relative inline-block text-right">
+               <div class="inline-block text-right">
                <span id="productStatus" class="font-semibold"></span>
                 </div>
 				</div>
@@ -342,7 +342,6 @@ String userid = (String) request.getAttribute("userid");
             .then(response => {
                 const data = response.data;
                 console.log(data);
-                
                 document.getElementById('nickname').innerText = data.seller_id || '';
                 document.getElementById('shopImg').src = data.shop_img || ''; // 상점 이미지 URL
 
@@ -351,7 +350,7 @@ String userid = (String) request.getAttribute("userid");
                 document.getElementById('productPrice').innerText = data.products_price + '원' || '';
                 document.getElementById('productStatus').innerText = data.products_status || '';
                 document.getElementById('productImage').src = data.products_img1 || ''; // 상품 이미지 URL
-
+				
                
 
                 // 오른쪽 패널의 정보 섹션을 표시
@@ -364,7 +363,8 @@ String userid = (String) request.getAttribute("userid");
                     deleteChatRoom(room_id);
                 };
                 document.getElementById('markTransactionCompleteButton').onclick = function() {
-                    markTransactionComplete(data.product_id);
+                	
+                	markTransactionComplete(data.product_idx);
                 };
 
             })
@@ -374,27 +374,7 @@ String userid = (String) request.getAttribute("userid");
         }
 
         
-     // 초기 메시지 로드
-        function fetchMessages() {
-        	
-            axios.get(`/messages/${currentRoomId}`)
-                .then(response => {
-                    const messages = response.data;
-                    messages.forEach(messages => {
-                        addMessage({
-                            messageType: 'TALK',
-                            sender: messages.sender,
-                            message: messages.message,
-                            room_id: messages.room_id
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error("Error loading messages:", error);
-                });
-        }
-        // 주기적으로 메시지 조회 (5초마다)
-        setInterval(fetchMessages, 100000);
+     
 
         function connectRoom(room_id, buttonElement) {
 
@@ -524,27 +504,39 @@ String userid = (String) request.getAttribute("userid");
         }
     }
 
-        // 상품 거래 완료 기능
-        function markTransactionComplete() {
-            if (confirm('이 거래를 완료로 표시하시겠습니까?')) {
-                // 서버에 거래 완료 요청을 보냄
-                fetch(`/api/completeTransaction?roomId=${currentRoomId}`, {
-                    method: 'POST'
+        function markTransactionComplete(product_idx) {
+        	console.log("trans product stauts p : "+ product_idx);
+			
+			if (confirm('이 거래를 완료로 표시하시겠습니까?')) {
+            fetch('/product/status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'product_idx': product_idx
                 })
-                .then(response => {
-                    if (response.ok) {
-                        alert('거래가 완료되었습니다.');
-                        // 추가 동작 필요시 여기에 추가
-                    } else {
-                        alert('거래 완료에 실패했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error marking transaction complete:', error);
-                });
-            }
+            })
+            .then(response => response.text())
+            .then(result => {
+            	 console.log('Server response:', result);
+                if (result === "success") {
+                    alert("상품 거래가 완료되었습니다.");
+                    window.location.href = '/myRoomsPage'; 
+                    
+                } else {
+                    alert("상품 거래 완료 처리 중 오류가 발생했습니다.");
+                    window.location.href = '/myRoomsPage'; 
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("상품 거래 완료 처리 중 오류가 발생했습니다.");
+            });
+			}
         }
 
+        
     </script>
 </body>
 </html>
