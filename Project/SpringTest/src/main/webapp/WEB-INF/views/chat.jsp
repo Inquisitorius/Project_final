@@ -109,18 +109,25 @@ String userid = (String) request.getAttribute("userid");
         }
         .message-container {
             overflow-y: auto;
-            min-height: 710px; 
+            min-height: 670px; 
 
         }
+.hidden {
+    height: 0;
+    overflow: hidden;
+}
+
+
+.visible {
+    height: auto;
+}
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
 </head>
 <jsp:include page="../Common/header.jsp"></jsp:include>
 
@@ -149,8 +156,8 @@ String userid = (String) request.getAttribute("userid");
                         <div class="font-semibold">
                             <c:choose>
                                 <c:when test="${username == chatRoom.sender}">${chatRoom.seller_id}</c:when>
-                                <c:when test="${username == chatRoom.seller_id}">${chatRoom.sender}</c:when>
-                                <c:otherwise>${chatRoom.room_name}</c:otherwise>
+                           		<c:when test="${username == chatRoom.seller_id}">${chatRoom.sender}</c:when>
+                                <c:otherwise>${chatRoom.sender}</c:otherwise>
                             </c:choose>
                         </div>
                         <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
@@ -164,9 +171,16 @@ String userid = (String) request.getAttribute("userid");
             <!-- 상단에 닉네임과 상품 정보 영역 -->
             <div class="flex flex-col">
                 <div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
-                   <span id="nickname" class="font-semibold">닉네임</span>
+                   <div id="shopSection" class="hidden">
+                   <img id="shopImg" src="" alt="Shop Image" style="width: 50px; height: 50px;margin-right:10px;"/>
+                   </div>
+                   <div class="col">
+                   <span id="nickname" class="font-semibold"></span>
+                   </div>
+
+                   
                     <!-- 드롭다운 메뉴 -->
-                    <div class="relative inline-block text-left">
+                    <div class="relative inline-block text-right">
                         <button onclick="toggleDropdown()" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                             메뉴
                         </button>
@@ -179,12 +193,20 @@ String userid = (String) request.getAttribute("userid");
                     </div>
                 </div>
 
-    
+
+    			<div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
                 <!-- 상품 목록 -->
-                <div id="productList" class="p-4 border border-gray-300 bg-white text-center font-semibold">
-				상품목록
+                <div id="imgSection" class="hidden">
+               <img id="productImage" src="" alt="Product Image" style="width: 50px; height: 50px; margin-right:10px;">
+               </div>
+          		<div class="col">	
+               <span id="productInfo" class="font-semibold"></span> <br/>
+               <span id="productPrice" class="font-semibold"></span>
+    			</div>	
+               <div class="relative inline-block text-right">
+               <span id="productStatus" class="font-semibold"></span>
                 </div>
-            </div>
+				</div>
 
             <!-- 수신된 메시지를 출력 -->
             <div class="message-container bg-white border border-gray-300">
@@ -202,6 +224,8 @@ String userid = (String) request.getAttribute("userid");
             </div>
         </div>
     </div>
+    </div>
+    
 
 
 	
@@ -215,6 +239,11 @@ String userid = (String) request.getAttribute("userid");
 		let currentSelectedButton = null;
 		
 		console.log("sender : " + sender);
+		
+		function texthidden() {
+
+		}
+		
 		
         function connect() {
             console.log("Connecting to WebSocket for room: ", currentRoomId);
@@ -298,34 +327,52 @@ String userid = (String) request.getAttribute("userid");
             messageContainer.appendChild(messageDiv);
 
             // 7. 스크롤을 최신 메시지로 이동
-            messageContainer.scrollBottom = messageContainer.scrollHeight;
+            messageContainer.scrollTop = messageContainer.scrollHeight;
         }
 
+     // Axios를 사용하여 채팅방 세부정보를 가져오는 함수
         function loadChatRoomDetails(room_id) {
-        	console.log("loadChatRoomDetails " + room_id);
-            fetch(`/chatroom/details?room_id=${room_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    // 닉네임과 상품 정보를 업데이트
-                    document.getElementById('nickname').innerText = data.seller_id;
-                    console.log("nickname " + data.seller_id);
-                    document.getElementById('productList').innerText = data.products_name;
-                    console.log("nickname " + data.products_name);
-                    // 드롭다운 버튼의 클릭 이벤트를 채팅방 ID와 함께 업데이트
-                    document.getElementById('deleteChatRoomButton').onclick = function() {
-                        deleteChatRoom(room_id);
-                    };
-                    document.getElementById('markTransactionCompleteButton').onclick = function() {
-                        markTransactionComplete(data.product_id);
-                    };
+            console.log("loadChatRoomDetails " + room_id);
+            
+            axios.get(`/chatroom/details`, {
+                params: {
+                    room_id: room_id
+                }
+            })
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                
+                document.getElementById('nickname').innerText = data.seller_id || '';
+                document.getElementById('shopImg').src = data.shop_img || ''; // 상점 이미지 URL
 
-                    // 드롭다운 메뉴 표시 (선택 사항)
-                    toggleDropdown();
-                })
-                .catch(error => {
-                    console.error('Error fetching chat room details:', error);
-                });
+                // 상품 정보 업데이트
+                document.getElementById('productInfo').innerText = data.products_name || '';
+                document.getElementById('productPrice').innerText = data.products_price + '원' || '';
+                document.getElementById('productStatus').innerText = data.products_status || '';
+                document.getElementById('productImage').src = data.products_img1 || ''; // 상품 이미지 URL
+
+               
+
+                // 오른쪽 패널의 정보 섹션을 표시
+                document.getElementById('shopSection').classList.remove('hidden');
+                document.getElementById('shopSection').classList.add('visible');
+                document.getElementById('imgSection').classList.remove('hidden');
+                document.getElementById('imgSection').classList.add('visible');
+                // 버튼 클릭 이벤트 설정
+                document.getElementById('deleteChatRoomButton').onclick = function() {
+                    deleteChatRoom(room_id);
+                };
+                document.getElementById('markTransactionCompleteButton').onclick = function() {
+                    markTransactionComplete(data.product_id);
+                };
+
+            })
+            .catch(error => {
+                console.error('Error fetching chat room details:', error);
+            });
         }
+
         
      // 초기 메시지 로드
         function fetchMessages() {

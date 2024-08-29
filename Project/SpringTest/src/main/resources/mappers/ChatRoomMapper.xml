@@ -51,15 +51,18 @@
 </select>
 
 	<delete id ="deleteChatRoom" parameterType="int">
-		DELETE FROM chat_rooms4 WHERE room_id = #{room_id}
+	DELETE FROM chat_rooms4 WHERE room_id = #{room_id}
 	</delete>
 	
 	<select id="getroomdetail" parameterType="int" resultType="com.zerock.test.dto.ChatRoom4">
-	 SELECT cr.*, p.products_name, s.shop_img , p.PRODUCTS_PRICE, p.PRODUCTS_STATUS , p.PRODUCTS_IMG1 
+	SELECT cr.*, p.products_name, s.shop_img , p.PRODUCTS_PRICE, p.PRODUCTS_STATUS , p.PRODUCTS_IMG1 
     FROM chat_rooms4 cr 
     JOIN products p ON cr.PRODUCT_IDX = p.idx
     JOIN shop s ON s.SHOP_ID = p.SHOP_ID
     WHERE cr.room_id = #{room_id}
 	</select> 
 
+	<update id="updateproduct" parameterType="int">
+	UPDATE products SET PRODUCTS_status ='거래완료' WHERE idx = #{product_idx};
+	</update>
 </mapper>

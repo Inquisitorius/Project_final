@@ -148,6 +148,7 @@ public class ChatRoomController {
 	        messagingTemplate.convertAndSend("/topic/chatroom/delete", room_id);
 
 	    }
+	 
 	 @GetMapping("/chatroom/details")
 	 @ResponseBody
 	 public ChatRoom4 getChatRoomDetails(@RequestParam("room_id") int room_id) {

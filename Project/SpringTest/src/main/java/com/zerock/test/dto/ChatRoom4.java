@@ -1,6 +1,5 @@
 package com.zerock.test.dto;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +19,7 @@ public class ChatRoom4 {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Timestamp created_at;
 	
+
 	private int shop_id;
 	private String products_name;
 	private String products_status;
