@@ -37,12 +37,13 @@
         Boolean isAdmin = (Boolean) request.getAttribute("isAdmin");
         if (username != null) {
     %>	
-    <div class="col-5 login" style="max-height: 48px; padding: 10px 20px 0;">
+    <div class="col-6 login" style="max-height: 48px; padding: 10px 0px 0;">
     <div style="display: flex; align-items: center; justify-content: flex-end;">
         <span class="ddd" style = "margin-right: 10px;"> <%= username %> 님</span>
         <% if (Boolean.TRUE.equals(isAdmin)) { %>
         <button class = "btn btn-danger" id="admin-btn" style = "margin-right: 10px;">관리자 페이지</button>
         <% } %>
+        <button class = "btn btn-secondary" id="productInsert-btn" style = "margin-right: 10px;">상품등록</button>
         <button class = "btn btn-secondary" id="mypage-btn">마이페이지</button>
         <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px;">
             <button class = "btn btn-secondary" type="submit">
@@ -68,9 +69,16 @@
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
+	
 		
-		var id = '<%= userid != null ? userid : "" %>';
-		
+	var id = '<%= userid != null ? userid : "" %>';
+	
+	
+	$('#productInsert-btn').click(function()
+	{
+		location.href = '/ProductInsert';
+	});
+	
 		
 	function checkid()	{
 		if (id !== null && id.trim() !== '') {
@@ -133,7 +141,7 @@
 	}
 	checkid();
 		$("#admin-btn").on('click',function(){
-			 window.location.href = '/admin';
+			 window.location.href = '/adminHome';
 		});
 		
 		$("#mypage-btn").on('click',function(){

@@ -155,9 +155,13 @@ $(document).ready(function()
 {
 	dropdownInit();
 	
+	$('#deletebtn').click(function()
+	{
+		location.href = '/hello';		
+	});
+	
 	$('#updatebtn').click(function()
 	{
-		
 		
 		var products_name = $('#product_name').val();
 		var products_category = $('#dropdownMenuButton2').text();
@@ -185,9 +189,7 @@ $(document).ready(function()
 		var files = $('#fileUpload').prop('files');
 		for (var i = 0; i < files.length; i++) {
 		    formData.append('files_list', files[i]);
-		}
-		
-		
+		}		
 		
 		var dto = { 
 								products_seller,
@@ -209,8 +211,15 @@ $(document).ready(function()
 	         data: formData,
 	         contentType: false,
 	         processData: false,
-	         success: function(response) {
-	             $('#uploadStatus').text('업로드 성공: ' + response);
+	         success: function(response) 
+	         {	            
+	        	 Swal.fire({
+					  title: "제품등록",
+					  text: "제품등록이 완료되었습니다.",
+					  icon: "success"
+					}).then((result) => {
+						window.location.href = '/hello';
+					});
 	         },
 	         error: function(jqXHR, textStatus, errorThrown) {
 	             $('#uploadStatus').text('업로드 실패: ' + textStatus);
