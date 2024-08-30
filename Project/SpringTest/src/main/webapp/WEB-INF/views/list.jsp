@@ -30,7 +30,7 @@
 		$(document).ready(function(){
 			
 				
-				$('.product_link').on('click', function(){
+		       $('.product_link').on('click', function(){
 					var idx = $(this).find('#idxInput').val();
 					console.log(idx);
 					
@@ -40,9 +40,10 @@
 					            method: 'GET',
 					            data: {
 					                idx: idx,
+					                page: 1
 					            },
 					            success: function (response) {
-					               
+					               console.log(response);
 					            },
 					            error: function () {
 					                alert('데이터를 가져오는 데 실패했습니다.');
@@ -50,8 +51,8 @@
 					        });
 					
 				});
-				
-			
+		   	
+		     
 			
 		});
 		</script>

@@ -4,11 +4,13 @@
     pageEncoding="UTF-8"%>
 <%
 String username = (String) request.getAttribute("username");
-List<ProductDTO> recentlyViewed = (List<ProductDTO>) session.getAttribute("recentlyViewed");
+List<ProductDTO> recentlyViewed = (List<ProductDTO>) session.getAttribute("paged");
+List<ProductDTO> recentcnt = (List<ProductDTO>) session.getAttribute("recentlyViewed");
 Integer cnt = (Integer) request.getAttribute("cnt");
-if (cnt == null) {
-    cnt = 0; // 기본값으로 설정
-}
+Integer currentPage = (Integer) session.getAttribute("currentPage");
+Integer totalPages = (Integer) session.getAttribute("totalPages");
+currentPage = 1;
+
 %>
 <!DOCTYPE html>
 <html>
@@ -65,15 +67,15 @@ if (cnt == null) {
 		</div>
 		
 		<div class="recently-count">
-		<%if(recentlyViewed != null){ %>
-			<%=recentlyViewed.size() %>
+		<%if(recentcnt != null){ %>
+			<%=recentcnt.size() %>
 			<%} else{%>
 			0
 			<%} %>
 		</div>
 		<div class="recently-itemcontainer">
 		<% 
-        recentlyViewed = (List<ProductDTO>) session.getAttribute("recentlyViewed");
+	
         if (recentlyViewed != null && !recentlyViewed.isEmpty()) {
             for (ProductDTO recentProduct : recentlyViewed) {
         %>
@@ -91,10 +93,24 @@ if (cnt == null) {
         } 
         %>
 		</div>
+ 
+
 	</div>
 	<div class="sc-box">
 		<button class="top-btn" id="top-btn">TOP</button>
 	</div>
+	<!-- 페이징 네비게이션 -->
+    <div class="pagination">
+        <% if (totalPages != null && totalPages > 1) { %>
+            <% for (int i = 1; i <= totalPages; i++) { %>
+                <% if (i == currentPage) { %>
+                   <a class="page-link" data-page="<%= i %>"><%= i %></a>
+                <% } else { %>
+                    <a class="page-link" data-page="<%= i %>"><%= i %></a>
+                <% } %>
+            <% } %>
+        <% } %>
+    </div>
 	</div>
 	<div class="container">
 
@@ -123,6 +139,8 @@ if (cnt == null) {
 	$(document).ready(function(){
 		var size = 40;
 		var cnt = '<%=cnt%>';
+		var totalPages = '<%=totalPages%>';
+		console.log("total : " + totalPages);
 		$('#top-btn').click(function(){
 			$('html, body').scrollTop(0);
 		});
@@ -157,6 +175,30 @@ if (cnt == null) {
                 setTimeout(() => getProducts(), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
+		 
+ 
+        
+        $(document).on('click', '.page-link', function(event) {
+           
+
+            var page = $(this).data('page'); // 페이지 번호 추출
+            console.log("Page: " + page); // 페이지 번호 콘솔에 출력
+            $.ajax({
+	            url: '/paging',
+	            method: 'GET',
+	            data: {
+	                page : page
+	            },
+	            success: function (response) {
+	            	$('.recently-itemcontainer').load(location.href+' .recently-itemcontainer');
+	            },
+	            error: function () {
+	                alert('데이터를 가져오는 데 실패했습니다.');
+	            }
+	        });
+           
+        });
+        
 		
 	});
 	

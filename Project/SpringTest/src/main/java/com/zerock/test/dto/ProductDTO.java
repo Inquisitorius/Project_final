@@ -147,5 +147,5 @@ public class ProductDTO {
 		this.shop_info = shop_info;
 	}
 	
-	
+	 
 }

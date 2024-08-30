@@ -252,7 +252,7 @@ if (cnt == 0) {
 					},
 					success : function(response) {
 						location.reload();
-						alert(content);
+						alert('수정되었습니다.');
 					},
 					error : function() {
 						alert('데이터를 가져오는 데 실패했습니다.' + ' ' + rating); // 에러 시 경고 메시지
