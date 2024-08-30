@@ -34,6 +34,7 @@ public class ChatRoom4 {
 	private String seller_shop_img;
 	private String sender_shop_img;
 	private String shop_name;
+	private String formatted_created_at;
 	
 	public int getRoom_id() {
 		return room_id;
@@ -161,6 +162,13 @@ public class ChatRoom4 {
 	public void setShop_name(String shop_name) {
 		this.shop_name = shop_name;
 	}
+	public String getFormatted_created_at() {
+		return formatted_created_at;
+	}
+	public void setFormatted_created_at(String formatted_created_at) {
+		this.formatted_created_at = formatted_created_at;
+	}
 	
+
 
 }

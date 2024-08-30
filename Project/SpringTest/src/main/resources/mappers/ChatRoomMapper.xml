@@ -33,6 +33,7 @@
 	
 	<select id= "getRoom" parameterType="String" resultType="com.zerock.test.dto.ChatRoom4">
 	SELECT cr.*, 
+	TO_CHAR(cr.CREATED_AT , 'YYYY-MM-DD HH24:MI:ss') AS formatted_created_at,
        p.*, 
        s1.shop_img AS seller_shop_img, 
        s2.shop_img AS sender_shop_img 
@@ -41,6 +42,7 @@ JOIN products p ON cr.PRODUCT_IDX = p.idx
 JOIN shop s1 ON s1.shop_owner = cr.seller_id
 LEFT JOIN shop s2 ON s2.SHOP_OWNER = cr.sender
 WHERE cr.seller_id = #{userId} OR cr.sender = #{userId}	
+order BY room_id desc
 	
 	</select>
 	

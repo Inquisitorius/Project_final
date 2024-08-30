@@ -177,7 +177,7 @@ String userid = (String) request.getAttribute("userid");
       						  </c:otherwise>
                             </c:choose>
                         </div>
-                        <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
+                        <div class="text-xs text-zinc-500">${chatRoom.formatted_created_at}</div>
                     </div>
                 </button>	
             </c:forEach>
