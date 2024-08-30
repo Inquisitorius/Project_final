@@ -19,7 +19,6 @@ public class ChatRoom4 {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Timestamp created_at;
 	
-
 	private int shop_id;
 	private String products_name;
 	private String products_status;
@@ -29,6 +28,12 @@ public class ChatRoom4 {
 	private int like_count;
 	private String shop_img;
 	private String profileImg;
+	
+	private int idx;
+	private String shop_owner;
+	private String seller_shop_img;
+	private String sender_shop_img;
+	private String shop_name;
 	
 	public int getRoom_id() {
 		return room_id;
@@ -126,5 +131,36 @@ public class ChatRoom4 {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public String getShop_owner() {
+		return shop_owner;
+	}
+	public void setShop_owner(String shop_owner) {
+		this.shop_owner = shop_owner;
+	}
+	public String getSeller_shop_img() {
+		return seller_shop_img;
+	}
+	public void setSeller_shop_img(String seller_shop_img) {
+		this.seller_shop_img = seller_shop_img;
+	}
+	public String getSender_shop_img() {
+		return sender_shop_img;
+	}
+	public void setSender_shop_img(String sender_shop_img) {
+		this.sender_shop_img = sender_shop_img;
+	}
+	public String getShop_name() {
+		return shop_name;
+	}
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
+	}
+	
 
 }

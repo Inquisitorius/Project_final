@@ -144,20 +144,37 @@ String userid = (String) request.getAttribute("userid");
                 <button class="chat-room-button" style="border: 1px solid #ddd;" onclick="connectRoom(${chatRoom.room_id}, this)">
                     <div class="inline-block">
                         <c:choose>
-                            <c:when test="${not empty chatRoom.shop_img}">
-                                <img src="${chatRoom.shop_img}" alt="Shop Image"/>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
-                            </c:otherwise>
+                            <c:when test="${userid == chatRoom.seller_id}">
+                    <c:choose>
+                        <c:when test="${not empty chatRoom.sender_shop_img}">
+                            <img src="${chatRoom.sender_shop_img}" alt="Shop Image"/>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+                <c:when test="${userid == chatRoom.sender}">
+                    <c:choose>
+                        <c:when test="${not empty chatRoom.seller_shop_img}">
+                            <img src="${chatRoom.seller_shop_img}" alt="Shop Image"/>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="w-11 h-11 min-w-[44px] rounded-full bg-zinc-300"></div>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
                         </c:choose>
                     </div>
                     <div class="flex flex-col items-start ml-2">
                         <div class="font-semibold">
                             <c:choose>
-                                <c:when test="${username == chatRoom.sender}">${chatRoom.seller_id}</c:when>
-                           		<c:when test="${username == chatRoom.seller_id}">${chatRoom.sender}</c:when>
-                                <c:otherwise>${chatRoom.sender}</c:otherwise>
+                                <c:when test="${userid eq chatRoom.sender}">
+       						     ${chatRoom.seller_id}
+     						    </c:when>
+      						  <c:otherwise>
+           						 ${chatRoom.sender}
+      						  </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="text-xs text-zinc-500">${chatRoom.created_at}</div>
@@ -172,7 +189,7 @@ String userid = (String) request.getAttribute("userid");
             <div class="flex flex-col">
                 <div class="p-4 border border-gray-300 bg-white flex justify-between items-center">
                    <div id="shopSection" class="hidden">
-                   <img id="shopImg" src="" alt="Shop Image" style="width: 50px; height: 50px;margin-right:10px;"/>
+                   <img id="shopImg" src="" alt="Shop Image" style="width: 50px; height: 50px;margin-right:10px;border-radius: 50%;"/>
                    </div>
                    <div class="col">
                    <span id="nickname" class="font-semibold"></span>
@@ -237,14 +254,11 @@ String userid = (String) request.getAttribute("userid");
         let currentRoomId = "";
 		let message = "";
 		let currentSelectedButton = null;
+		var userid = "<%= userid %>";
 		
 		console.log("sender : " + sender);
 		
-		function texthidden() {
 
-		}
-		
-		
         function connect() {
             console.log("Connecting to WebSocket for room: ", currentRoomId);
             let socket = new SockJS('/ws-stomp');
@@ -342,9 +356,21 @@ String userid = (String) request.getAttribute("userid");
             .then(response => {
                 const data = response.data;
                 console.log(data);
-                document.getElementById('nickname').innerText = data.seller_id || '';
-                document.getElementById('shopImg').src = data.shop_img || ''; // 상점 이미지 URL
+                
+                let opponentId = '';
+                let opponentImg = '';
 
+                if (userid === data.seller_id) {
+                    opponentId = data.sender;
+                    opponentImg = data.sender_shop_img; 
+                } else {
+                    opponentId = data.seller_id;
+                    opponentImg = data.seller_shop_img; 
+                }
+
+                // 상대방의 닉네임과 이미지를 설정
+                document.getElementById('nickname').innerText = opponentId || '';
+                document.getElementById('shopImg').src = opponentImg || '';
                 // 상품 정보 업데이트
                 document.getElementById('productInfo').innerText = data.products_name || '';
                 document.getElementById('productPrice').innerText = data.products_price + '원' || '';
@@ -374,7 +400,7 @@ String userid = (String) request.getAttribute("userid");
         }
 
         
-     
+        
 
         function connectRoom(room_id, buttonElement) {
 
