@@ -374,7 +374,7 @@ public class ShopController {
 	@ResponseBody
 	public String file_spring(@RequestParam Integer shop_id, @RequestParam MultipartFile file) {
 		String fileName = file.getOriginalFilename();
-		String fileDir = "D:/test/Project/SpringTest/src/main/resources/static/img/";
+		String fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/upload/";
 		String relativePath = "/img/" + fileName;
 		// home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img#
 
@@ -397,7 +397,7 @@ public class ShopController {
 
 		service.updateShopImg(params);
 
-		return "redirect:/mypage/" + shop_id;
+		return "redirect:/shop/" + shop_id;
 	}
 
 }

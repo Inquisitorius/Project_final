@@ -11,6 +11,8 @@ if (currentPage == null) {
 	List<ProductDTO> products = (List<ProductDTO>) request.getAttribute("products");
 	if (products != null && !products.isEmpty()) {
 		for (ProductDTO product : products) {
+			  java.text.NumberFormat formatter = java.text.NumberFormat.getInstance();
+			    String formattedPrice = formatter.format(product.getProducts_price());
 	%>
 		<div class="row" style="margin: 0 auto; padding-bottom: 20px;">
 		<div class="col product_container">
@@ -23,7 +25,7 @@ if (currentPage == null) {
 				</div>
 				<div class="price-location">
 				<div class="product-price">
-					<%=product.getProducts_price() %>원
+					<%=formattedPrice %>원
 				</div>
 				</div>
 				<div class="product-location">

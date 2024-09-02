@@ -48,6 +48,8 @@
 			List<ProductDTO> products = (List<ProductDTO>) request.getAttribute("products");
 			if (products != null && !products.isEmpty()) {
 				for (ProductDTO product : products) {
+					 java.text.NumberFormat formatter = java.text.NumberFormat.getInstance();
+					    String formattedPrice = formatter.format(product.getProducts_price());
 			%>
 			<div class="products-content">
 				<a class="product_link" href="/product?p_idx=<%=product.getIdx() %>" style="text-decoration: none;" data-idx = "<%=product.getIdx() %>"> <img
@@ -60,7 +62,7 @@
 						</div>
 						<div class="price-location">
 							<div class="product-price">
-								<%=product.getProducts_price()%>원
+								<%=formattedPrice%>원
 							</div>
 							<div class="product-location">
 								<span><%=product.getProducts_location()%></span>
