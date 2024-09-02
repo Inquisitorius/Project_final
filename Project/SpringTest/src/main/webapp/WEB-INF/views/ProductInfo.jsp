@@ -104,18 +104,32 @@ img {
             </div>
             <div class="row">
                 <div class="col-md-3 fontgray">상품상태</div>
-                <div class="col-md-4 fontCommon_nomal">상태</div>
+                <div class="col-md-4 fontCommon_nomal">${Product.products_status}</div>
             </div>
-            <div class="row">
-                <div class="col-md-3 fontgray">상품크기</div>
-                <div class="col-md-4 fontCommon_nomal">사이즈</div>
-            </div>
-            <div class="row" style="margin-bottom:24px;">
+            <div class="row" style="margin-bottom:34px;">
                 <div class="col-md-3 fontgray">거래방법</div>
-                <div class="col-md-4 fontCommon_nomal">거래</div>
+                <div class="col-md-4 fontCommon_nomal">직거래</div>
             </div>
            
+           <form id ="deleteproduct" action="">
+           </form>
+           
            <div class="row">
+                      <c:choose>
+            <c:when test="${Product.products_seller == userid }">
+             <button id="deleteproduct" class="btn btn-danger" 
+                    style="width: 250px; height: 50px; font-size: 20px; font-weight: bold;">
+                상품 삭제
+            </button>
+            </c:when>
+            <c:otherwise>
+            
+            </c:otherwise>
+            
+            </c:choose>
+           
+           
+           
     <div class="col" style="padding-bottom: 50px; display: flex; justify-content: flex-end">
         <form id="chatForm" action="/chat/room1" method="post">
             <!-- Hidden input fields to store data -->
@@ -123,10 +137,18 @@ img {
             <input type="hidden" name="product_idx" value="${Product.idx}">
             <input type="hidden" name="sender" value="<%= userid %>">
             <input type="hidden" name="product_seller" value="${Product.products_seller}">
+            
+                        <c:choose>
+            <c:when test="${Product.products_status == '거래완료'}">
+            
+            </c:when>
+            <c:otherwise>
             <button id="chatWithSellerButton" class="btn btn-success" 
                     style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
                 판매자와 채팅하기
             </button>
+                        </c:otherwise>
+            </c:choose>
         </form>
     </div>
 </div>
@@ -137,7 +159,7 @@ img {
     <hr style="height: 1px; border: none; background-color: black;">
     
     <div class="row d-flex flex-nowrap" style="display: flex;">
-    <div class="col-7">
+    <div class="col-7" style="margin-right:20px">
                 <div class="col-md-12 fontCommon_nomal" style="display: flex; font-size: 22px; font-weight: 600; margin-bottom: 30px;">
                     상품설명	
                 </div>
@@ -162,10 +184,10 @@ img {
           
             
             
-            <div class="col-5">
+            <div class="col-4">
             <div class="row">
             <div class="col-md-4 fontCommon_nomal">상점정보</div>
-            ${Product.shop_name}
+            <hr style="height: 1px; border: none; background-color: gray;">
             </div>
               <div class="shop-panel">
                    <input type="file" id="file-input" style="display: none;">
@@ -174,7 +196,7 @@ img {
                 <img src=" ${Product.shop_img}" class="shop-img"; style="width:100px;height:100px;";>
              	</a>   
               </div>
-            
+                        ${Product.shop_name}
             </div>
             
             </div>
@@ -188,6 +210,10 @@ img {
 <script>
 
 var productLocation = "<c:out value='${Product.products_location}'/>";
+var userid= "<%= userid %>";
+var idx = "<c:out value='${Product.idx}'/>";
+
+console.log("Product.idx " +idx);
 
 function initMap() {
     var geocoder = new kakao.maps.services.Geocoder();
@@ -218,6 +244,39 @@ function initMap() {
 window.onload = initMap;
 </c:forEach>
 
+
+document.getElementById('deleteproduct').onclick = function() {
+    console.log("button click idx : " + idx); 
+    deletepro(idx);
+};
+
+function deletepro(idx) {
+    if (confirm("정말로 이 상품 게시글을 삭제하시겠습니까?")) {
+        console.log("Delete idx:", idx);
+        fetch('/product/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'idx': idx
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("상품 게시글이 삭제되었습니다.");
+                
+                window.location.href = '/hello'; 
+            } else {
+                alert("채팅방 삭제에 실패했습니다.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("채팅방 삭제 중 오류가 발생했습니다.");
+        });
+        }
+    }
 </script>
 
 </body>
