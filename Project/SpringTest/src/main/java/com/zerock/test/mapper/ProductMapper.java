@@ -58,5 +58,7 @@ public interface ProductMapper {
 	ProductDTO selectOne(int idx);
 				
 	void updateproduct(@Param("product_idx") int idx);
+	
+	void deleteproduct(@Param("idx") int idx);
 }
 

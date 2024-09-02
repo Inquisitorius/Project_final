@@ -219,5 +219,7 @@
 	<update id="updateproduct" parameterType="int">
 	UPDATE products SET PRODUCTS_status ='거래완료' WHERE idx = #{product_idx}
 	</update>
-       
+    <delete id="deleteproduct" parameterType="int">
+    DELETE from products WHERE idx=#{idx}
+    </delete>   
 </mapper>

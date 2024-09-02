@@ -105,5 +105,19 @@ public class ProductController {
 			return "error";
 		}
 	}
+	@PostMapping("/product/delete")
+	@ResponseBody
+	public String deleteproduct(@RequestParam("idx")int idx) {
+		System.out.println("deleteproduct : " + idx);
+		log.info("deleteproduct : " + idx);
+		try {
+			productService.deleteproduct(idx);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+				
+		}
 
 }

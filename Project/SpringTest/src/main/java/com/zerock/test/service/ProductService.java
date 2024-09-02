@@ -137,5 +137,8 @@ public class ProductService {
 	public void updateproduct(int idx) {
 		mapper.updateproduct(idx);
 	}
+	public void deleteproduct(int idx) {
+        mapper.deleteproduct(idx);
+    }
 
 }
