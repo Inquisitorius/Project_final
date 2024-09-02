@@ -50,9 +50,9 @@
 				for (ProductDTO product : products) {
 			%>
 			<div class="products-content">
-				<a href="www.naver.com" style="text-decoration: none;"> <img
+				<a class="product_link" href="/product?p_idx=<%=product.getIdx() %>" style="text-decoration: none;" data-idx = "<%=product.getIdx() %>"> <img
 					class="product_img"
-					src="https://m.bunjang.co.kr/products/280245231?ref=%ED%99%88"
+					src="<%=product.getProducts_img1() %>"
 					style="width: 194px; height: 194px;">
 					<div class="product-info">
 						<div class="product-title">
@@ -183,7 +183,28 @@ $(document).ready(function () {
     });
 	
     
-    
+    $('.product_link').on('click', function(){
+		var idx = $(this).data('idx');
+		console.log(idx);
+		
+		
+			 $.ajax({
+		            url: '/product-add',
+		            method: 'GET',
+		            data: {
+		                idx: idx,
+		                page: 1
+		            },
+		            success: function (response) {
+		               console.log(response);
+		            },
+		            error: function () {
+		                alert('데이터를 가져오는 데 실패했습니다.');
+		            }
+		        });
+		
+	});
+	
     
     function setActiveselect(status, sortType) {
         $(".form-select").each(function() {

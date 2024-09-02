@@ -1,6 +1,12 @@
 <%@page import="com.zerock.test.dto.ProductDTO"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+Integer currentPage = (Integer) session.getAttribute("currentPage");
+if (currentPage == null) {
+    currentPage = 1; 
+}
+%>
 	<% 
 	List<ProductDTO> products = (List<ProductDTO>) request.getAttribute("products");
 	if (products != null && !products.isEmpty()) {
@@ -28,7 +34,7 @@
 		</div>
 		<script type="text/javascript">
 		$(document).ready(function(){
-			
+			var currentPage = '<%=currentPage%>';
 				
 		       $('.product_link').on('click', function(){
 					var idx = $(this).find('#idxInput').val();
@@ -39,8 +45,7 @@
 					            url: '/product-add',
 					            method: 'GET',
 					            data: {
-					                idx: idx,
-					                page: 1
+					                idx: idx
 					            },
 					            success: function (response) {
 					               console.log(response);
@@ -59,3 +64,4 @@
 	</div>
 	<%} 
 	}%>
+	

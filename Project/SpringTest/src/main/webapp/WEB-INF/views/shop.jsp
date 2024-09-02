@@ -7,7 +7,6 @@ String type = (String) request.getAttribute("type");
 Integer shopNum = (Integer) request.getAttribute("shopId");
 String currentUri = request.getRequestURI();
 Integer cnt = (Integer) request.getAttribute("cnt");
-String sortType = (String) request.getAttribute("sort");
 Integer size = (Integer) request.getAttribute("size");
 Double shopRating = (Double) request.getAttribute("rating");
 if(shopRating == null){
@@ -161,7 +160,6 @@ if(shopRating == null){
 		var userid = '<%=userid%>';
 		var shopNum = '<%=shopNum%>';
 		var type = $(this).data('type');
-		var sortType = '<%=sortType%>';
 		var userid = '<%=userid%>';
 		var shopOwner = "<%=shopOwner%>";
 
@@ -298,12 +296,12 @@ if(shopRating == null){
 	              data = { status: 'all', size: 5 };  
 	          }
 	          $.ajax({
-	              url: url,
+	              url: '/shop/' + shopNum + '/products',
 	              method: "GET",
 	              data:data,
 	              success: function(response) {
 	            	  console.log("초기화" + status);
-	            	  console.log(url);
+	            	  console.log(type);
 	            	  setActiveTab(); 
 	            	  
 	              },

@@ -50,6 +50,7 @@ public class ProductController {
 		}
 		int totalItems = recentlyViewed.size();
 		int start = (page - 1) * size;
+		
 		int end = Math.min(start + size, totalItems);
 		if (start > totalItems) {
 			start = end = 0;
@@ -58,9 +59,9 @@ public class ProductController {
 
 		List<ProductDTO> pagedRecentlyViewed = recentlyViewed.subList(start, end);
 		session.setAttribute("paged", pagedRecentlyViewed);
-		session.setAttribute("currentPage", page);
+		
 		session.setAttribute("totalPages", (int) Math.ceil((double) totalItems / size));
-		System.out.println("Total Pages: " + (int) Math.ceil((double) totalItems / size));
+		
 		
 		
 
@@ -76,15 +77,17 @@ public class ProductController {
 			recentlyViewed = new ArrayList<>();
 		}
 		int totalItems = recentlyViewed.size();
+		
 		int start = (page - 1) * size;
 		int end = Math.min(start + size, totalItems);
 		if (start > totalItems) {
 			start = end = 0;
 		}
-		System.out.println("page : " + page);
+		
 		List<ProductDTO> pagedRecentlyViewed = recentlyViewed.subList(start, end);
 		session.setAttribute("paged", pagedRecentlyViewed);
-		System.out.println("Total Pages: " + (int) Math.ceil((double) totalItems / size));
+		session.setAttribute("currentPage", page);
+		
 		
 		return "view";
 	}

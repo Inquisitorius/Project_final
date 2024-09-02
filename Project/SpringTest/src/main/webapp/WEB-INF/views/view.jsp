@@ -9,7 +9,9 @@ List<ProductDTO> recentcnt = (List<ProductDTO>) session.getAttribute("recentlyVi
 Integer cnt = (Integer) request.getAttribute("cnt");
 Integer currentPage = (Integer) session.getAttribute("currentPage");
 Integer totalPages = (Integer) session.getAttribute("totalPages");
-currentPage = 1;
+if (currentPage == null) {
+    currentPage = 1; 
+}
 
 %>
 <!DOCTYPE html>
@@ -27,7 +29,7 @@ currentPage = 1;
 </head>
 <body>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
-<link href="/css/stickySidebar.css" rel="stylesheet" type="text/css">		
+<link href="/css/stickySidebar.css" rel="stylesheet" type="text/css">      
 <jsp:include page="../Common/header.jsp"></jsp:include>
 
 
@@ -38,7 +40,7 @@ currentPage = 1;
     max-width: 1320px;
 ">
 
-	
+   
   <div class="carousel-inner" style="max-height: 80%">
     <div class="carousel-item active" data-bs-interval="5000">
       <img src="/img/1236022401_w1197.webp" class="d-block w-100" alt="">
@@ -61,21 +63,21 @@ currentPage = 1;
 </div>
 <div class="sticky-sidebar" >
 
-	<div class="sc-box">
-		<div class="recently-viewed">
-			최근본상품
-		</div>
-		
-		<div class="recently-count">
-		<%if(recentcnt != null){ %>
-			<%=recentcnt.size() %>
-			<%} else{%>
-			0
-			<%} %>
-		</div>
-		<div class="recently-itemcontainer">
-		<% 
-	
+   <div class="sc-box">
+      <div class="recently-viewed">
+         최근본상품
+      </div>
+      
+      <div class="recently-count">
+      <%if(recentcnt != null){ %>
+         <%=recentcnt.size() %>
+         <%} else{%>
+         0
+         <%} %>
+      </div>
+      <div class="recently-itemcontainer">
+      <% 
+   
         if (recentlyViewed != null && !recentlyViewed.isEmpty()) {
             for (ProductDTO recentProduct : recentlyViewed) {
         %>
@@ -92,77 +94,86 @@ currentPage = 1;
         <% 
         } 
         %>
-		</div>
+      <div class=paged>
+    <% if (totalPages != null && totalPages > 1) { %>
+
+        <!-- 현재 페이지가 1보다 큰 경우에만 이전 버튼 표시 -->
+        <% if (currentPage > 1) { %>
+            <button class="page-btn" data-page="prev">
+            <img src="../img/prev-btn.png" style="width: 5px; height: 9px;">
+            </button>
+        <% } else {%>
+        	<button disabled class="page-btn" data-page="prev">
+            <img src="../img/prev-btn.png" style="width: 5px; height: 9px;">
+            </button>
+		<% }%>
+        <!-- 현재 페이지를 표시 -->
+        <span class="current-page"><%= currentPage %>/<%= totalPages %></span>
+
+        <!-- 현재 페이지가 totalPages보다 작은 경우에만 다음 버튼 표시 -->
+        <% if (currentPage < totalPages) { %>
+            <button class="page-btn" data-page="next">
+             <img src="../img/next-btn.png" style="width: 5px; height: 9px;">
+            </button>
+        <% } else{%>
+        <button disabled class="page-btn" data-page="next">
+             <img src="../img/next-btn.png" style="width: 5px; height: 9px;">
+            </button>
+		<%} %>
+    <% } %>
+</div>
+      </div>
+  
+
+
+   </div>
+   <div class="sc-box">
+      <button class="top-btn" id="top-btn">TOP</button>
+   </div>
  
+   </div>
+   <div class="container">
 
-	</div>
-	<div class="sc-box">
-		<button class="top-btn" id="top-btn">TOP</button>
-	</div>
-	<!-- 페이징 네비게이션 -->
-    <div class="pagination">
-        <% if (totalPages != null && totalPages > 1) { %>
-            <% for (int i = 1; i <= totalPages; i++) { %>
-                <% if (i == currentPage) { %>
-                   <a class="page-link" data-page="<%= i %>"><%= i %></a>
-                <% } else { %>
-                    <a class="page-link" data-page="<%= i %>"><%= i %></a>
-                <% } %>
-            <% } %>
-        <% } %>
-    </div>
-	</div>
-	<div class="container">
-
-		<div class="row" style="margin-top: 50px;">
-			<h2 style="padding: 0;font-size: 25px;font-family: sans-serif;">상품 목록 </h2>
-		</div>
-	</div>
-	
+      <div class="row" style="margin-top: 50px;">
+         <h2 style="padding: 0;font-size: 25px;font-family: sans-serif;">상품 목록 </h2>
+      </div>
+   </div>
+   
             
-            <div class="row">
-                <div class="col-3" style="padding-bottom: 50px; display: flex;justify-content: flex-end">
-                    <form id="productForm" action="product" method="get">
-                    <input type="hidden" name="p_idx" id="idxInput">
-                        <button type="submit" class="btn btn-success" style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
-                            판매자와 채팅하기
-                        </button>
-                    </form>
-                </div>
-            </div>
-	
+   
 <div class="container list-container" style="padding: 0px; margin: 0 auto;">
-	
+   
 </div>
 <jsp:include page="../Common/footer.jsp"></jsp:include>
 <script type="text/javascript">
-	$(document).ready(function(){
-		var size = 40;
-		var cnt = '<%=cnt%>';
-		var totalPages = '<%=totalPages%>';
-		console.log("total : " + totalPages);
-		$('#top-btn').click(function(){
-			$('html, body').scrollTop(0);
-		});
-		
-		function getProducts(){
-			 $.ajax({
-		            url: '/getProducts',
-		            method: 'GET',
-		            data: {
-		                size: size,
-		            },
-		            success: function (response) {
-		               $('.list-container').html(response);
-		               console.log(cnt);
-		            },
-		            error: function () {
-		                alert('데이터를 가져오는 데 실패했습니다.');
-		            }
-		        });
-		}
-		getProducts();
-		 // 스크롤 이벤트 핸들러 등록
+   $(document).ready(function(){
+      var size = 40;
+      var cnt = '<%=cnt%>';
+      var totalPages = '<%=totalPages%>';
+      var currentPage = '<%=currentPage%>';
+      console.log("total : " + totalPages);
+      $('#top-btn').click(function(){
+         $('html, body').scrollTop(0);
+      });
+      
+      function getProducts(){
+          $.ajax({
+                  url: '/getProducts',
+                  method: 'GET',
+                  data: {
+                      size: size,
+                  },
+                  success: function (response) {
+                     $('.list-container').html(response);
+                     console.log(cnt);
+                  },
+                  error: function () {
+                      alert('데이터를 가져오는 데 실패했습니다.');
+                  }
+              });
+      }
+      getProducts();
+       // 스크롤 이벤트 핸들러 등록
         $(window).on("scroll", function(){
             var scrollTop = $(window).scrollTop();
             var windowHeight = $(window).height();
@@ -170,42 +181,50 @@ currentPage = 1;
             var isBottom = scrollTop + windowHeight + 10 >= documentHeight;
 
             if (isBottom && size <= cnt ) {
-            	console.log(size);
+               console.log(size);
                 size += 8;
                 setTimeout(() => getProducts(), 300); // 0.3초 딜레이 후 데이터 요청
             }
         });
-		 
+       
  
         
-        $(document).on('click', '.page-link', function(event) {
+        $(document).on('click', '.page-btn', function(event) {
            
 
             var page = $(this).data('page'); // 페이지 번호 추출
-            console.log("Page: " + page); // 페이지 번호 콘솔에 출력
+            
+            // prev나 next가 아니라면 숫자로 변환
+            if(page === 'prev' && currentPage > 1){
+                page = parseInt(currentPage) - 1;
+            } else if(page === 'next' && currentPage < totalPages){
+                page = parseInt(currentPage) + 1;
+            } else {
+                page = parseInt(page);
+            }
+            
             $.ajax({
-	            url: '/paging',
-	            method: 'GET',
-	            data: {
-	                page : page
-	            },
-	            success: function (response) {
-	            	$('.recently-itemcontainer').load(location.href+' .recently-itemcontainer');
-	            },
-	            error: function () {
-	                alert('데이터를 가져오는 데 실패했습니다.');
-	            }
-	        });
+               url: '/paging',
+               method: 'GET',
+               data: {
+                   page : page
+               },
+               success: function (response) {
+                  $('.recently-itemcontainer').load(location.href+' .recently-itemcontainer');
+                  currentPage = page;
+               },
+               error: function () {
+                   alert('데이터를 가져오는 데 실패했습니다.');
+               }
+           });
            
         });
         
-		
-	});
-	
+      
+   });
+   
 
 
-    var p_idx = 63; 
-    document.getElementById('idxInput').value = p_idx;
 
 </script>
 </body>
