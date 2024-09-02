@@ -185,6 +185,10 @@
 			<div class=submit-container>
 				<button type="button" id ="edit-btn" class="submit-btn"><span class="submit-span">수정하기</span></button>
 			</div>
+			
+			<div class=back-container>
+				<button type="button" id ="back-btn" class="back-btn"><span class="submit-span">취소</span></button>
+			</div>
 		</form>
 	</div>
 	
@@ -205,6 +209,10 @@
 			}
 		}
 		initializeDateFields(userbirth);
+		
+		$('#back-btn').click(function(){
+			  window.history.back();
+		});
 		
 		$('#edit-btn').click(function(event) {
 			event.preventDefault();

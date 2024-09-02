@@ -241,7 +241,7 @@
     -webkit-box-pack: center;
     justify-content: center;
     border-top: 1px solid rgb(255, 255, 255);
-    padding: 40px 0px;
+    padding: 20px 0px;
 }
 
 .submit-btn{
@@ -259,4 +259,21 @@
 	display: inline-block;
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.back-container{
+	 display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    border-top: 1px solid rgb(255, 255, 255);
+}
+
+.back-btn{
+	width: 180px;
+    height: 60px;
+    display: block;
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    border: 0px none;
 }

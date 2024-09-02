@@ -45,7 +45,7 @@
         <% } %>
         <button class = "btn btn-secondary" id="productInsert-btn" style = "margin-right: 10px;">상품등록</button>
         <button class = "btn btn-secondary" id="mypage-btn">마이페이지</button>
-        <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px;">
+        <form id="logoutForm" action="/logout" method="post" style="margin-left: 10px; margin-bottom: 0px;">
             <button class = "btn btn-secondary" type="submit">
                 로그아웃
             </button>
