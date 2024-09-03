@@ -374,8 +374,8 @@ public class ShopController {
 	@ResponseBody
 	public String file_spring(@RequestParam Integer shop_id, @RequestParam MultipartFile file) {
 		String fileName = file.getOriginalFilename();
-		String fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/upload/";
-		String relativePath = "/img/" + fileName;
+		String fileDir = "/home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img/profile/";
+		String relativePath = "/profile/" + fileName;
 		// home/ubuntu/tomcat/apache-tomcat-10.0.27/webapps/ROOT/WEB-INF/classes/static/img#
 
 		// Path directoryPath = Paths.get("src", "main", "resources","static", "img",
