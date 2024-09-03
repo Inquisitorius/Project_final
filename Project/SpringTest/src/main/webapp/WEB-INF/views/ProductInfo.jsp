@@ -110,8 +110,6 @@ img {
                 <div class="col-md-4 fontCommon_nomal">직거래</div>
             </div>
            
-           <form id ="deleteproduct" action="">
-           </form>
            
            <div class="row">
                       <c:choose>
