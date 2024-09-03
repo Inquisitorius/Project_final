@@ -1,5 +1,6 @@
 package com.zerock.test.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,18 +15,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class SendMailService {
-
+	
+	@Autowired
     private  UserMapper mapper;
-    private  PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private  JavaMailSender javaMailSender;
 
    
-     public SendMailService(UserMapper mapper, PasswordEncoder passwordEncoder,
-            JavaMailSender javaMailSender) {
-         this.mapper = mapper;
-         this.passwordEncoder = passwordEncoder;;
-         this.javaMailSender = javaMailSender;
-     }
+  
 
     @Transactional
     public void UpdatePassword(String email) {
