@@ -110,7 +110,7 @@ String userid = (String) request.getAttribute("userid");
         .message-container {
             overflow-y: auto;
             min-height: 670px; 
-
+			max-height: 670px; 
         }
 .hidden {
     height: 0;
@@ -255,6 +255,7 @@ String userid = (String) request.getAttribute("userid");
 		let message = "";
 		let currentSelectedButton = null;
 		var userid = "<%= userid %>";
+		const displayedMessageIds = new Set();
 		
 		console.log("sender : " + sender);
 		
@@ -295,11 +296,24 @@ String userid = (String) request.getAttribute("userid");
 
         function addMessage(recv) {
 
-            // 1. recv 객체 확인
-            if (!recv) {
-                console.error("Received data is null or undefined.");
+        	if (!recv) {
+                console.error("Received data is null, undefined, or missing an ID.");
                 return;
             }
+        	
+        	if (!recv.id) {
+                console.error("Received data is null, undefined, or missing an ID.");
+                return;
+            }
+
+            // 중복된 메시지인지 체크
+            if (displayedMessageIds.has(recv.id)) {
+                console.log("Message with ID " + recv.id + " is already displayed.");
+                return;
+            }
+
+            // 메시지 ID를 저장
+            displayedMessageIds.add(recv.id);
 
             console.log("addMessage called with:", recv);
 
@@ -344,7 +358,7 @@ String userid = (String) request.getAttribute("userid");
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
 
-     // Axios를 사용하여 채팅방 세부정보를 가져오는 함수
+     // 채팅방 세부정보
         function loadChatRoomDetails(room_id) {
             console.log("loadChatRoomDetails " + room_id);
             
@@ -399,8 +413,22 @@ String userid = (String) request.getAttribute("userid");
             });
         }
 
+        function clearChatMessages() {
+            let chatContainer = document.querySelector('.message-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = ''; // 채팅 메시지 초기화
+            }
+        }
         
-        
+        function redirectToChatRoom(room_id) {
+            fetchMessages(room_id)
+                .then(() => {
+                    window.location.href = '/myRoomsPage'; // 채팅 목록 페이지로 리다이렉트
+                })
+                .catch(error => {
+                    console.error("Error while loading messages or redirecting:", error);
+                });
+        }
 
         function connectRoom(room_id, buttonElement) {
 
@@ -421,15 +449,17 @@ String userid = (String) request.getAttribute("userid");
 					console.log("Disconnected from previous WebSoucket");
 					
 					clearChatMessages();
-					
-					loadChatRoomDetails(room_id);
+					fetchMessages(room_id);
 					connect();
+					loadChatRoomDetails(room_id);
 				
 				});
         	} else{
-
+        		
         		loadChatRoomDetails(room_id);
-        		connect();  <!-- 웹소켓 -->
+        		fetchMessages(room_id);
+        		connect(); 	
+        		setInterval(() => fetchMessages(room_id), 1000);
         	}
         
         	}
@@ -495,6 +525,46 @@ String userid = (String) request.getAttribute("userid");
             dropdown.classList.toggle('hidden');
         }
 
+        function fetchMessages(room_id) {
+            console.log("fetchmessage : " + room_id);
+            
+            var url = "/messages/" + room_id;
+            console.log("Request URL: " + url);
+            
+            axios.get(url)
+                .then(response => {
+                    console.log("fetchmessage 후 : " + room_id);
+                    const messages = response.data;
+
+                    // 응답 데이터가 배열인지 확인
+                    if (!Array.isArray(messages)) {
+                        console.error("Expected an array of messages but got:", messages);
+                        return;
+                    }
+                    
+                    
+                    messages.forEach(message => {
+                        // 각 메시지 객체의 필드를 확인하고 기본값 설정
+                        if (message) {
+                            addMessage({
+								id: message.id,
+                                messageType: message.messageType || 'UNKNOWN',
+                                sender: message.sender || 'Unknown Sender',
+                                message: message.message || 'No message content',
+                                room_id: message.room_id || room_id ,
+                                timestamp: message.timestamp
+                            });
+                        } else {
+                            console.error("Received an invalid message object:", message);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading messages:", error);
+                });
+        }
+
+        	
         // 채팅방 삭제 기능
         function deleteChatRoom(room_id) {
         if (confirm("정말로 이 채팅방을 삭제하시겠습니까?")) {
@@ -511,7 +581,14 @@ String userid = (String) request.getAttribute("userid");
             .then(response => {
                 if (response.ok) {
                     // 성공적으로 삭제된 경우
-                    alert("채팅방이 삭제되었습니다.");
+                    Swal.fire({
+					  title: "채팅방 삭제",
+					  text: "채팅방이 삭제되었습니다.",
+					  icon: "success"
+					}).then((result) => {
+						window.location.href = '/myRoomsPage';
+					});
+
                     
                     ws.send("/pub/chatroom/delete", {}, JSON.stringify({ 
                         'room_id': room_id 

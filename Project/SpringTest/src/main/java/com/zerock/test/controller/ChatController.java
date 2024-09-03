@@ -78,7 +78,7 @@ public class ChatController {
     public List<Chat_message> getMessages(@PathVariable("room_id") int room_id) {
     	System.out.println("Fetching messages for room id: " + room_id);
     	log.info("fetching messageadsad: adsaddas" + room_id);
-        List<Chat_message> messages = chatMessageService.getMessagesByRoom(room_id);
+    	List<Chat_message> messages = chatMessageService.getMessagesByRoom(room_id);
         log.info("fetching messageadsad: chatservaeqwd" + messages);
         System.out.println("Messages: " + messages);
         return messages;

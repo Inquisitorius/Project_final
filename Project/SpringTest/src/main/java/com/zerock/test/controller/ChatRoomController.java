@@ -80,15 +80,6 @@ public class ChatRoomController {
 	    return "chat";
 	}
 	    
-	@PostMapping("/chat/room")
-	public String createRoom(@RequestParam("room_id") int room_id, @RequestParam("name") String name) {
-		ChatRoom chatRoom = new ChatRoom();
-		chatRoom.setRoom_id(room_id);
-		chatRoom.setName(name);
-		chatRoomService.createRoom(chatRoom);
-		return "redirect:chat";
-	}
-
 	@PostMapping("/chat/room1")
 	public String createRoom(@ModelAttribute("room_name") String room_name,
 	                         @ModelAttribute("product_idx") int product_idx,

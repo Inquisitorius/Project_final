@@ -9,12 +9,7 @@
     </insert>
     
      <select id="selectMessagesByRoom" parameterType="int" resultType="com.zerock.test.dto.Chat_message">
-        SELECT messageType , room_id , sender, message
-        FROM chat_message	
-        WHERE room_id = #{room_id}
+        SELECT * FROM chat_message WHERE room_id = #{room_id} order by timestamp
     </select>
     
-   
-    
-   
 </mapper>

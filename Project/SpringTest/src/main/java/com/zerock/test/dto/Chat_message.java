@@ -22,10 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 public class Chat_message {
 	   
+		private int id;
 	    private String messageType;
 	    private int room_id;
 	    private String sender;
 	    private String message;
+	    private Timestamp timestamp;
 	   
 	    
 	    public String getMessageType() {
@@ -52,6 +54,8 @@ public class Chat_message {
 		public void setMessage(String message) {
 			this.message = message;
 		}
+		
+		
 		@Override
 		public String toString() {
 			return "Chat_message [messageType=" + messageType + ", room_id=" + room_id + ", sender=" + sender

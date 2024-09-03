@@ -87,7 +87,6 @@ img {
         <div class="col-7">
             <div class="row">
                 <div class="col-md-12 fontCommon_Option" style="display: flex; font-size: 24px; font-weight: 600; color: #333; justify-content: flex-start; margin-bottom: 40px;">
-               
 				${Product.products_name} 
                 </div>
             </div>
@@ -144,7 +143,7 @@ img {
             </c:when>
             <c:otherwise>
             <button id="chatWithSellerButton" class="btn btn-success" 
-                    style="width: 300px; height: 50px; font-size: 20px; font-weight: bold;">
+                    style="width: 250px; height: 50px; font-size: 20px; font-weight: bold;">
                 판매자와 채팅하기
             </button>
                         </c:otherwise>
