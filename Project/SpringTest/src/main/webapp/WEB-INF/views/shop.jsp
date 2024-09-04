@@ -267,7 +267,7 @@ if(shopRating == null){
 	                  contentType: false,
 	                  processData: false,
 	                  success: function(response) {
-	                	  
+	                	  $('.shop-img').attr("src", response);
 	                  },
 	                  error: function(xhr, status, error) {
 	                      alert('File upload failed: ' + error);

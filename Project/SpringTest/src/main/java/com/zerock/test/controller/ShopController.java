@@ -397,7 +397,7 @@ public class ShopController {
 
 		service.updateShopImg(params);
 
-		return "redirect:/shop/" + shop_id;
+		return relativePath;
 	}
 
 }
