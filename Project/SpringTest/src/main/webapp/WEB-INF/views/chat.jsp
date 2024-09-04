@@ -25,23 +25,33 @@ String userid = (String) request.getAttribute("userid");
     border-radius: 10px;
     margin-right:10px;
     margin-left:10px;
+    
 }
 .message-sent {
-   background-color: #f0e09c	;
+	
+	
+    background-color: #ffd86e;
     text-align: left;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
     margin-right:50px;
+    display: grid;
+    grid-template-columns: minmax(100px, max-content) 1fr;
+    gap: 10px;
+    width: 400px;
+
+    
 }
 
 .message-received {
-    background-color: #aef7a6	;
+    background-color: #aef7a6;
     text-align: right;
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
-    margin-left:50px;
+    margin-left:340px;
+    
     
 }
 
